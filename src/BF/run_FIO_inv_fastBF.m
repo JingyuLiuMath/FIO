@@ -97,7 +97,7 @@ tic;
 result.t_pcg = toc;
 
 fprintf("    t_pcg: %.1e\n", result.t_pcg);
-fprintf("    iter_pcg:%d\n", result.iter_pcg);
+fprintf("    iter_pcg: %d\n", result.iter_pcg);
 result.rel_res_pcg = norm(Kf - apply_fbf(K_BF, f_pcg)) / norm(Kf);
 fprintf("    rel_res_pcg: %.1e\n", result.rel_res_pcg);
 result.rel_err_pcg = norm(f_ex - f_pcg) / norm(f_ex);

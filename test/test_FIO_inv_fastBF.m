@@ -12,8 +12,8 @@ p = 10;
 N = 2^p;
 half_N = N / 2;
 
-r_bf = 8;
-tol_bf = 1e-12;
+r_bf = 10;
+tol_bf = 1e-8;
 
 num_sample = 256;
 

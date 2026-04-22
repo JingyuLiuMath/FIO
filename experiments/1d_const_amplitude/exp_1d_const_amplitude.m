@@ -8,8 +8,8 @@ c_func = @(x) (2 + sin(2 * pi * x)) / 8;
 phi_func = @(x, xi) x * xi.' + c_func(x) * abs(xi).';
 exp_phi_func = @(x, xi) exp(2 * pi * 1i * phi_func(x, xi));
 
-% p_list = (10 : 2 : 18)';
-p_list = (10 : 2 : 12)';
+p_list = (10 : 2 : 18)';
+% p_list = (10 : 2 : 12)';
 num_n = length(p_list);
 
 r_bf = 10;
