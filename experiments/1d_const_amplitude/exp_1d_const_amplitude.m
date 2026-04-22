@@ -12,8 +12,8 @@ exp_phi_func = @(x, xi) exp(2 * pi * 1i * phi_func(x, xi));
 p_list = (10 : 2 : 12)';
 num_n = length(p_list);
 
-r_bf = 8;
-tol_bf = 1e-12;
+r_bf = 10;
+tol_bf = 1e-8;
 
 min_points = 256;
 tol_hss_list = [1e-3, 1e-6];
