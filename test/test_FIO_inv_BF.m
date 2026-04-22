@@ -2,6 +2,9 @@
 clear;
 close all;
 
+addpath('../extern/BF.m/1D/src');
+addpath('../extern/BF.m/1D/test');
+
 c_func = @(x) (2 + sin(2 * pi * x)) / 8;
 phi_func = @(x, xi) x * xi.' + c_func(x) * abs(xi).';
 

@@ -1,0 +1,106 @@
+function result = run_FIO_inv_fastBF(...
+    exp_phi_func, N, ...
+    r_bf, tol_bf, ...
+    min_points, r_hss, tol_hss, ...
+    num_sample, ...
+    tol_cg, maxit_cg)
+
+result = struct();
+
+result.N = N;
+result.r_bf = r_bf;
+result.tol_bf = tol_bf;
+result.min_points = min_points;
+result.r_hss = r_hss;
+result.tol_hss = tol_hss;
+result.num_sample = num_sample;
+result.tol_cg = tol_cg;
+result.maxit_cg = maxit_cg;
+
+half_N = N / 2;
+
+% Initialization.
+x = (0 : (N - 1))' / N;
+xi = (-half_N : (half_N - 1))';
+
+% BF.
+fprintf("BF.\n");
+tic;
+[K_BF, ~] = fastBF(exp_phi_func, x, xi, r_bf, tol_bf);
+result.t_BF_construct = toc;
+fprintf("  t_BF_construct: %.1e\n", result.t_BF_construct);
+
+f_ex = randn(N,1) + 1i * randn(N,1);
+tic;
+Kf = apply_fbf(K_BF, f_ex);
+result.t_BF_apply = toc;
+
+fprintf("  t_BF_apply: %.1e\n", result.t_BF_apply);
+result.rel_err_BF = fbf_check(N, exp_phi_func, f_ex, x, xi, Kf, num_sample);
+fprintf("  rel_err_BF: %.1e\n", result.rel_err_BF);
+
+% HSS.
+fprintf("HSS.\n");
+op_G = @(v) apply_fbf_adj(K_BF, apply_fbf(K_BF, v));
+
+tic;
+G_HSS = BF_HSS(N);
+G_HSS.BuildTree(min_points);
+leaf_size = G_HSS.MaxLeafSize();
+G_HSS.BlackBoxConstruct(op_G, leaf_size, r_hss, tol_hss);
+result.t_HSS_construct = toc;
+fprintf("  t_HSS_construct: %.1e\n", result.t_HSS_construct);
+
+result.hss_rank = G_HSS.Rank();
+fprintf("  HSS rank: %d\n", result.hss_rank);
+result.hss_mem = G_HSS.Storage();
+ratio = result.hss_mem / N^2;
+fprintf("  ratio: %.1e\n", ratio);
+
+tic;
+G_HSS.ULV_Factor();
+result.t_HSS_factor = toc;
+fprintf("  t_HSS_factor: %.1e\n", result.t_HSS_factor);
+
+% Direct Solution.
+fprintf("Direct solution.\n");
+tic;
+f_direct = G_HSS.ULV_Solve(apply_fbf_adj(K_BF, Kf));
+result.t_solve_direct = toc;
+
+fprintf("  t_solve_direct: %.1e\n", result.t_solve_direct);
+result.rel_res_direct = norm(Kf - apply_fbf(K_BF, f_direct)) / norm(Kf);
+fprintf("  rel_res_direct: %.1e\n", result.rel_res_direct);
+result.rel_err_direct = norm(f_ex - f_direct) / norm(f_ex);
+fprintf("  rel_res_direct: %.1e\n", result.rel_err_direct);
+
+% Iterative solution.
+fprintf("Iterative solution.\n");
+rhs = apply_fbf_adj(K_BF, Kf);
+
+fprintf("  Without precond.\n");
+tic;
+[f_cg, result.flag_cg, ~, result.iter_cg] = pcg(op_G, rhs, tol_cg, maxit_cg);
+result.t_cg = toc;
+
+fprintf("    t_cg: %.1e\n", result.t_cg);
+fprintf("    iter_cg: %d\n", result.iter_cg);
+result.rel_res_cg = norm(Kf - apply_fbf(K_BF, f_cg)) / norm(Kf);
+fprintf("    rel_res_cg: %.1e\n", result.rel_res_cg);
+result.rel_err_cg = norm(f_ex - f_cg) / norm(f_ex);
+fprintf("    rel_err_cg: %.1e\n", result.rel_err_cg);
+
+fprintf("  With precond.\n");
+op_M = @(v) G_HSS.ULV_Solve(v);
+tic;
+[f_pcg, result.flag_pcg, ~, result.iter_pcg] = pcg(op_G, rhs, tol_cg, maxit_cg, op_M);
+result.t_pcg = toc;
+
+fprintf("    t_pcg: %.1e\n", result.t_pcg);
+fprintf("    iter_pcg:%d\n", result.iter_pcg);
+result.rel_res_pcg = norm(Kf - apply_fbf(K_BF, f_pcg)) / norm(Kf);
+fprintf("    rel_res_pcg: %.1e\n", result.rel_res_pcg);
+result.rel_err_pcg = norm(f_ex - f_pcg) / norm(f_ex);
+fprintf("    rel_err_pcg: %.1e\n", result.rel_err_pcg);
+
+end
