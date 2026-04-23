@@ -1,4 +1,4 @@
-function BlackBoxConstruct(A, op_A, leaf_size, target_rank, tol)
+function BlackBoxConstruct(A, op_A, target_rank, tol)
 % BlackBoxConstruct
 
 % Jingyu Liu, December 4, 2024.
@@ -6,12 +6,12 @@ function BlackBoxConstruct(A, op_A, leaf_size, target_rank, tol)
 arguments (Input)
     A HSS_Herm;
     op_A function_handle;
-    leaf_size (1, 1) double;
     target_rank (1, 1) double;
     tol (1, 1) double;
 end
 
 % Settings.
+leaf_size = A.MaxLeafSize();
 p = 5;
 r = target_rank + p;
 s = max(r + leaf_size, 3 * r);

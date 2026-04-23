@@ -10,8 +10,7 @@ arguments (Input)
 end
 
 op_G = @(v) G_fun(v, K_BF, p, p_inv);
-leaf_size = G.MaxLeafSize();
-G.BlackBoxConstruct(op_G, leaf_size, r, tol);
+G.BlackBoxConstruct(op_G, r, tol);
 
 end
 

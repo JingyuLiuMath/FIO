@@ -8,7 +8,6 @@ arguments (Input)
 end
 
 op_G = @(v) apply_fbf_adj(K_BF, apply_fbf(K_BF, v));
-leaf_size = G.MaxLeafSize();
-G.BlackBoxConstruct(op_G, leaf_size, r, tol);
+G.BlackBoxConstruct(op_G, r, tol);
 
 end
