@@ -3,10 +3,9 @@ close all;
 warning off;
 
 addpath('../../extern/FastBF.m/src');
+addpath('../../extern/FastBF.m/test/kernels');
 
-c_func = @(x) (2 + sin(2 * pi * x)) / 8;
-phi_func = @(x, xi) x * xi.' + c_func(x) * abs(xi).';
-exp_phi_func = @(x, xi) exp(2 * pi * 1i * phi_func(x, xi));
+exp_phi_func = @(x, xi) fun0_1D(x, xi);
 
 p_list = (10 : 2 : 18)';
 % p_list = (10 : 2 : 12)';
@@ -16,7 +15,7 @@ r_bf = 10;
 tol_bf = 1e-8;
 
 min_points = 256;
-tol_hss_list = [1e-3, 1e-6];
+tol_hss_list = [1e-2, 1e-4];
 num_tol_hss = length(tol_hss_list);
 
 tol_cg = 1e-12;
