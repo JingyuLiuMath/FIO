@@ -7,7 +7,7 @@ addpath('../extern/FastBF.m/test/kernels');
 
 exp_phi_func = @(x, xi) fun0_2D(x, xi);
 
-p = 6;
+p = 5;
 n = 2^p;
 N = n^2;
 half_n = n / 2;
@@ -18,7 +18,7 @@ tol_bf = 1e-8;
 num_sample = 256;
 
 min_points = 256;
-r_hss = 4 * n;
+r_hss = 2 * n;
 tol_hss = 1e-3;
 
 tol_cg = 1e-12;

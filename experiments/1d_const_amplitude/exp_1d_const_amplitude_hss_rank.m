@@ -1,0 +1,26 @@
+clear;
+close all;
+warning off;
+
+addpath('../../extern/FastBF.m/src');
+addpath('../../extern/FastBF.m/test/kernels');
+
+exp_phi_func = @(x, xi) fun0_1D(x, xi);
+
+p_list = (7 : 14)';
+num_n = length(p_list);
+
+for it_p = 1 : num_n
+    p = p_list(it_p);
+
+    N = 2^p;
+
+    fprintf("\n\n\n\n");
+    fprintf("Basic info.\n");
+    fprintf("  p: %d\n", p);
+    fprintf("  N: %d\n", N);
+
+    result = run_FIO_hss_rank(exp_phi_func, N);
+    save("./data/hss_rank_" + string(p) + ".mat", ...
+        "result");
+end

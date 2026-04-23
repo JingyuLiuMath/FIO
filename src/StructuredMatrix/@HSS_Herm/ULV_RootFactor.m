@@ -10,7 +10,7 @@ if A.leaf_ == 0
 end
 
 A.Amat_ = (A.Amat_ + A.Amat_') / 2;
-[A.ULV_A_re_re_, ~] = chol(A.Amat_, 'lower');
+A.ULV_A_re_re_ = chol(A.Amat_, 'lower');
 
 % Clear data.
 A.Amat_ = [];

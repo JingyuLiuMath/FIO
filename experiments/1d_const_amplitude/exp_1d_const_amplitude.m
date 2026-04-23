@@ -33,7 +33,7 @@ for it_tol_hss = 1 : num_tol_hss
         r_hss = 2 * p;
 
         fprintf("\n\n\n\n");
-        fprintf("Basic info.\n")
+        fprintf("Basic info.\n");
         fprintf("  p: %d\n", p);
         fprintf("  N: %d\n", N);
 
