@@ -36,7 +36,7 @@ if rank_or_tol >= 1
     Q = Q(:, 1 : k);
     R = R(1 : k, :);
 else
-    k1 = find(abs(diag(R)) >= rank_or_tol * 1e-1 * max(abs(R(1, 1)), 1), ...
+    k1 = find(abs(diag(R)) >= rank_or_tol * 1e-1 * abs(R(1, 1)), ...
         1, "last");
     k = min(size(R, 1));
     if ~isempty(k1)

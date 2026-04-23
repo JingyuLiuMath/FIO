@@ -23,7 +23,7 @@ end
 
 [Q, R, ~] = qr(B, "econ", "vector");
 
-k1 = find(abs(diag(R)) >= tol * 1e-1 * max(abs(R(1, 1)), 1), 1, "last");
+k1 = find(abs(diag(R)) >= tol * 1e-1 * abs(R(1, 1)), 1, "last");
 if ~isempty(k1)
     k = min(k1, k);
 else

@@ -53,9 +53,6 @@ classdef (Abstract) HSS_Herm < handle
         ULV_A_re_re_ (:, :) double;
         ULV_A_sk_re_ (:, :) double;
         ULV_A_sk_sk_ (:, :) double;
-        ULV_L_root_ (:, :) double;
-        ULV_U_root_ (:, :) double;
-        ULV_lu_root_ (1, 1) double;
         % +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         % Vectors.
         ULV_f_sk_ (:, :) double;

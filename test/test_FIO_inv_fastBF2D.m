@@ -18,7 +18,7 @@ tol_bf = 1e-8;
 num_sample = 256;
 
 min_points = 256;
-r_hss = 600;
+r_hss = 4 * n;
 tol_hss = 1e-3;
 
 tol_cg = 1e-12;
