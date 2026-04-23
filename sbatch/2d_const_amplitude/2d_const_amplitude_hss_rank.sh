@@ -4,7 +4,6 @@
 #SBATCH --output=FIO_rank_%j.out
 #SBATCH --error=FIO_rank_%j.err
 #SBATCH --nodelist=bigMem0
-#SBATCH --exclusive
 #SBATCH --time=18:00:00
 
 module unload MATLAB
