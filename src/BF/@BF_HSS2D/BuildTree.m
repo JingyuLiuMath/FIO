@@ -1,12 +1,8 @@
-function p = BuildTree(G, min_points)
+function BuildTree(G, min_points)
 
 arguments (Input)
     G BF_HSS2D;
     min_points (1, 1) double;
-end
-
-arguments (Output)
-    p (:, 1) double;
 end
 
 if G.size_ <= min_points
@@ -16,7 +12,7 @@ if G.size_ <= min_points
     x_ind = (G.x_freq_start_ : G.x_freq_end_)' + G.nx_ / 2 + 1;
     y_ind = (G.y_freq_start_ : G.y_freq_end_)' + G.ny_ / 2 + 1;
     xy_ind = TensorProduct2D(x_ind, y_ind);
-    p = sub2ind([G.nx_, G.ny_], xy_ind(:, 1), xy_ind(:, 2));
+    G.perm_ = sub2ind([G.nx_, G.ny_], xy_ind(:, 1), xy_ind(:, 2));
 else
     % Partition.
     G.num_children_ = 4;
@@ -49,16 +45,20 @@ else
         y_offset = y_offset + curr_y_size;
     end
 
-    p = zeros(G.size_, 1);
+    G.perm_ = zeros(G.size_, 1);
     % Recursion.
     offset = 0;
     for i = 1 : G.num_children_
         curr_size = G.children_{i}.size_;
-        pi = G.children_{i}.BuildTree(min_points);
-        p((offset + 1) : (offset + curr_size)) = pi;
+        G.children_{i}.BuildTree(min_points);
+        G.perm_((offset + 1) : (offset + curr_size)) = G.children_{i}.perm_;
         G.max_level_ = max(G.max_level_, G.children_{i}.max_level_);
         offset = offset + curr_size;
     end
+end
+
+if G.level_ == 0
+    [~, G.perm_inv_] = sort(G.perm_, "ascend");
 end
 
 end

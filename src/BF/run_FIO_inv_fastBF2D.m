@@ -6,6 +6,19 @@ function result = run_FIO_inv_fastBF2D(...
     tol_cg, maxit_cg)
 
 N = n^2;
+fprintf("Basic info.\n");
+fprintf("  n: %d\n", n);
+fprintf("  N: %d\n", N);
+
+fprintf("  r_bf: %d\n", r_bf);
+fprintf("  tol_bf: %.1e\n", tol_bf);
+
+fprintf("  min_points: %d\n", min_points);
+fprintf("  r_hss: %d\n", r_hss);
+fprintf("  tol_hss: %.1e\n", tol_hss);
+
+fprintf("  tol_cg: %.1e\n", tol_cg);
+fprintf("  maxit_cg: %d\n", maxit_cg);
 
 result = struct();
 
@@ -50,15 +63,16 @@ op_G = @(v) apply_fbf_adj(K_BF, apply_fbf(K_BF, v));
 
 tic;
 G_HSS = BF_HSS2D(n, n);
-p = G_HSS.BuildTree(min_points);
-[~, p_inv] = sort(p, "ascend");
-G_HSS.BlackBoxConstruct_BF(p, p_inv, K_BF, r_hss, tol_hss);
+G_HSS.BuildTree(min_points);
+% G_HSS.Construct_ID_Full(exp_phi_func, x, xi(p, :), tol_hss);
+% K = exp_phi_func(x, xi);
+% G_HSS.BlackBoxConstruct_BF(p, p_inv, K, r_hss, tol_hss);
+G_HSS.BlackBoxConstruct_BF(K_BF, r_hss, tol_hss);
 result.t_HSS_construct = toc;
 fprintf("  t_HSS_construct: %.1e\n", result.t_HSS_construct);
 
 Gf_ex = op_G(f_ex);
-Gf = G_HSS.Apply(f_ex(p, :));
-Gf = Gf(p_inv, :);
+Gf = G_HSS.MyApply(f_ex);
 result.rel_err_HSS = norm(Gf - Gf_ex) / norm(Gf);
 fprintf("  rel_err_HSS: %.1e\n", result.rel_err_HSS);
 
@@ -76,7 +90,7 @@ fprintf("  t_HSS_factor: %.1e\n", result.t_HSS_factor);
 % Direct Solution.
 fprintf("Direct solution.\n");
 tic;
-f_direct = G_HSS.Solve(p, p_inv, apply_fbf_adj(K_BF, Kf));
+f_direct = G_HSS.Solve(apply_fbf_adj(K_BF, Kf));
 result.t_solve_direct = toc;
 
 fprintf("  t_solve_direct: %.1e\n", result.t_solve_direct);
@@ -102,7 +116,7 @@ result.rel_err_cg = norm(f_ex - f_cg) / norm(f_ex);
 fprintf("    rel_err_cg: %.1e\n", result.rel_err_cg);
 
 fprintf("  With precond.\n");
-op_M = @(v) G_HSS.Solve(p, p_inv, v);
+op_M = @(v) G_HSS.Solve(v);
 tic;
 [f_pcg, result.flag_pcg, ~, result.iter_pcg] = pcg(op_G, rhs, tol_cg, maxit_cg, op_M);
 result.t_pcg = toc;

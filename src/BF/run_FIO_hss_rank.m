@@ -1,6 +1,9 @@
 function result = run_FIO_hss_rank(...
     exp_phi_func, N)
 
+fprintf("Basic info.\n");
+fprintf("  N: %d\n", N);
+
 result = struct();
 
 result.N = N;

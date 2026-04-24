@@ -1,8 +1,10 @@
 #!/bin/bash
 
-#SBATCH --job-name=FIO_rank
-#SBATCH --output=FIO_rank_%j.out
-#SBATCH --error=FIO_rank_%j.err
+#SBATCH --job-name=FIO
+#SBATCH --output=FIO_%j.out
+#SBATCH --error=FIO_%j.err
+#SBATCH --nodelist=bigMem0
+#SBATCH --exclusive
 #SBATCH --time=18:00:00
 
 module unload MATLAB
@@ -47,7 +49,7 @@ echo "Job started at: $(date)"
 echo "=========================================="
 echo ""
 
-matlab -r 'cd /home/jyliu/FIO; fio_startup; cd experiments/2d_const_amplitude; exp_2d_const_amplitude_hss_rank;'
+matlab -r 'cd /home/jyliu/FIO; fio_startup; cd experiments/2d_const_amplitude; exp_2d_const_amplitude;'
 
 echo ""
 echo "MATLAB finished at: $(date)"

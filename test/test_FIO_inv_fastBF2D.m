@@ -18,7 +18,7 @@ tol_bf = 1e-8;
 num_sample = 256;
 
 min_points = 256;
-r_hss = 2 * n;
+r_hss = 10 * n;
 tol_hss = 1e-3;
 
 tol_cg = 1e-12;
@@ -33,7 +33,7 @@ if exact_flag == 1
     xi_co = (-half_n : (half_n - 1))';
     xi = TensorProduct2D(xi_co, xi_co);
 
-    fprintf("exact info.\n")
+    fprintf("Exact info.\n")
     K = exp_phi_func(x, xi);
     r_K = rank(K);
     fprintf("  rank(K): %d\n", r_K);

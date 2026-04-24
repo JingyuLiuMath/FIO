@@ -5,6 +5,19 @@ function result = run_FIO_inv_fastBF(...
     num_sample, ...
     tol_cg, maxit_cg)
 
+fprintf("Basic info.\n");
+fprintf("  N: %d\n", N);
+
+fprintf("  r_bf: %d\n", r_bf);
+fprintf("  tol_bf: %.1e\n", tol_bf);
+
+fprintf("  min_points: %d\n", min_points);
+fprintf("  r_hss: %d\n", r_hss);
+fprintf("  tol_hss: %.1e\n", tol_hss);
+
+fprintf("  tol_cg: %.1e\n", tol_cg);
+fprintf("  maxit_cg: %d\n", maxit_cg);
+
 result = struct();
 
 result.N = N;
@@ -51,7 +64,7 @@ result.t_HSS_construct = toc;
 fprintf("  t_HSS_construct: %.1e\n", result.t_HSS_construct);
 
 Gf_ex = op_G(f_ex);
-Gf = G_HSS.Apply(f_ex);
+Gf = G_HSS.MyApply(f_ex);
 result.rel_err_HSS = norm(Gf - Gf_ex) / norm(Gf);
 fprintf("  rel_err_HSS: %.1e\n", result.rel_err_HSS);
 

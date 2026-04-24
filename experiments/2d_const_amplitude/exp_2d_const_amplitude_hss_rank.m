@@ -17,10 +17,7 @@ for it_p = 1 : num_n
     N = n^2;
 
     fprintf("\n\n\n\n");
-    fprintf("Basic info.\n");
-    fprintf("  p: %d\n", p);
-    fprintf("  n: %d\n", n);
-    fprintf("  N: %d\n", N);
+    fprintf("p: %d\n", p);
 
     result = run_FIO_hss_rank2D(exp_phi_func, n);
     save("./data/hss_rank_" + string(p) + ".mat", ...

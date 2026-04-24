@@ -17,7 +17,7 @@ tol_bf = 1e-8;
 num_sample = 256;
 
 min_points = 256;
-r_hss = 2 * p;
+r_hss = 25;
 tol_hss = 1e-3;
 
 tol_cg = 1e-12;
@@ -30,7 +30,7 @@ if exact_flag == 1
     x = (0 : (N - 1))' / N;
     xi = (-half_N : (half_N - 1))';
 
-    fprintf("exact info.\n")
+    fprintf("Exact info.\n")
     K = exp_phi_func(x, xi);
     r_K = rank(K);
     fprintf("  rank(K): %d\n", r_K);

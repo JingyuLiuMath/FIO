@@ -1,11 +1,8 @@
 classdef BF_HSS < HSS_Herm
     
     properties
-        % *****************************************************************
-        % PROPERTY: Col Points.
         freq_start_ (1, 1) double;
         freq_end_ (1, 1) double;
-        % -----------------------------------------------------------------
     end
     
      methods

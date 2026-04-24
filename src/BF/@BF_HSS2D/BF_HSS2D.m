@@ -1,8 +1,6 @@
 classdef BF_HSS2D < HSS_Herm
     
     properties
-        % *****************************************************************
-        % PROPERTY: Col Points.
         nx_ (1, 1) double;
         ny_ (1, 1) double;
         x_freq_start_ (1, 1) double;
@@ -11,7 +9,13 @@ classdef BF_HSS2D < HSS_Herm
         y_freq_start_ (1, 1) double;
         y_freq_end_ (1, 1) double;
         y_size_ (1, 1) double;
-        % -----------------------------------------------------------------
+
+        perm_ (:, 1) double;
+        perm_inv_ (:, 1) double;
+        
+        ind_ (:, 1) double;
+        re_ (:, 1) double;
+        sk_ (:, 1) double;
     end
     
      methods

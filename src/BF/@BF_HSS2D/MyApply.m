@@ -1,4 +1,4 @@
-function f = Solve(G, rhs)
+function f = MyApply(G, rhs)
 
 arguments (Input)
     G BF_HSS2D;
@@ -10,7 +10,7 @@ arguments (Output)
 end
 
 rhs = rhs(G.perm_, :);
-f = G.ULV_Solve(rhs);
+f = G.Apply(rhs);
 f = f(G.perm_inv_, :);
 
 end

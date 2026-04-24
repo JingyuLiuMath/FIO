@@ -16,9 +16,7 @@ for it_p = 1 : num_n
     N = 2^p;
 
     fprintf("\n\n\n\n");
-    fprintf("Basic info.\n");
-    fprintf("  p: %d\n", p);
-    fprintf("  N: %d\n", N);
+    fprintf("p: %d\n", p);
 
     result = run_FIO_hss_rank(exp_phi_func, N);
     save("./data/hss_rank_" + string(p) + ".mat", ...
