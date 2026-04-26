@@ -21,12 +21,12 @@ switch hss_rank_rule
 end
 
 A = BF_HSS2D(n, n);
-[~] = A.BuildTree(min_points);
+A.BuildTree(min_points);
 A.RandInit(hss_rank_rule);
 op_A = @(v) A.Apply(v);
 
 B = BF_HSS2D(n, n);
-[~] = B.BuildTree(min_points);
+B.BuildTree(min_points);
 B.BlackBoxConstruct(op_A, r_hss, tol_hss);
 
 f = randn(N, 1) + 1i * randn(N, 1);

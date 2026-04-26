@@ -52,6 +52,7 @@ else
         curr_size = G.children_{i}.size_;
         G.children_{i}.BuildTree(min_points);
         G.perm_((offset + 1) : (offset + curr_size)) = G.children_{i}.perm_;
+        G.children_{i}.perm_ = [];
         G.max_level_ = max(G.max_level_, G.children_{i}.max_level_);
         offset = offset + curr_size;
     end

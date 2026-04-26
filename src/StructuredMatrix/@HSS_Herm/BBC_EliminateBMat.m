@@ -1,8 +1,6 @@
 function BBC_EliminateBMat(A, level)
 % BBC_EliminateBMat
 
-% Jingyu Liu, December 6, 2024.
-
 arguments (Input)
     A HSS_Herm;
     level (1, 1) double;
@@ -20,7 +18,6 @@ if A.level_ == level
                 A.Bmat_{i, j} = A.Bmat_{i, j} ...
                     + A.Rmat_{i} * A.BBC_A_ * A.Rmat_{j}';
             end
-            A.Bmat_{i, i} = (A.Bmat_{i, i} + A.Bmat_{i, i}') / 2;
         end
         A.BBC_A_ = [];
 

@@ -11,7 +11,6 @@ if A.leaf_ == 1
 else
     A.BBC_MergeAuxiliaryMatrix();
     A.BBC_A_ = A.BBC_Y_ / A.BBC_Omega_;
-    A.BBC_A_ = (A.BBC_A_ + A.BBC_A_') / 2;
 
     % Assign B.
     A.Bmat_ = cell(A.num_children_, A.num_children_);

@@ -55,24 +55,28 @@ fprintf("  rel_err_BF: %.1e\n", result.rel_err_BF);
 % HSS.
 fprintf("HSS.\n");
 op_G = @(v) apply_fbf_adj(K_BF, apply_fbf(K_BF, v));
-
-tic;
-G_HSS = BF_HSS(N);
-G_HSS.BuildTree(min_points);
-G_HSS.BlackBoxConstruct_BF(K_BF, r_hss, tol_hss);
-result.t_HSS_construct = toc;
-fprintf("  t_HSS_construct: %.1e\n", result.t_HSS_construct);
-
 Gf_ex = op_G(f_ex);
-Gf = G_HSS.MyApply(f_ex);
-result.rel_err_HSS = norm(Gf - Gf_ex) / norm(Gf);
-fprintf("  rel_err_HSS: %.1e\n", result.rel_err_HSS);
 
-result.hss_rank = G_HSS.Rank();
-fprintf("  HSS rank: %d\n", result.hss_rank);
-result.hss_mem = G_HSS.Storage();
-ratio = result.hss_mem / N^2;
-fprintf("  ratio: %.1e\n", ratio);
+result.rel_err_HSS = inf;
+while result.rel_err_HSS >= tol_hss * 10
+    fprintf("  current r_hss: %d\n", r_hss);
+    tic;
+    G_HSS = BF_HSS(N);
+    G_HSS.BuildTree(min_points);
+    G_HSS.BlackBoxConstruct_BF(K_BF, r_hss, tol_hss);
+    result.t_HSS_construct = toc;
+    fprintf("  t_HSS_construct: %.1e\n", result.t_HSS_construct);
+
+    Gf = G_HSS.MyApply(f_ex);
+    result.rel_err_HSS = norm(Gf - Gf_ex) / norm(Gf);
+    fprintf("  rel_err_HSS: %.1e\n", result.rel_err_HSS);
+
+    result.hss_rank = G_HSS.Rank();
+    fprintf("  HSS rank: %d\n", result.hss_rank);
+    result.hss_mem = G_HSS.Storage();
+    ratio = result.hss_mem / N^2;
+    fprintf("  ratio: %.1e\n", ratio);
+end
 
 tic;
 G_HSS.ULV_Factor();
@@ -89,7 +93,7 @@ fprintf("  t_solve_direct: %.1e\n", result.t_solve_direct);
 result.rel_res_direct = norm(Kf - apply_fbf(K_BF, f_direct)) / norm(Kf);
 fprintf("  rel_res_direct: %.1e\n", result.rel_res_direct);
 result.rel_err_direct = norm(f_ex - f_direct) / norm(f_ex);
-fprintf("  rel_res_direct: %.1e\n", result.rel_err_direct);
+fprintf("  rel_err_direct: %.1e\n", result.rel_err_direct);
 
 % Iterative solution.
 fprintf("Iterative solution.\n");

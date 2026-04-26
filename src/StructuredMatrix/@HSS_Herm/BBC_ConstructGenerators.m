@@ -13,12 +13,11 @@ if A.level_ == level
         A.BBC_MergeAuxiliaryMatrix();
     end
     target_rank = min(target_rank, size(A.BBC_Y_, 1));
-    P = NullBasis(A.BBC_Omega_, target_rank);
-    [A.Umat_, A.rank_] = ColBasis(A.BBC_Y_ * P, target_rank,  tol);
+    P = NullBasis(A.BBC_Omega_, target_rank + 5);
+    [A.Umat_, A.rank_] = ColBasis(A.BBC_Y_ * P, target_rank, tol);
     Y_OmegaInv = A.BBC_Y_ / A.BBC_Omega_;
     tmp = Y_OmegaInv - A.Umat_ * (A.Umat_' * Y_OmegaInv);
     A.BBC_A_ = tmp + A.Umat_ * (A.Umat_' * tmp');
-    A.BBC_A_ = (A.BBC_A_ + A.BBC_A_') / 2;
     if A.leaf_ == 1
         A.Amat_ = A.BBC_A_;
     else
