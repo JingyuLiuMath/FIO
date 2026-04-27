@@ -1,4 +1,4 @@
-function BlackBoxConstruct_BF(G, K_BF, r, tol)
+function BlackBoxConstruct_FastBF(G, K_BF, r, tol)
 
 arguments (Input)
     G BF_HSS;

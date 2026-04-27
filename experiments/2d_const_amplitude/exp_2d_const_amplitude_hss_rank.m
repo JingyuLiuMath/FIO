@@ -3,9 +3,8 @@ close all;
 warning off;
 
 addpath('../../extern/FastBF.m/src');
-addpath('../../extern/FastBF.m/test/kernels');
 
-exp_phi_func = @(x, xi) fun0_2D(x, xi);
+exp_phi_func = @(x, xi) fun_2D(x, xi);
 
 p_list = (4 : 7)';
 num_n = length(p_list);

@@ -2,7 +2,8 @@
 clear;
 close all;
 
-addpath('../extern/FastBF.m/src');
+addpath('../extern/BF.m/2D/GBF/src');
+addpath('../extern/BF.m/2D/MBF/src');
 
 exp_phi_func = @(x, xi) fun_2D(x, xi);
 
@@ -10,9 +11,6 @@ p = 6;
 n = 2^p;
 N = n^2;
 half_n = n / 2;
-
-r_bf = 10 * p;
-tol_bf = 1e-10;
 
 num_sample = 256;
 
@@ -57,12 +55,12 @@ if exact_flag == 1
 end
 
 %% Run.
-result = run_FIO_inv_fastBF2D(...
+result = run_FIO_inv_exact2D(...
     exp_phi_func, n, ...
-    r_bf, tol_bf, ...
     min_points, r_hss, tol_hss, ...
     num_sample, ...
     tol_cg, maxit_cg);
 
 %% Remove path.
-rmpath('../extern/FastBF.m/src');
+rmpath('../extern/BF.m/2D/GBF/src');
+rmpath('../extern/BF.m/2D/MBF/src');

@@ -3,9 +3,8 @@ clear;
 close all;
 
 addpath('../extern/FastBF.m/src');
-addpath('../extern/FastBF.m/test/kernels');
 
-exp_phi_func = @(x, xi) fun0_1D(x, xi);
+exp_phi_func = @(x, xi) fun_1D(x, xi);
 
 p = 10;
 N = 2^p;
@@ -54,3 +53,6 @@ result = run_FIO_inv_fastBF(...
     min_points, r_hss, tol_hss, ...
     num_sample, ...
     tol_cg, maxit_cg);
+
+%% Remove path.
+rmpath('../extern/FastBF.m/src');

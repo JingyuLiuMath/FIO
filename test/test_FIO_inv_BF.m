@@ -86,8 +86,7 @@ op_G = @(v) apply_bf_adj(K_BF, apply_bf(K_BF, v));
 tic;
 G_HSS = BF_HSS(N);
 G_HSS.BuildTree(min_points);
-leaf_size = G_HSS.MaxLeafSize();
-G_HSS.BlackBoxConstruct(op_G, leaf_size, r_hss, tol_hss);
+G_HSS.BlackBoxConstruct(op_G, r_hss, tol_hss);
 t_HSS_construct = toc;
 fprintf("  t_HSS_construct: %.1e\n", t_HSS_construct);
 
@@ -142,3 +141,7 @@ rel_res_pcg = norm(Kf - apply_bf(K_BF, f_pcg)) / norm(Kf);
 fprintf("    rel_res_pcg: %.1e\n", rel_res_pcg);
 rel_err_pcg = norm(f_ex - f_pcg) / norm(f_ex);
 fprintf("    rel_err_pcg: %.1e\n", rel_err_pcg);
+
+%% Remove path.
+rmpath('../extern/BF.m/1D/src');
+rmpath('../extern/BF.m/1D/test');

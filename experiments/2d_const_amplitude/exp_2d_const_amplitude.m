@@ -3,14 +3,12 @@ close all;
 warning off;
 
 addpath('../../extern/FastBF.m/src');
-addpath('../../extern/FastBF.m/test/kernels');
 
-exp_phi_func = @(x, xi) fun0_2D(x, xi);
+exp_phi_func = @(x, xi) fun_2D(x, xi);
 
 p_list = (6 : 9)';
 num_n = length(p_list);
 
-r_bf = 10;
 tol_bf = 1e-8;
 
 min_points = 256;
@@ -29,6 +27,7 @@ for it_tol_hss = 1 : num_tol_hss
     
         n = 2^p;
         N = n^2;
+        r_bf = 10 * p;       
         r_hss = 10 * n;
     
         fprintf("\n\n\n\n");
