@@ -2,6 +2,7 @@
 clear;
 close all;
 
+originalPath = path;
 addpath('../extern/BF.m/1D/src');
 addpath('../extern/BF.m/1D/test');
 
@@ -51,5 +52,4 @@ rel_err_BF = bf_explicit_check(N, BF_input.fun, f, ...
 fprintf("  rel_err_BF: %.1e\n", rel_err_BF);
 
 %% Remove path.
-rmpath('../extern/BF.m/1D/src');
-rmpath('../extern/BF.m/1D/test');
+path(originalPath);

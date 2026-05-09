@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#SBATCH --job-name=FIO2d_ID_FULL
-#SBATCH --output=FIO2d_ID_FULL_%j.out
-#SBATCH --error=FIO2d_ID_FULL_%j.err
+#SBATCH --job-name=FIO2d_EXACT
+#SBATCH --output=FIO2d_EXACT_%j.out
+#SBATCH --error=FIO2d_EXACT_%j.err
 #SBATCH --nodelist=bigMem0
 #SBATCH --cpus-per-task=16
 #SBATCH --time=18:00:00
@@ -49,7 +49,7 @@ echo "Job started at: $(date)"
 echo "=========================================="
 echo ""
 
-matlab -r 'cd /home/jyliu/FIO; fio_startup; cd experiments/2d_const_amplitude; exp_2d_const_amplitude_id_full;'
+matlab -r 'cd /home/jyliu/FIO; fio_startup; cd experiments/2d_const_amplitude; exp_2d_const_amplitude_total_exact;'
 
 echo ""
 echo "MATLAB finished at: $(date)"

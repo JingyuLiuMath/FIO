@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#SBATCH --job-name=FIO_rank
-#SBATCH --output=FIO_rank_%j.out
-#SBATCH --error=FIO_rank_%j.err
+#SBATCH --job-name=FIO1d_RANK
+#SBATCH --output=FIO1d_RANK_%j.out
+#SBATCH --error=FIO1ed_RANK_%j.err
 #SBATCH --time=18:00:00
 
 module unload MATLAB

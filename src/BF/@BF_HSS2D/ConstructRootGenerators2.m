@@ -14,7 +14,7 @@ ny = G.ny_;
 if G.leaf_ == 1
     G.ind_ = G.offset_ + (1 : G.size_)';
 
-    xi_I = x(G.ind_, :);
+    xi_I = xi(G.ind_, :);
 
     % Assign full mat.
     G.Amat_ = exp_phi_func(x, xi_I)' * exp_phi_func(x, xi_I);

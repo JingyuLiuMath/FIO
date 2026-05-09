@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#SBATCH --job-name=FIO
-#SBATCH --output=FIO_Exact%j.out
-#SBATCH --error=FIO_Exact%j.err
-#SBATCH --nodelist=bigMem3
+#SBATCH --job-name=FIO2d_EXACT
+#SBATCH --output=FIO2d_EXACT_%j.out
+#SBATCH --error=FIO2d_EXACT_%j.err
+#SBATCH --nodelist=bigMem0
 #SBATCH --cpus-per-task=16
 #SBATCH --time=18:00:00
 

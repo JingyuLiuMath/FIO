@@ -1,45 +1,34 @@
-clear;
-close all;
-warning off;
-
-addpath('../../extern/FastBF.m/src');
-
-exp_phi_func = @(x, xi) fun_1D(x, xi);
-
-p_list = (10 : 2 : 18)';
-num_n = length(p_list);
-
-r_bf = 10;
-tol_bf = 1e-8;
-
-min_points = 256;
-tol_hss_list = [1e-2, 1e-3, 1e-4, 1e-6];
-num_tol_hss = length(tol_hss_list);
-
-tol_cg = 1e-12;
-maxit_cg = 500;
-
-num_sample = 256;
+exp_1d_const_amplitude_settings;
 
 for it_tol_hss = 1 : num_tol_hss
     for it_p = 1 : num_n
         tol_hss = tol_hss_list(it_tol_hss);
         p = p_list(it_p);
-
-        N = 2^p;
-        r_hss = 20;
-
+        
         fprintf("\n\n\n\n");
         fprintf("p: %d\n", p);
 
-        result = run_FIO_inv_fastBF(...
+        load("./data/1d_const_amplituide_results_cg" ...
+            + "_" + string(p) ...
+            + ".mat");
+        f_ex = result.f_ex;
+        Kf_ex = result.Kf_ex;
+        N = result.N;
+
+        result = [];
+        result = run_FIO1D_inv(...
             exp_phi_func, N, ...
             r_bf, tol_bf, ...
-            min_points, r_hss, tol_hss, ...
+            min_points, tol_hss, ...
             num_sample, ...
-            tol_cg, maxit_cg);
+            tol_cg, maxit_cg, ...
+            f_ex, Kf_ex);
 
-        save("./data/1d_const_amplituide_results_" + string(p) + "_" + string(tol_hss) + ".mat", ...
-            "result");
+        save("./data/1d_const_amplituide_results" ...
+            + "_" + string(p) ...
+            + "_" + string(tol_hss) ...
+            + ".mat", "result");
     end
 end
+
+path(originalPath);

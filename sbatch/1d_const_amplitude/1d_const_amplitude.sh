@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#SBATCH --job-name=FIO
-#SBATCH --output=FIO_%j.out
-#SBATCH --error=FIO_%j.err
+#SBATCH --job-name=FIO1d
+#SBATCH --output=FIO1d_%j.out
+#SBATCH --error=FIO1d_%j.err
 #SBATCH --nodelist=bigMem0
 #SBATCH --exclusive
 #SBATCH --time=18:00:00

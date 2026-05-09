@@ -2,6 +2,7 @@
 clear;
 close all;
 
+originalPath = path;
 addpath('../extern/BF.m/2D/GBF/src');
 addpath('../extern/BF.m/2D/MBF/src');
 
@@ -48,5 +49,4 @@ rel_err_BF = norm(Kf_ex - Kf) / norm(Kf_ex);
 fprintf("  rel_err_BF: %.1e\n", rel_err_BF);
 
 %% Remove path.
-rmpath('../extern/BF.m/2D/GBF/src');
-rmpath('../extern/BF.m/2D/MBF/src');
+path(originalPath);

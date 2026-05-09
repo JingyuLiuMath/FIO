@@ -2,6 +2,7 @@
 clear;
 close all;
 
+originalPath = path;
 addpath('../extern/FastBF.m/src');
 
 exp_phi_func = @(x, xi) fun_2D(x, xi);
@@ -44,4 +45,5 @@ rel_err_BF = norm(Kf_ex - Kf) / norm(Kf_ex);
 fprintf("  rel_err_BF: %.1e\n", rel_err_BF);
 
 %% Remove path.
-rmpath('../extern/FastBF.m/src');
+path(originalPath);
+
