@@ -9,7 +9,8 @@ exp_phi_func = @(x, xi) fun_2D(x, xi);
 p_list = (6 : 9)';
 num_n = length(p_list);
 
-tol_bf = 1e-8;
+r_bf = 30;
+tol_bf = 1e-10;
 
 min_points = 256;
 tol_hss_list = [1e-3];
@@ -26,8 +27,7 @@ for it_tol_hss = 1 : num_tol_hss
         p = p_list(it_p);
     
         n = 2^p;
-        N = n^2;
-        r_bf = 10 * p;       
+        N = n^2;     
         r_hss = 10 * n;
     
         fprintf("\n\n\n\n");
@@ -39,7 +39,7 @@ for it_tol_hss = 1 : num_tol_hss
             min_points, r_hss, tol_hss, ...
             num_sample, ...
             tol_cg, maxit_cg);
-
+        
         save("./data/2d_const_amplituide_results_" + string(p) + "_" + string(tol_hss) + ".mat", ...
             "result");
     end

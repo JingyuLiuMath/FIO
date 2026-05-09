@@ -1,7 +1,7 @@
-function result = run_FIO_inv_fastBF2D(...
+function result = run_FIO_inv_ID_Full2D(...
     exp_phi_func, n, ...
     r_bf, tol_bf, ...
-    min_points, r_hss, tol_hss, ...
+    min_points, tol_hss, ...
     num_sample, ...
     tol_cg, maxit_cg)
 
@@ -14,7 +14,6 @@ fprintf("  r_bf: %d\n", r_bf);
 fprintf("  tol_bf: %.1e\n", tol_bf);
 
 fprintf("  min_points: %d\n", min_points);
-fprintf("  r_hss: %d\n", r_hss);
 fprintf("  tol_hss: %.1e\n", tol_hss);
 
 fprintf("  tol_cg: %.1e\n", tol_cg);
@@ -27,7 +26,6 @@ result.N = N;
 result.r_bf = r_bf;
 result.tol_bf = tol_bf;
 result.min_points = min_points;
-result.r_hss = r_hss;
 result.tol_hss = tol_hss;
 result.num_sample = num_sample;
 result.tol_cg = tol_cg;
@@ -68,7 +66,7 @@ while result.rel_err_HSS >= tol_hss * 10
     tic;
     G_HSS = BF_HSS2D(n, n);
     G_HSS.BuildTree(min_points);
-    G_HSS.BlackBoxConstruct_FastBF(K_BF, r_hss, tol_hss);
+    G_HSS.Construct_ID_Full(exp_phi_func, x, xi(G_HSS.perm_, :), tol_hss);
     result.t_HSS_construct = toc;
     fprintf("  t_HSS_construct: %.1e\n", result.t_HSS_construct);
     

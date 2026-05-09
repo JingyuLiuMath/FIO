@@ -1,6 +1,7 @@
 function result = run_FIO_hss_rank2D(...
     exp_phi_func, n)
 
+N = n^2;
 fprintf("Basic info.\n");
 fprintf("  n: %d\n", n);
 

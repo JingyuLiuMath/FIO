@@ -13,7 +13,7 @@ r_bf = 10;
 tol_bf = 1e-8;
 
 min_points = 256;
-tol_hss_list = [1e-3, 1e-6];
+tol_hss_list = [1e-2, 1e-3, 1e-4, 1e-6];
 num_tol_hss = length(tol_hss_list);
 
 tol_cg = 1e-12;
@@ -27,7 +27,7 @@ for it_tol_hss = 1 : num_tol_hss
         p = p_list(it_p);
 
         N = 2^p;
-        r_hss = 25;
+        r_hss = 20;
 
         fprintf("\n\n\n\n");
         fprintf("p: %d\n", p);
