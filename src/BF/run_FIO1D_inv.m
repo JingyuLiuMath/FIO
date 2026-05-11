@@ -1,10 +1,14 @@
 function result = run_FIO1D_inv(...
-    exp_phi_func, N, ...
-    r_bf, tol_bf, ...
-    min_points, tol_hss, ...
-    num_sample, ...
-    tol_cg, maxit_cg, ...
-    f_ex, Kf_ex)
+    result, ...
+    min_points, tol_hss)
+
+N = result.N;
+
+r_bf = result.r_bf;
+tol_bf = result.tol_bf;
+
+tol_cg = result.tol_cg;
+maxit_cg = result.maxit_cg;
 
 fprintf("Basic info.\n");
 fprintf("  N: %d\n", N);
@@ -18,37 +22,13 @@ fprintf("  tol_hss: %.1e\n", tol_hss);
 fprintf("  tol_cg: %.1e\n", tol_cg);
 fprintf("  maxit_cg: %d\n", maxit_cg);
 
-result = struct();
-
-result.N = N;
-result.r_bf = r_bf;
-result.tol_bf = tol_bf;
 result.min_points = min_points;
 result.tol_hss = tol_hss;
-result.num_sample = num_sample;
-result.tol_cg = tol_cg;
-result.maxit_cg = maxit_cg;
 
-half_N = N / 2;
-
-% Initialization.
-x = (0 : (N - 1))' / N;
-xi = (-half_N : (half_N - 1))';
-
-% BF.
-fprintf("BF.\n");
-tic;
-[K_BF, ~] = fastBF(exp_phi_func, x, xi, r_bf, tol_bf);
-result.t_BF_construct = toc;
-fprintf("  t_BF_construct: %.1e\n", result.t_BF_construct);
-
-tic;
-Kf = apply_fbf(K_BF, f_ex);
-result.t_BF_apply = toc;
-
-fprintf("  t_BF_apply: %.1e\n", result.t_BF_apply);
-result.rel_err_BF = fbf_check(N, exp_phi_func, f_ex, x, xi, Kf, num_sample);
-fprintf("  rel_err_BF: %.1e\n", result.rel_err_BF);
+K_BF = result.K_BF;
+f_ex = result.f_ex;
+Kf_ex = result.Kf_ex;
+result = rmfield(result, {'K_BF', 'f_ex', 'Kf_ex'});
 
 op_G = @(v) apply_fbf_adj(K_BF, apply_fbf(K_BF, v));
 rhs = apply_fbf_adj(K_BF, Kf_ex);
@@ -65,8 +45,8 @@ while result.rel_err_HSS >= tol_hss * 10
     G_HSS = BF_HSS(N);
     G_HSS.BuildTree(min_points);
     G_HSS.BlackBoxConstruct_FastBF(K_BF, r_hss, tol_hss);
-    result.t_HSS_construct = toc;
-    fprintf("  t_HSS_construct: %.1e\n", result.t_HSS_construct);
+    result.t_construct_HSS = toc;
+    fprintf("  t_HSS_construct: %.1e\n", result.t_construct_HSS);
 
     Gf = G_HSS.MyApply(f_ex);
     result.rel_err_HSS = norm(Gf - Gf_ex) / norm(Gf);

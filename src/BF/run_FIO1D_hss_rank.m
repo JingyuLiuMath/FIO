@@ -20,7 +20,7 @@ sub_K = exp_phi_func(x, xi_row)' * exp_phi_func(x, xi_col);
 sigma = svd(sub_K);
 for it = 1 : size(result.tol_list, 1)
     result.rank_list(it) = find(sigma >= result.tol_list(it) * sigma(1), 1, "last");
-    fprintf("tol: %.1e, rank: %d\n", result.tol_list(it), result.rank_list(it));
+    fprintf("  tol: %.1e, rank: %d\n", result.tol_list(it), result.rank_list(it));
 end
 
 

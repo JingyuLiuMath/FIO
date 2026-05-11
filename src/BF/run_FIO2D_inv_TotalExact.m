@@ -1,14 +1,23 @@
 function result = run_FIO2D_inv_TotalExact(...
-    exp_phi_func, n, ...
-    min_points, tol_hss, ...
-    num_sample, ...
-    tol_cg, maxit_cg, ...
-    f_ex, Kf_ex)
+    exp_phi_func, ...
+    result, ...
+    min_points, tol_hss)
 
-N = n^2;
+n = result.n;
+N = result.N;
+
+r_bf = result.r_bf;
+tol_bf = result.tol_bf;
+
+tol_cg = result.tol_cg;
+maxit_cg = result.maxit_cg;
+
 fprintf("Basic info.\n");
 fprintf("  n: %d\n", n);
 fprintf("  N: %d\n", N);
+
+fprintf("  r_bf: %d\n", r_bf);
+fprintf("  tol_bf: %.1e\n", tol_bf);
 
 fprintf("  min_points: %d\n", min_points);
 fprintf("  tol_hss: %.1e\n", tol_hss);
@@ -16,15 +25,12 @@ fprintf("  tol_hss: %.1e\n", tol_hss);
 fprintf("  tol_cg: %.1e\n", tol_cg);
 fprintf("  maxit_cg: %d\n", maxit_cg);
 
-result = struct();
-
-result.n = n;
-result.N = N;
 result.min_points = min_points;
 result.tol_hss = tol_hss;
-result.num_sample = num_sample;
-result.tol_cg = tol_cg;
-result.maxit_cg = maxit_cg;
+
+f_ex = result.f_ex;
+Kf_ex = result.Kf_ex;
+result = rmfield(result, {'K_BF', 'f_ex', 'Kf_ex'});
 
 half_n = n / 2;
 
@@ -41,7 +47,7 @@ fprintf("HSS.\n");
 op_G = @(v) K' * (K * v);
 Gf_ex = op_G(f_ex);
 
-r_hss = log10(1 / tol_hss) * n * 2;
+r_hss = n * 2;
 result.rel_err_HSS = inf;
 while result.rel_err_HSS >= tol_hss * 10
     fprintf("  current r_hss: %d\n", r_hss);
