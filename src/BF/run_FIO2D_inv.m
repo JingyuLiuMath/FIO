@@ -39,7 +39,7 @@ rhs = apply_fbf_adj(K_BF, Kf_ex);
 fprintf("HSS.\n");
 Gf_ex = op_G(f_ex);
 
-r_hss = log10(1 / tol_hss) * n * 2;
+r_hss = ceil(log10(1 / tol_hss) / 16 * 12) * n;
 result.rel_err_HSS = inf;
 while result.rel_err_HSS >= tol_hss * 10
     fprintf("  current r_hss: %d\n", r_hss);

@@ -1,4 +1,4 @@
-function result = run_FIO1D_inv(...
+function result = run_FIO1D_inv_indep(...
     result, ...
     min_points, tol_hss)
 
@@ -39,12 +39,13 @@ Gf_ex = op_G(f_ex);
 
 G_HSS = BF_HSS(N);
 G_HSS.BuildTree(min_points);
-r_hss = ceil(3 * log10(1 / tol_hss)) * G_HSS.max_level_;
+c = ceil(3 * log10(1 / tol_hss));
+rank_func = @(ell) c;
 result.rel_err_HSS = inf;
 while result.rel_err_HSS >= tol_hss * 10
-    fprintf("  current r_hss: %d\n", r_hss);
+    fprintf("  c: %d\n", c);
     tic;
-    G_HSS.BlackBoxConstruct_FastBF(K_BF, r_hss, tol_hss);
+    G_HSS.BlackBoxConstruct_Indep_FastBF(K_BF, rank_func, tol_hss);
     result.t_construct_HSS = toc;
     fprintf("  t_HSS_construct: %.1e\n", result.t_construct_HSS);
 
@@ -58,7 +59,8 @@ while result.rel_err_HSS >= tol_hss * 10
     ratio = result.hss_mem / N^2;
     fprintf("  ratio: %.1e\n", ratio);
 
-    r_hss = r_hss * 2;
+    c = c * 2;
+    rank_func = @(ell) c;
 end
 
 tic;

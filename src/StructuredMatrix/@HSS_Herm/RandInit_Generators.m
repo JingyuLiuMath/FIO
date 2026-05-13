@@ -8,7 +8,7 @@ end
 
 switch hss_rank_rule
     case "const"
-        r = 10;
+        r = 32;
     case "log"
         r = ceil(log2(A.size_));
     case "sqrt"

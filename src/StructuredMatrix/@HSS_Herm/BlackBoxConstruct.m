@@ -15,6 +15,7 @@ leaf_size = A.MaxLeafSize();
 p = 5;
 r = target_rank + p;
 s = max(r + leaf_size, 3 * r);
+fprintf("  total num of samples: %d\n", s);
 
 % Sampling.
 Omega = randn(A.size_, s);

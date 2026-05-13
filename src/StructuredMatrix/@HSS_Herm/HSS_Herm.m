@@ -65,6 +65,8 @@ classdef (Abstract) HSS_Herm < handle
         BBC_Omega_ (:, :) double;
         BBC_Y_ (:, :) double;
         BBC_A_ (:, :) double;
+
+        level_size_ (1, 1) double;
         %------------------------------------------------------------------
 
     end

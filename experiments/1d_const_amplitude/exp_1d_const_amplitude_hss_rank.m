@@ -7,7 +7,7 @@ addpath('../../extern/FastBF.m/src');
 
 exp_phi_func = @(x, xi) fun_1D(x, xi);
 
-p_list = (7 : 14)';
+p_list = (7 : 12)';
 num_n = length(p_list);
 
 for it_p = 1 : num_n
