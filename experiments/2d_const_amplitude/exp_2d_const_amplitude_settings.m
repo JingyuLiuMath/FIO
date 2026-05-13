@@ -1,6 +1,7 @@
 clear;
 close all;
-warning off;
+
+data_path = "/scratch/jyliu/FIO/2d_const_amplitude/data/";
 
 originalPath = path;
 addpath('../../extern/FastBF.m/src');
