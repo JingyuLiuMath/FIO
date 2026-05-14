@@ -6,7 +6,7 @@ arguments (Input)
     op_A function_handle;
     rank_func function_handle;
     tol (1, 1) double;
-    verbose (1, 1) double = 0;
+    verbose (1, 1) double = 1;
 end
 
 p = 5;
@@ -19,10 +19,18 @@ for level = A.max_level_ : -1 : 0
     total_level_size = A.level_size_;
     target_rank = ceil(rank_func(level));
     r = target_rank + p;
-    s = max(r + max_level_size, 2 * r);
+    if level ~= 0
+        s = r + max_level_size;
+    else
+        s = p + max_level_size;
+    end
     if verbose == 1
-        fprintf("  total_level_size: %d\n", total_level_size);
-        fprintf("  num of samples: %d\n", s);
+        fprintf("    \n");
+        fprintf("    level: %d\n", level);
+        fprintf("    max_level_size: %d\n", max_level_size);
+        fprintf("    total_level_size: %d\n", total_level_size);
+        fprintf("    target_rank: %d\n", target_rank);
+        fprintf("    num of samples: %d\n", s);
     end
     s_total = s_total + s;
 
@@ -42,7 +50,7 @@ for level = A.max_level_ : -1 : 0
         U_level_list = {};
         U_level_list = A.BBC_Indep_ConstructGenerators(...
             level, ...
-            r, ...
+            target_rank, ...
             U_level_list, ...
             tol);
         U_list{level} = sparse_blkdiag(U_level_list{:});

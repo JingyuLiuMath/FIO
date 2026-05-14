@@ -21,10 +21,6 @@ if A.level_ == level
     Y_OmegaInv = A.BBC_Y_ / A.BBC_Omega_;
     tmp = Y_OmegaInv - U * (U' * Y_OmegaInv);
     A.BBC_A_ = tmp + U * (U' * tmp');
-    err = HermError(A.BBC_A_);
-    % if err > 1e-2
-    %     keyboard;
-    % end
     if A.leaf_ == 1
         A.Amat_ = A.BBC_A_;
         A.Umat_ = U;
