@@ -31,6 +31,8 @@ for level = A.max_level_ : -1 : 0
         fprintf("    total_level_size: %d\n", total_level_size);
         fprintf("    target_rank: %d\n", target_rank);
         fprintf("    num of samples: %d\n", s);
+        mem = double_to_gb(A.Storage());
+        fprintf("    used memory: %.1e GB\n", mem);
     end
     s_total = s_total + s;
 

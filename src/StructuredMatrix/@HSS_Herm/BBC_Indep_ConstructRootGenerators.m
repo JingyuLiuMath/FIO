@@ -4,12 +4,10 @@ arguments (Input)
     A HSS_Herm;
 end
 
+Acheck = A.BBC_Y_ / A.BBC_Omega_;
 if A.leaf_ == 1
-    A.Amat_ = A.BBC_Y_ / A.BBC_Omega_;
-    A.Amat_ = (A.Amat_ + A.Amat_') / 2;
+    A.Amat_ = (Acheck + Acheck') / 2;
 else
-    A.BBC_A_ = A.BBC_Y_ / A.BBC_Omega_;
-
     % Assign B.
     A.Bmat_ = cell(A.num_children_, A.num_children_);
     row_offset = 0;
@@ -18,7 +16,7 @@ else
         col_offset = 0;
         for j = 1 : i
             current_col_size = A.children_{j}.rank_;
-            A.Bmat_{i, j} = A.BBC_A_(...
+            A.Bmat_{i, j} = Acheck(...
                 (row_offset + 1) : (row_offset + current_row_size), ...
                 (col_offset + 1) : (col_offset + current_col_size));
             col_offset = col_offset + current_col_size;
@@ -30,6 +28,5 @@ end
 % Clear.
 A.BBC_Omega_ = [];
 A.BBC_Y_ = [];
-A.BBC_A_ = [];
 
 end

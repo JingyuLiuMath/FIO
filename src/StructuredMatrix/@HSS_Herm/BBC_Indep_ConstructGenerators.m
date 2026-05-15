@@ -20,9 +20,13 @@ if A.level_ == level
     U_level_list{end + 1} = U;
     Y_OmegaInv = A.BBC_Y_ / A.BBC_Omega_;
     tmp = Y_OmegaInv - U * (U' * Y_OmegaInv);
-    A.BBC_A_ = tmp + U * (U' * tmp');
+    Acheck = tmp + U * (U' * tmp');
+
+    % Clear.
+    A.BBC_Y_ = [];
+    A.BBC_Omega_ = [];
     if A.leaf_ == 1
-        A.Amat_ = A.BBC_A_;
+        A.Amat_ = Acheck;
         A.Umat_ = U;
     else
         % Assign R and W.
@@ -42,7 +46,7 @@ if A.level_ == level
             col_offset = 0;
             for j = 1 : i
                 current_col_size = A.children_{j}.rank_;
-                A.Bmat_{i, j} = A.BBC_A_(...
+                A.Bmat_{i, j} = Acheck(...
                     (row_offset + 1) : (row_offset + current_row_size), ...
                     (col_offset + 1) : (col_offset + current_col_size));
                 col_offset = col_offset + current_col_size;
