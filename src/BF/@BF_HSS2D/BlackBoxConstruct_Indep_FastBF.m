@@ -8,7 +8,8 @@ arguments (Input)
 end
 
 op_G = @(v) G_fun(v, K_BF, G.perm_, G.perm_inv_);
-G.BlackBoxConstruct_Indep(op_G, rank_func, tol);
+% G.BlackBoxConstruct_Indep(op_G, rank_func, tol);
+G.BlackBoxConstruct_Indep_New(op_G, rank_func, tol);
 
 end
 
