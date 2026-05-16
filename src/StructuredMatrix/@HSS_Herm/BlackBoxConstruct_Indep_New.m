@@ -30,15 +30,15 @@ for level = A.max_level_ : -1 : 0
 
     % Sampling.
     Omega = randn(total_level_size, s);
-    Y = Omega;
     if level == A.max_level_
-        Y = op_A(Y);
+        Y = op_A(Omega);
     else
-        A.BBC_Indep_FillY(level + 1, Y);
+        A.BBC_Indep_FillY(level + 1, Omega);
         A.BBC_Indep_Apply_U(level + 1);
         Y = A.BBC_Indep_FetchY_Leaf(s);
         Y = op_A(Y);
         A.BBC_Indep_FillY_Leaf(Y);
+        Y = [];
         A.BBC_Indep_Apply_U_Star(level + 1);
         Y = A.BBC_Indep_FetchY(level + 1, s);
     end
@@ -53,6 +53,8 @@ for level = A.max_level_ : -1 : 0
         A.BBC_Indep_ConstructRootGenerators(Omega, Y);
     end
 
+    Omega = [];
+    Y = [];
 
     if verbose == 1
         fprintf("    \n");

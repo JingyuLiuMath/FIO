@@ -9,44 +9,44 @@ arguments (Input)
     verbose (1, 1) double = 1;
 end
 
+matlab_mem0 = getMemoryInfo();
+fprintf("    initial used memory: %.1e GB\n", matlab_mem0);
+
 p = 5;
 s_total = 0;
-U_list = cell(1, A.max_level_);
 % Recursive construction.
 for level = A.max_level_ : -1 : 0
     % Settings.
     max_level_size = A.BBC_Indep_LevelSize(level);
-    total_level_size = A.level_size_;
     target_rank = ceil(rank_func(level));
-    r = target_rank + p;
     if level ~= 0
-        s = r + max_level_size;
+        s = target_rank + max_level_size + p;
     else
-        s = p + max_level_size;
+        s = max_level_size + p;
     end
     s_total = s_total + s;
 
     % Sampling.
-    Omega = randn(total_level_size, s);
-    Y = Omega;
-    for it_level = (level + 1) : 1 : A.max_level_
-        Y = U_list{it_level} * Y;
-    end
-    Y = op_A(Y);
-    for it_level = A.max_level_ : -1 : (level + 1)
-        Y = U_list{it_level}' * Y;
+    if level == A.max_level_
+        Omega = randn(total_level_size, s);
+        Y = op_A(Omega);
+        A.BBC_Indep_FillY_Leaf(Y);
+    else
+        A.BBC_Indep_TopDown(level + 1, s);
+        Y = A.BBC_Indep_FetchY_Leaf(s);
+        Y = op_A(Y);
+        A.BBC_Indep_FillY_Leaf(Y);
+        Y = [];
+        A.BBC_Indep_Apply_U_Star(level + 1);
+        Y = A.BBC_Indep_FetchY(level + 1, s);
     end
 
     if level ~= 0
-        U_level_list = {};
-        U_level_list = A.BBC_Indep_ConstructGenerators(...
+        A.BBC_Indep_ConstructGenerators_New(...
             level, ...
             Omega, Y, ...
             target_rank, ...
-            U_level_list, ...
             tol);
-        U_list{level} = sparse_blkdiag(U_level_list{:});
-        U_level_list = {};
     else
         A.BBC_Indep_ConstructRootGenerators(Omega, Y);
     end
@@ -61,17 +61,19 @@ for level = A.max_level_ : -1 : 0
         fprintf("    total_level_size: %d\n", total_level_size);
         fprintf("    target_rank: %d\n", target_rank);
         fprintf("    num of samples: %d\n", s);
-        mem = double_to_gb(A.Storage());
-        for it = (level + 1) : A.max_level_
-            mem = mem + double_to_gb(nnz(U_list{it}));
-        end
+        mem = byte_to_gb(A.Storage());
+        mem = mem + byte_to_gb(byte_size(Omega));
+        mem = mem + byte_to_gb(byte_size(Y));
         fprintf("    used memory: %.1e GB\n", mem);
         matlab_mem = getMemoryInfo();
-        fprintf("    total used memory: %.1e GB\n", matlab_mem.MemUsedMATLAB_GB);
+        fprintf("    incr used memory: %.1e GB\n", matlab_mem - matlab_mem0);
+        fprintf("    total used memory: %.1e GB\n", matlab_mem);
     end
 end
 
 fprintf("  total num of samples: %d\n", s_total);
+
+A.BBC_Indep_AssignR();
 
 % Eliminate B{i, i} matrices.
 A.BBC_EliminateRootBMat();

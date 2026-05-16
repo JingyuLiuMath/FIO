@@ -16,7 +16,6 @@ if A.level_ == level
     else
         A.level_size_ = 0;
         for i = 1 : A.num_children_
-            % A.children_{i}.level_size_ = A.children_{i}.rank_;
             A.level_size_ = A.level_size_ + A.children_{i}.rank_;
         end
     end
