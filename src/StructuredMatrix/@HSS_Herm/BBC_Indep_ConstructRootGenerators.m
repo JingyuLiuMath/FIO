@@ -1,10 +1,12 @@
-function BBC_Indep_ConstructRootGenerators(A)
+function BBC_Indep_ConstructRootGenerators(A, Omega, Y)
 
 arguments (Input)
     A HSS_Herm;
+    Omega (:, :) double;
+    Y (:, :) double;
 end
 
-Acheck = A.BBC_Y_ / A.BBC_Omega_;
+Acheck = Y / Omega;
 if A.leaf_ == 1
     A.Amat_ = (Acheck + Acheck') / 2;
 else
@@ -24,9 +26,5 @@ else
         row_offset = row_offset + current_row_size;
     end
 end
-
-% Clear.
-A.BBC_Omega_ = [];
-A.BBC_Y_ = [];
 
 end

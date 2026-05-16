@@ -1,9 +1,16 @@
-function U_level_list = BBC_Indep_ConstructGenerators(A, level, target_rank, U_level_list, tol)
+function U_level_list = BBC_Indep_ConstructGenerators(...
+    A, level, ...
+    Omega, Y, ...
+    target_rank, ...
+    U_level_list, ...
+    tol)
 % BBC_ConstructGenerators
 
 arguments (Input)
     A HSS_Herm;
     level (1, 1) double;
+    Omega (:, :) double;
+    Y (:, :) double;
     target_rank (1, 1) double;
     U_level_list (1, :) cell;
     tol (1, 1) double;
@@ -14,17 +21,14 @@ arguments (Output)
 end
 
 if A.level_ == level
-    target_rank = min(target_rank, size(A.BBC_Y_, 1));
-    P = NullBasis(A.BBC_Omega_, target_rank + 5);
-    [U, A.rank_] = ColBasis(A.BBC_Y_ * P, target_rank, tol);
+    target_rank = min(target_rank, size(Y, 1));
+    P = NullBasis(Omega, target_rank + 5);
+    [U, A.rank_] = ColBasis(Y * P, target_rank, tol);
     U_level_list{end + 1} = U;
-    Y_OmegaInv = A.BBC_Y_ / A.BBC_Omega_;
+    Y_OmegaInv = Y / Omega;
     tmp = Y_OmegaInv - U * (U' * Y_OmegaInv);
     Acheck = tmp + U * (U' * tmp');
 
-    % Clear.
-    A.BBC_Y_ = [];
-    A.BBC_Omega_ = [];
     if A.leaf_ == 1
         A.Amat_ = Acheck;
         A.Umat_ = U;
@@ -55,12 +59,17 @@ if A.level_ == level
         end
     end
 elseif A.leaf_ == 0
+    offset = 0;
     for i = 1 : A.num_children_
+        current_size = A.children_{i}.level_size_;
         U_level_list = A.children_{i}.BBC_Indep_ConstructGenerators(...
             level, ...
+            Omega((offset + 1) : (offset + current_size), :), ...
+            Y((offset + 1) : (offset + current_size), :), ...
             target_rank, ...
             U_level_list, ...
             tol);
+        offset = offset + current_size;
     end
 end
 
