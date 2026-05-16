@@ -1,13 +1,13 @@
-function BlackBoxConstruct_FastBF(G, K_BF, r, tol)
+function BlackBoxConstruct_FastBF(G, op_G, rank_func, tol)
 
 arguments (Input)
     G BF_HSS;
-    K_BF;
-    r (1, 1) double;
+    op_G;
+    rank_func function_handle;
     tol (1, 1) double;
 end
 
-op_G = @(v) apply_fbf_adj(K_BF, apply_fbf(K_BF, v));
-G.BlackBoxConstruct(op_G, r, tol);
+op_G_HSS = @(v) op_G(v);
+G.BlackBoxConstruct_Indep_New(op_G_HSS, rank_func, tol);
 
 end

@@ -1,15 +1,15 @@
 function result = run_FIO2D_inv_indep(...
-    result, ...
+    result_bf, ...
     min_points, tol_hss)
 
-n = result.n;
-N = result.N;
+n = result_bf.n;
+N = result_bf.N;
 
-r_bf = result.r_bf;
-tol_bf = result.tol_bf;
+r_bf = result_bf.r_bf;
+tol_bf = result_bf.tol_bf;
 
-tol_cg = result.tol_cg;
-maxit_cg = result.maxit_cg;
+tol_cg = result_bf.tol_cg;
+maxit_cg = result_bf.maxit_cg;
 
 fprintf("Basic info.\n");
 fprintf("  n: %d\n", n);
@@ -24,26 +24,24 @@ fprintf("  tol_hss: %.1e\n", tol_hss);
 fprintf("  tol_cg: %.1e\n", tol_cg);
 fprintf("  maxit_cg: %d\n", maxit_cg);
 
+result.n = n;
+result.N = N;
+result.r_bf = r_bf;
+result.tol_bf = tol_bf;
 result.min_points = min_points;
 result.tol_hss = tol_hss;
+result.tol_cg = tol_cg;
+result.maxit_cg = maxit_cg;
 
-K_BF = result.K_BF;
-f_ex = result.f_ex;
-Kf_ex = result.Kf_ex;
-result = rmfield(result, {'K_BF', 'f_ex', 'Kf_ex'});
-
-op_G = @(v) apply_fbf_adj(K_BF, apply_fbf(K_BF, v));
-rhs = apply_fbf_adj(K_BF, Kf_ex);
+op_G = @(v) apply_fbf_adj(result_bf.K_BF, apply_fbf(result_bf.K_BF, v));
+rhs = apply_fbf_adj(result_bf.K_BF, result_bf.Kf_ex);
 
 % HSS.
 fprintf("HSS.\n");
-Gf_ex = op_G(f_ex);
+Gf_ex = op_G(result_bf.f_ex);
 
 G_HSS = BF_HSS2D(n, n);
 G_HSS.BuildTree(min_points);
-
-matlab_mem = getMemoryInfo();
-fprintf("    total used memory: %.1e GB\n", matlab_mem.MemUsedMATLAB_GB);
 
 c = 2 * ceil(log10(1 / tol_hss));
 rank_func = @(ell) c * n / 2^ell;
@@ -51,11 +49,11 @@ result.rel_err_HSS = inf;
 while result.rel_err_HSS >= tol_hss * 10
     fprintf("  c: %d\n", c);
     tic;
-    G_HSS.BlackBoxConstruct_Indep_FastBF(K_BF, rank_func, tol_hss);
+    G_HSS.BlackBoxConstruct_Indep_FastBF(op_G, rank_func, tol_hss);
     result.t_HSS_construct = toc;
     fprintf("  t_HSS_construct: %.1e\n", result.t_HSS_construct);
 
-    Gf = G_HSS.MyApply(f_ex);
+    Gf = G_HSS.MyApply(result_bf.f_ex);
     result.rel_err_HSS = norm(Gf - Gf_ex) / norm(Gf);
     fprintf("  rel_err_HSS: %.1e\n", result.rel_err_HSS);
 
@@ -81,9 +79,9 @@ f_direct = G_HSS.Solve(rhs);
 result.t_solve_direct = toc;
 
 fprintf("  t_solve_direct: %.1e\n", result.t_solve_direct);
-result.rel_res_direct = norm(Kf_ex - apply_fbf(K_BF, f_direct)) / norm(Kf_ex);
+result.rel_res_direct = norm(result_bf.Kf_ex - apply_fbf(result_bf.K_BF, f_direct)) / norm(result_bf.Kf_ex);
 fprintf("  rel_res_direct: %.1e\n", result.rel_res_direct);
-result.rel_err_direct = norm(f_ex - f_direct) / norm(f_ex);
+result.rel_err_direct = norm(result_bf.f_ex - f_direct) / norm(result_bf.f_ex);
 fprintf("  rel_err_direct: %.1e\n", result.rel_err_direct);
 
 % Iterative solution.
@@ -96,9 +94,9 @@ result.t_pcg = toc;
 
 fprintf("    t_pcg: %.1e\n", result.t_pcg);
 fprintf("    iter_pcg: %d\n", result.iter_pcg);
-result.rel_res_pcg = norm(Kf_ex - apply_fbf(K_BF, f_pcg)) / norm(Kf_ex);
+result.rel_res_pcg = norm(result_bf.Kf_ex - apply_fbf(result_bf.K_BF, f_pcg)) / norm(result_bf.Kf_ex);
 fprintf("    rel_res_pcg: %.1e\n", result.rel_res_pcg);
-result.rel_err_pcg = norm(f_ex - f_pcg) / norm(f_ex);
+result.rel_err_pcg = norm(result_bf.f_ex - f_pcg) / norm(result_bf.f_ex);
 fprintf("    rel_err_pcg: %.1e\n", result.rel_err_pcg);
 
 end
