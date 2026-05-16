@@ -33,7 +33,7 @@ for level = A.max_level_ : -1 : 0
     else
         A.BBC_Indep_FillY(level + 1, Y);
         A.BBC_Indep_Apply_U(level + 1);
-        Y = A.BBC_Indep_FetchY_Leaf(A.max_level_ + 1, s);
+        Y = A.BBC_Indep_FetchY_Leaf(s);
         Y = op_A(Y);
         A.BBC_Indep_FillY_Leaf(Y);
         A.BBC_Indep_Apply_U_Star(level + 1);
@@ -60,8 +60,8 @@ for level = A.max_level_ : -1 : 0
         fprintf("    num of samples: %d\n", s);
         mem = double_to_gb(A.Storage());
         fprintf("    used memory: %.1e GB\n", mem);
-        matlab_mem = memory;
-        fprintf("    total used memory: %.1e GB\n", matlab_mem.MemUsedMATLAB / 10^9);
+        matlab_mem = getMemoryInfo();
+        fprintf("    total used memory: %.1e GB\n", matlab_mem.MemUsedMATLAB_GB);
     end
 end
 

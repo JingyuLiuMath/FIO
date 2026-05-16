@@ -66,8 +66,8 @@ for level = A.max_level_ : -1 : 0
             mem = mem + double_to_gb(nnz(U_list{it}));
         end
         fprintf("    used memory: %.1e GB\n", mem);
-        matlab_mem = memory;
-        fprintf("    total used memory: %.1e GB\n", matlab_mem.MemUsedMATLAB / 10^9);
+        matlab_mem = getMemoryInfo();
+        fprintf("    total used memory: %.1e GB\n", matlab_mem.MemUsedMATLAB_GB);
     end
 end
 

@@ -42,8 +42,8 @@ Gf_ex = op_G(f_ex);
 G_HSS = BF_HSS2D(n, n);
 G_HSS.BuildTree(min_points);
 
-matlab_mem = memory;
-fprintf("  used memory: %.1e GB\n", matlab_mem.MemUsedMATLAB / 10^9);
+matlab_mem = getMemoryInfo();
+fprintf("    total used memory: %.1e GB\n", matlab_mem.MemUsedMATLAB_GB);
 
 c = 2 * ceil(log10(1 / tol_hss));
 rank_func = @(ell) c * n / 2^ell;
