@@ -16,12 +16,12 @@ tol_bf = 1e-8;
 
 num_sample = 256;
 
-min_points = 256;
+min_points = 64;
 r_hss = 25;
 tol_hss = 1e-3;
 
 tol_cg = 1e-12;
-maxit_cg = 500;
+maxit_cg = 50;
 
 %% HSS Rank.
 fprintf("\n");
@@ -39,11 +39,6 @@ result_bf = run_FIO1D_inv_CG(...
 %% FIO.
 fprintf("\n");
 run_FIO1D_inv(...
-    result_bf, ...
-    min_points, tol_hss);
-
-fprintf("\n");
-run_FIO1D_inv_indep(...
     result_bf, ...
     min_points, tol_hss);
 
