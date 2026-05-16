@@ -28,42 +28,29 @@ for level = A.max_level_ : -1 : 0
 
     % Sampling.
     if level == A.max_level_
-        Omega = randn(total_level_size, s);
-        Y = op_A(Omega);
-        A.BBC_Indep_FillY_Leaf(Y);
+        Omega = randn(A.global_size_, s);
+        A.BBC_FillAuxiliaryMatrix(Omega, op_A(Omega));
+        clear Omega;
     else
         A.BBC_Indep_TopDown(level + 1, s);
-        Y = A.BBC_Indep_FetchY_Leaf(s);
-        Y = op_A(Y);
-        A.BBC_Indep_FillY_Leaf(Y);
-        Y = [];
-        A.BBC_Indep_Apply_U_Star(level + 1);
-        Y = A.BBC_Indep_FetchY(level + 1, s);
+        A.BBC_Indep_FillY_Leaf(op_A(A.BBC_Indep_FetchY_Leaf(s)));
+        A.BBC_Indep_BottomUp(level + 1);
     end
 
     if level ~= 0
-        A.BBC_Indep_ConstructGenerators_New(...
-            level, ...
-            Omega, Y, ...
-            target_rank, ...
-            tol);
+        A.BBC_Indep_ConstructGenerators(...
+            level, s, target_rank, tol);
     else
-        A.BBC_Indep_ConstructRootGenerators(Omega, Y);
+        A.BBC_Indep_ConstructRootGenerators(s);
     end
-
-    Omega = [];
-    Y = [];
 
     if verbose == 1
         fprintf("    \n");
         fprintf("    level: %d\n", level);
         fprintf("    max_level_size: %d\n", max_level_size);
-        fprintf("    total_level_size: %d\n", total_level_size);
         fprintf("    target_rank: %d\n", target_rank);
         fprintf("    num of samples: %d\n", s);
         mem = byte_to_gb(A.Storage());
-        mem = mem + byte_to_gb(byte_size(Omega));
-        mem = mem + byte_to_gb(byte_size(Y));
         fprintf("    used memory: %.1e GB\n", mem);
         matlab_mem = getMemoryInfo();
         fprintf("    incr used memory: %.1e GB\n", matlab_mem - matlab_mem0);

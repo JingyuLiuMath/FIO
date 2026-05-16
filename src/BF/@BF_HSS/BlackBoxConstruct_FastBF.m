@@ -8,6 +8,6 @@ arguments (Input)
 end
 
 op_G_HSS = @(v) op_G(v);
-G.BlackBoxConstruct_Indep_New(op_G_HSS, rank_func, tol);
+G.BlackBoxConstruct_Indep(op_G_HSS, rank_func, tol);
 
 end

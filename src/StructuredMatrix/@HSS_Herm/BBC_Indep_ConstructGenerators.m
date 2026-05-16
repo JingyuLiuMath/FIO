@@ -1,47 +1,28 @@
-function U_level_list = BBC_Indep_ConstructGenerators(...
-    A, level, ...
-    Omega, Y, ...
-    target_rank, ...
-    U_level_list, ...
-    tol)
+function BBC_Indep_ConstructGenerators(...
+    A, level, s, target_rank, tol)
 % BBC_ConstructGenerators
 
 arguments (Input)
     A HSS_Herm;
     level (1, 1) double;
-    Omega (:, :) double;
-    Y (:, :) double;
+    s (1, 1) double;
     target_rank (1, 1) double;
-    U_level_list (1, :) cell;
     tol (1, 1) double;
 end
 
-arguments (Output)
-    U_level_list (1, :) cell;
-end
-
 if A.level_ == level
+    [Omega, Y] = A.BBC_Indep_Y_Omega(s);
     target_rank = min(target_rank, size(Y, 1));
     P = NullBasis(Omega, target_rank + 5);
-    [U, A.rank_] = ColBasis(Y * P, target_rank, tol);
-    U_level_list{end + 1} = U;
+    [A.Umat_, A.rank_] = ColBasis(Y * P, target_rank, tol);
     Y_OmegaInv = Y / Omega;
-    tmp = Y_OmegaInv - U * (U' * Y_OmegaInv);
-    Acheck = tmp + U * (U' * tmp');
+    tmp = Y_OmegaInv - A.Umat_ * (A.Umat_' * Y_OmegaInv);
+    Acheck = tmp + A.Umat_ * (A.Umat_' * tmp');
+    A.level_size_ = A.rank_;
 
     if A.leaf_ == 1
         A.Amat_ = Acheck;
-        A.Umat_ = U;
     else
-        % Assign R and W.
-        offset = 0;
-        for i = 1 : A.num_children_
-            current_size = A.children_{i}.rank_;
-            A.Rmat_{i} = U(...
-                (offset + 1) : (offset + current_size), :);
-            offset = offset + current_size;
-        end
-
         % Assign B.
         A.Bmat_ = cell(A.num_children_, A.num_children_);
         row_offset = 0;
@@ -59,17 +40,9 @@ if A.level_ == level
         end
     end
 elseif A.leaf_ == 0
-    offset = 0;
     for i = 1 : A.num_children_
-        current_size = A.children_{i}.level_size_;
-        U_level_list = A.children_{i}.BBC_Indep_ConstructGenerators(...
-            level, ...
-            Omega((offset + 1) : (offset + current_size), :), ...
-            Y((offset + 1) : (offset + current_size), :), ...
-            target_rank, ...
-            U_level_list, ...
-            tol);
-        offset = offset + current_size;
+        A.children_{i}.BBC_Indep_ConstructGenerators(...
+            level, s, target_rank, tol);
     end
 end
 

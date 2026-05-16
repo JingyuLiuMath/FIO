@@ -50,7 +50,7 @@ for level = A.max_level_ : -1 : 0
             target_rank, ...
             tol);
     else
-        A.BBC_Indep_ConstructRootGenerators(Omega, Y);
+        A.BBC_Indep_ConstructRootGenerators_New(Omega, Y);
     end
 
     Omega = [];
