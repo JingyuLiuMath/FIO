@@ -68,7 +68,6 @@ for level = A.max_level_ : -1 : 0
         fprintf("    used memory: %.1e GB\n", mem);
         matlab_mem = memory;
         fprintf("    total used memory: %.1e GB\n", matlab_mem.MemUsedMATLAB / 10^9);
-        keyboard;
     end
 end
 
