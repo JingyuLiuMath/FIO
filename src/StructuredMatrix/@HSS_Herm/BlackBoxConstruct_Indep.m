@@ -9,9 +9,6 @@ arguments (Input)
     verbose (1, 1) double = 1;
 end
 
-matlab_mem0 = getMemoryInfo();
-fprintf("    initial used memory: %.1e GB\n", matlab_mem0);
-
 p = 5;
 s_total = 0;
 % Recursive construction.
@@ -50,11 +47,6 @@ for level = A.max_level_ : -1 : 0
         fprintf("    max_level_size: %d\n", max_level_size);
         fprintf("    target_rank: %d\n", target_rank);
         fprintf("    num of samples: %d\n", s);
-        mem = byte_to_gb(A.Storage());
-        fprintf("    used memory: %.1e GB\n", mem);
-        matlab_mem = getMemoryInfo();
-        fprintf("    incr used memory: %.1e GB\n", matlab_mem - matlab_mem0);
-        fprintf("    total used memory: %.1e GB\n", matlab_mem);
     end
 end
 

@@ -1,8 +1,6 @@
 clear;
 close all;
 
-profile('-memory','on');  % an alternative
-
 if ispc
     data_path = "./data/";
 else

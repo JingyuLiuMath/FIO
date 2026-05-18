@@ -33,7 +33,7 @@ result.tol_hss = tol_hss;
 result.tol_cg = tol_cg;
 result.maxit_cg = maxit_cg;
 
-op_G = @(v) apply_fbf_adj(result_bf.K_BF, apply_fbf(result_bf.K_BF, v));
+op_G = @(v) apply_fbf_adj_batch(result_bf.K_BF, apply_fbf_batch(result_bf.K_BF, v));
 rhs = apply_fbf_adj(result_bf.K_BF, result_bf.Kf_ex);
 
 % HSS.
