@@ -13,12 +13,18 @@ end
 
 % Settings.
 leaf_size = A.MaxLeafSize();
-total_target_rank = 0;
-for level = 1 : A.max_level_
-    total_target_rank = total_target_rank + rank_func(level);
+mode = 1;
+if mode == 1
+    total_target_rank = rank_func(1);
+else
+    total_target_rank = 0;
+    for level = 1 : A.max_level_
+        total_target_rank = total_target_rank + rank_func(level);
+    end
 end
 p = 5;
 s = total_target_rank + p + leaf_size;
+fprintf("  sampling mode: %d\n", mode);
 fprintf("  total num of samples: %d\n", s);
 
 % Sampling.
