@@ -1,4 +1,4 @@
-function BBC_ConstructGenerators(A, level, target_rank, tol)
+function level_rank = BBC_ConstructGenerators(A, level, target_rank, tol)
 % BBC_ConstructGenerators
 
 arguments (Input)
@@ -6,6 +6,10 @@ arguments (Input)
     level (1, 1) double;
     target_rank (1, 1) double;
     tol (1, 1) double;
+end
+
+arguments (Output)
+    level_rank (1, 1) double;
 end
 
 if A.level_ == level
@@ -18,6 +22,8 @@ if A.level_ == level
     Y_OmegaInv = A.BBC_Y_ / A.BBC_Omega_;
     tmp = Y_OmegaInv - A.Umat_ * (A.Umat_' * Y_OmegaInv);
     A.BBC_A_ = tmp + A.Umat_ * (A.Umat_' * tmp');
+    level_rank = A.rank_;
+
     if A.leaf_ == 1
         A.Amat_ = A.BBC_A_;
     else
@@ -47,8 +53,11 @@ if A.level_ == level
         end
     end
 elseif A.leaf_ == 0
+    level_rank = 0;
     for i = 1 : A.num_children_
-        A.children_{i}.BBC_ConstructGenerators(level, target_rank, tol);
+        c_level_rank = A.children_{i}.BBC_ConstructGenerators(...
+            level, target_rank, tol);
+        level_rank = max(level_rank, c_level_rank);
     end
 end
 

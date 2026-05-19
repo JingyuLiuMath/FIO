@@ -5,7 +5,7 @@ M = size(Factor.M, 1);
 
 num_cols = size(y, 2);
 
-memory_limit_gb = getMaxAvailableMemory();
+memory_limit_gb = 128;
 memory_limit_complex_double = memory_limit_gb * 1024^3 / 8 / 2;
 
 num_cols_limit = floor(memory_limit_complex_double/ M);
@@ -22,13 +22,6 @@ if res_size ~= 0
 end
 
 num_batch = size(batch_size_list, 1);
-
-if num_batch > 1
-    fprintf("    memory_limit_gb: %.1e\n", memory_limit_gb);
-    fprintf("    num of cols: %d\n", num_cols);
-    fprintf("    num_cols_limit: %d\n", num_cols_limit);
-    fprintf("    batch_size: %d\n", batch_size);
-end
 
 offset = 0;
 for it = 1 : num_batch

@@ -1,12 +1,9 @@
 clear;
 close all;
-warning off;
-
-addpath('../../extern/FastBF.m/src');
 
 exp_phi_func = @(x, xi) fun_2D(x, xi);
 
-p_list = (4 : 6)';
+p_list = (4 : 7)';
 num_n = length(p_list);
 
 for it_p = 1 : num_n
@@ -19,6 +16,7 @@ for it_p = 1 : num_n
     fprintf("p: %d\n", p);
 
     result = run_FIO2D_hss_rank(exp_phi_func, n);
-    % save("./data/hss_rank_" + string(p) + ".mat", ...
-    %     "result");
+    save("./data/2d_const_amplitude_hss_rank" ...
+        + "_" + string(p) ...
+        + ".mat", "result");
 end

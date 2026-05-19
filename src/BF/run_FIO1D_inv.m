@@ -1,6 +1,6 @@
 function result = run_FIO1D_inv(...
     result_bf, ...
-    min_points, tol_hss)
+    min_points, tol_hss, indep)
 
 N = result_bf.N;
 
@@ -22,6 +22,8 @@ fprintf("  tol_hss: %.1e\n", tol_hss);
 fprintf("  tol_cg: %.1e\n", tol_cg);
 fprintf("  maxit_cg: %d\n", maxit_cg);
 
+fprintf("  indep: %d\n", indep);
+
 result.N = N;
 result.r_bf = r_bf;
 result.tol_bf = tol_bf;
@@ -29,9 +31,14 @@ result.min_points = min_points;
 result.tol_hss = tol_hss;
 result.tol_cg = tol_cg;
 result.maxit_cg = maxit_cg;
+result.indep = indep;
 
 op_G = @(v) apply_fbf_adj(result_bf.K_BF, apply_fbf(result_bf.K_BF, v));
 rhs = apply_fbf_adj(result_bf.K_BF, result_bf.Kf_ex);
+
+M = size(result_bf.K_BF.M, 1);
+fprintf("  M in BF: %d\n", M);
+fprintf("  rel_err_BF: %.1e\n", result_bf.rel_err_BF);
 
 % HSS.
 fprintf("HSS.\n");
@@ -40,14 +47,18 @@ Gf_ex = op_G(result_bf.f_ex);
 G_HSS = BF_HSS(N);
 G_HSS.BuildTree(min_points);
 
-c = ceil(3 * log10(1 / tol_hss));
+c = ceil(1.25 * 3 * log10(1 / tol_hss));
 rank_func = @(ell) c;
 result.rel_err_HSS = inf;
 while result.rel_err_HSS >= tol_hss * 10
     fprintf("  c: %d\n", c);
-    tic;
-    G_HSS.BlackBoxConstruct_FastBF(op_G, rank_func, tol_hss);
-    result.t_construct_HSS = toc;
+    t_construct_HSS_start = tic;
+    if indep == 1
+        G_HSS.BlackBoxConstruct_Indep_FastBF(op_G, rank_func, tol_hss);
+    else
+        G_HSS.BlackBoxConstruct_FastBF(op_G, rank_func, tol_hss);
+    end
+    result.t_construct_HSS = toc(t_construct_HSS_start);
     fprintf("  t_HSS_construct: %.1e\n", result.t_construct_HSS);
 
     Gf = G_HSS.MyApply(result_bf.f_ex);
@@ -64,18 +75,18 @@ while result.rel_err_HSS >= tol_hss * 10
     rank_func = @(ell) c;
 end
 
-tic;
+t_HSS_factor_start = tic;
 G_HSS.ULV_Factor();
-result.t_HSS_factor = toc;
+result.t_HSS_factor = toc(t_HSS_factor_start);
 fprintf("  t_HSS_factor: %.1e\n", result.t_HSS_factor);
 
 % Direct Solution.
 fprintf("Direct solution.\n");
-tic;
+t_direct_start = tic;
 f_direct = G_HSS.Solve(rhs);
-result.t_solve_direct = toc;
+result.t_direct = toc(t_direct_start);
 
-fprintf("  t_solve_direct: %.1e\n", result.t_solve_direct);
+fprintf("  t_direct: %.1e\n", result.t_direct);
 result.rel_res_direct = norm(result_bf.Kf_ex - apply_fbf(result_bf.K_BF, f_direct)) / norm(result_bf.Kf_ex);
 fprintf("  rel_res_direct: %.1e\n", result.rel_res_direct);
 result.rel_err_direct = norm(result_bf.f_ex - f_direct) / norm(result_bf.f_ex);
@@ -85,9 +96,9 @@ fprintf("  rel_err_direct: %.1e\n", result.rel_err_direct);
 fprintf("Iterative solution.\n");
 fprintf("  With precond.\n");
 op_M = @(v) G_HSS.Solve(v);
-tic;
+t_pcg_start = tic;
 [f_pcg, result.flag_pcg, ~, result.iter_pcg] = pcg(op_G, rhs, tol_cg, maxit_cg, op_M);
-result.t_pcg = toc;
+result.t_pcg = toc(t_pcg_start);
 
 fprintf("    t_pcg: %.1e\n", result.t_pcg);
 fprintf("    iter_pcg: %d\n", result.iter_pcg);

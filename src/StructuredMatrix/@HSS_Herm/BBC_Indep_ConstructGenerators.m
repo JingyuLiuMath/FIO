@@ -1,4 +1,4 @@
-function BBC_Indep_ConstructGenerators(...
+function level_rank = BBC_Indep_ConstructGenerators(...
     A, level, s, target_rank, tol)
 % BBC_ConstructGenerators
 
@@ -10,6 +10,10 @@ arguments (Input)
     tol (1, 1) double;
 end
 
+arguments (Output)
+    level_rank (1, 1) double;
+end
+
 if A.level_ == level
     [Omega, Y] = A.BBC_Indep_Y_Omega(s);
     target_rank = min(target_rank, size(Y, 1));
@@ -19,6 +23,7 @@ if A.level_ == level
     tmp = Y_OmegaInv - A.Umat_ * (A.Umat_' * Y_OmegaInv);
     Acheck = tmp + A.Umat_ * (A.Umat_' * tmp');
     A.level_size_ = A.rank_;
+    level_rank = A.rank_;
 
     if A.leaf_ == 1
         A.Amat_ = Acheck;
@@ -40,9 +45,11 @@ if A.level_ == level
         end
     end
 elseif A.leaf_ == 0
+    level_rank = 0;
     for i = 1 : A.num_children_
-        A.children_{i}.BBC_Indep_ConstructGenerators(...
+        c_level_rank = A.children_{i}.BBC_Indep_ConstructGenerators(...
             level, s, target_rank, tol);
+        level_rank = max(level_rank, c_level_rank);
     end
 end
 

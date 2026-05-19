@@ -1,6 +1,7 @@
 exp_2d_const_amplitude_settings;
 
-indep = 0;
+indep = 1;
+
 for it_tol_hss = 1 : num_tol_hss
     for it_p = 1 : num_n
         tol_hss = tol_hss_list(it_tol_hss);
@@ -17,7 +18,7 @@ for it_tol_hss = 1 : num_tol_hss
             result, ...
             min_points, tol_hss, indep);
 
-        save(data_path + "2d_const_amplituide_results" ...
+        save(data_path + "2d_const_amplituide_results_indep" ...
             + "_" + string(p) ...
             + "_" + string(tol_hss) ...
             + ".mat", "result");

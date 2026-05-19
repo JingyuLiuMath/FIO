@@ -1,5 +1,6 @@
 exp_1d_const_amplitude_settings;
 
+indep = 0;
 for it_tol_hss = 1 : num_tol_hss
     for it_p = 1 : num_n
         tol_hss = tol_hss_list(it_tol_hss);
@@ -14,7 +15,7 @@ for it_tol_hss = 1 : num_tol_hss
 
         result = run_FIO1D_inv(...
             result, ...
-            min_points, tol_hss);
+            min_points, tol_hss, indep);
 
         save(data_path + "1d_const_amplituide_results" ...
             + "_" + string(p) ...

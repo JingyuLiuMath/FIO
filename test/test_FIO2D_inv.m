@@ -22,6 +22,8 @@ tol_hss = 1e-3;
 tol_cg = 1e-12;
 maxit_cg = 50;
 
+indep = 0;
+
 %% HSS Rank.
 % fprintf("\n");
 % result_rank = run_FIO2D_hss_rank(...
@@ -39,6 +41,6 @@ result_bf = run_FIO2D_inv_CG(...
 fprintf("\n");
 run_FIO2D_inv(...
     result_bf, ...
-    min_points, tol_hss);
+    min_points, tol_hss, indep);
 
 path(originalPath);

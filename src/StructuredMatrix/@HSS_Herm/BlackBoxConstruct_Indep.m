@@ -13,6 +13,10 @@ p = 5;
 s_total = 0;
 % Recursive construction.
 for level = A.max_level_ : -1 : 0
+    if verbose == 1
+        fprintf("    \n");
+        fprintf("    level: %d\n", level);
+    end
     % Settings.
     max_level_size = A.BBC_Indep_LevelSize(level);
     target_rank = ceil(rank_func(level));
@@ -23,6 +27,7 @@ for level = A.max_level_ : -1 : 0
     end
     s_total = s_total + s;
 
+    t_level_start = tic;
     % Sampling.
     if level == A.max_level_
         Omega = randn(A.global_size_, s);
@@ -35,17 +40,20 @@ for level = A.max_level_ : -1 : 0
     end
 
     if level ~= 0
-        A.BBC_Indep_ConstructGenerators(...
+        level_rank = A.BBC_Indep_ConstructGenerators(...
             level, s, target_rank, tol);
     else
         A.BBC_Indep_ConstructRootGenerators(s);
     end
+    t_level = toc(t_level_start);
 
     if verbose == 1
-        fprintf("    \n");
-        fprintf("    level: %d\n", level);
+        fprintf("    t_level: %.1e\n", t_level);
         fprintf("    max_level_size: %d\n", max_level_size);
-        fprintf("    target_rank: %d\n", target_rank);
+        if level ~= 0
+            fprintf("    target_rank: %d\n", target_rank);
+            fprintf("    level_rank: %d\n", level_rank);
+        end
         fprintf("    num of samples: %d\n", s);
     end
 end
