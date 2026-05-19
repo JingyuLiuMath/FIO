@@ -8,7 +8,7 @@ arguments (Input)
 end
 
 op_G_HSS = @(v) G_fun(v, op_G, G.perm_, G.perm_inv_);
-G.BlackBoxConstruct_Indep(op_G_HSS, rank_func, tol);
+G.BlackBoxConstruct(op_G_HSS, rank_func, tol);
 
 end
 

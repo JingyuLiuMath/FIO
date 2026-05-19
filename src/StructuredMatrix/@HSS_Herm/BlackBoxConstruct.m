@@ -13,7 +13,7 @@ end
 
 % Settings.
 leaf_size = A.MaxLeafSize();
-mode = 1;
+mode = 2;
 if mode == 1
     total_target_rank = rank_func(1);
 else
