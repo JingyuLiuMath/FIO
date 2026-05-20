@@ -59,7 +59,7 @@ Gf_ex = op_G(result_bf.f_ex);
 G_HSS = BF_HSS2D(n, n);
 G_HSS.BuildTree(min_points);
 
-c = ceil(4 * log10(1 / tol_hss));
+c = ceil(3 * log10(1 / tol_hss));
 rank_func = @(ell) c * n / 2^ell;
 result.rel_err_HSS = inf;
 while result.rel_err_HSS >= tol_hss * 10

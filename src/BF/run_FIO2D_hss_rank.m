@@ -24,7 +24,7 @@ xi_co2 = (0 : (half_n - 1))';
 xi_row = TensorProduct2D(xi_co1, xi_co1);
 xi_col = TensorProduct2D(xi_co1, xi_co2);
 
-factor = 4;
+factor = 3;
 sub_K = exp_phi_func(x, xi_row)' * exp_phi_func(x, xi_col);
 sigma = svd(sub_K);
 for it = 1 : size(result.tol_list, 1)
