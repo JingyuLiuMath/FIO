@@ -3,7 +3,7 @@ exp_2d_const_amplitude_settings;
 indep = 1;
 
 for it_tol_hss = 1 : num_tol_hss
-    for it_p = 1 : num_n
+    for it_p = num_n : -1 : 1
         tol_hss = tol_hss_list(it_tol_hss);
         p = p_list(it_p);
 

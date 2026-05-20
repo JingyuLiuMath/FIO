@@ -29,6 +29,7 @@ elseif isunix
 end
 tol_hss_list = [1e-3];
 num_tol_hss = length(tol_hss_list);
+tol_hss_display_list = ["10^{-3}"];
 
 tol_cg = 1e-12;
 if ispc

@@ -36,6 +36,15 @@ result.tol_cg = tol_cg;
 result.maxit_cg = maxit_cg;
 result.indep = indep;
 
+result.t_construct_BF = result_bf.t_construct_BF;
+result.t_apply_BF = result_bf.t_apply_BF;
+result.rel_err_BF = result_bf.rel_err_BF;
+
+result.t_cg = result_bf.t_cg;
+result.iter_cg = result_bf.iter_cg;
+result.rel_res_cg = result_bf.rel_res_cg;
+result.rel_err_cg = result_bf.rel_err_cg;
+
 op_G = @(v) apply_fbf_adj_batch(result_bf.K_BF, apply_fbf_batch(result_bf.K_BF, v));
 rhs = apply_fbf_adj(result_bf.K_BF, result_bf.Kf_ex);
 
@@ -50,7 +59,7 @@ Gf_ex = op_G(result_bf.f_ex);
 G_HSS = BF_HSS2D(n, n);
 G_HSS.BuildTree(min_points);
 
-c = ceil(3 * 2 * log10(1 / tol_hss));
+c = ceil(4 * log10(1 / tol_hss));
 rank_func = @(ell) c * n / 2^ell;
 result.rel_err_HSS = inf;
 while result.rel_err_HSS >= tol_hss * 10
@@ -61,8 +70,8 @@ while result.rel_err_HSS >= tol_hss * 10
     else
         G_HSS.BlackBoxConstruct_FastBF(op_G, rank_func, tol_hss);
     end
-    result.t_HSS_construct = toc(t_HSS_construct_start);
-    fprintf("  t_HSS_construct: %.1e\n", result.t_HSS_construct);
+    result.t_construct_HSS = toc(t_HSS_construct_start);
+    fprintf("  t_construct_HSS: %.1e\n", result.t_construct_HSS);
 
     Gf = G_HSS.MyApply(result_bf.f_ex);
     result.rel_err_HSS = norm(Gf - Gf_ex) / norm(Gf);
@@ -78,10 +87,10 @@ while result.rel_err_HSS >= tol_hss * 10
     rank_func = @(ell) c * n / 2^ell;
 end
 
-t_HSS_factor_start = tic;
+t_factor_HSS_start = tic;
 G_HSS.ULV_Factor();
-result.t_HSS_factor = toc(t_HSS_factor_start);
-fprintf("  t_HSS_factor: %.1e\n", result.t_HSS_factor);
+result.t_factor_HSS = toc(t_factor_HSS_start);
+fprintf("  t_factor_HSS: %.1e\n", result.t_factor_HSS);
 
 % Direct Solution.
 fprintf("Direct solution.\n");

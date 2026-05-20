@@ -24,12 +24,13 @@ xi_co2 = (0 : (half_n - 1))';
 xi_row = TensorProduct2D(xi_co1, xi_co1);
 xi_col = TensorProduct2D(xi_co1, xi_co2);
 
+factor = 4;
 sub_K = exp_phi_func(x, xi_row)' * exp_phi_func(x, xi_col);
 sigma = svd(sub_K);
 for it = 1 : size(result.tol_list, 1)
     tol = result.tol_list(it);
     result.rank_list(it) = find(sigma >= tol * sigma(1), 1, "last");
-    result.rank_est_list(it) = ceil(1.5 * log10(1 / tol)) * half_n;
+    result.rank_est_list(it) = ceil(factor * log10(1 / tol)) * half_n;
     fprintf("tol: %.1e, " + ...
         "rank: %d, " + ...
         "rank_est: %d\n", ...
