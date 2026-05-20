@@ -39,3 +39,5 @@ elseif isunix
 end
 
 num_sample = 256;
+
+figure_prefix = "./figure/1d_const_amplitude";
