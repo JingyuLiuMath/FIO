@@ -5,7 +5,8 @@
 #SBATCH --error=FIO2d_indep_%j.err
 #SBATCH --nodelist=bigMem0
 #SBATCH --exclusive
-#SBATCH --time=18:00:00
+#SBATCH --time=36:00:00
+#SBATCH --qos=double
 
 module unload MATLAB
 module load MATLAB/R2023b
