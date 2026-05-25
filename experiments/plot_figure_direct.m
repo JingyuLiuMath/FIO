@@ -47,20 +47,30 @@ plot_single_curve(N_list, t_list, marker_list, display_name_list);
 
 if isfield(result_list(1), "n")
     scaling_type = "$O(\sqrt{N})$";
+    factor = mean(hss_rank_list);
 else
     scaling_type = "$O(1)$";
+    factor = 12;
 end
-factor = hss_rank_list(end) * 1.5;
 plot_ref_curve(N_list, scaling_type, factor);
 
 xlabel(xlabel_name, "Interpreter", "latex");
+if isfield(result_list(1), "n")
+    xlim([1e3 1e6]);
+    xticks([1e3 1e4 1e5 1e6]);
+    ylim([128 4096]);  
+    yticks([256 512 1024 2048]);
+else
+    ylim([10 13]);  
+    yticks([10 11 12 13]);
+end
 title(title_name, "Interpreter", "latex");
 legend("Location", "southeast", "Interpreter", "latex");
 set(gca, 'FontSize', 24);
 saveas(gcf, figure_name + ".png", "png");
 saveas(gcf, figure_name + ".eps", "epsc");
 
-figure();
+figure('Position', [100 100 900 700]);
 xlabel_name = "$N$";
 ylabel_name = "time (s)";
 
@@ -81,16 +91,16 @@ plot_single_curve(N_list, t_list, marker_list, display_name_list);
 
 % Construct BF.
 scaling_type = "$O(N \log (N))$";
-factor = t_construct_BF_list(end) * 1.5;
+factor = mean(t_construct_BF_list);
 plot_ref_curve(N_list, scaling_type, factor);
 
 % Construct HSS.
 if isfield(result_list(1), "n")
-    scaling_type = "$O(N^{1.5} \log (N)$";
+    scaling_type = "$O(N^{1.5} \log (N))$";
 else
     scaling_type = "$O(N \log^{2}(N))$";
 end
-factor = t_construct_HSS_list(end) * 1.5;
+factor = mean(t_construct_HSS_list);
 plot_ref_curve(N_list, scaling_type, factor);
 
 % Factor HSS.
@@ -99,24 +109,33 @@ if isfield(result_list(1), "n")
 else
     scaling_type = "$O(N)$";
 end
-factor = t_factor_HSS_list(end) * 1.5;
+factor = mean(t_factor_HSS_list);
 plot_ref_curve(N_list, scaling_type, factor);
 
 % Solve
 if isfield(result_list(1), "n")
-    scaling_type = "";
+    scaling_type = "$O(N \log (N))$";
 else
-    scaling_type = "";
+    scaling_type = "$O(N)$";
 end
-factor = t_solve_list(end) * 1.5;
+factor = mean(t_solve_list);
 plot_ref_curve(N_list, scaling_type, factor);
 
 
 xlabel(xlabel_name, "Interpreter", "latex");
 ylabel(ylabel_name, "Interpreter", "latex");
+if isfield(result_list(1), "n")
+    xlim([1e3 1e6]);
+    xticks([1e3 1e4 1e5 1e6]);
+else
+    xlim([2^9 2^20])
+    xticks([1e3 1e4 1e5 1e6])
+    ylim([1e-3 1e3]);  
+    yticks([1e-3 1e-2 1e-1 1e0 1e1 1e2 1e3]);
+end
 title(title_name, "Interpreter", "latex");
-legend("Location", "southeast", "Interpreter", "latex");
-set(gca, 'FontSize', 24);
+legend("Location", "southeastoutside", "Interpreter", "latex");
+set(gca, 'FontSize', 32);
 saveas(gcf, figure_name + ".png", "png");
 saveas(gcf, figure_name + ".eps", "epsc");
 
@@ -168,25 +187,28 @@ switch scaling_type
         return;
     case "$O(1)$"
         ref_line = ones(size(N_list));
-        ref_line = ref_line / ref_line(1) * factor;
+        ref_line = ref_line / mean(ref_line) * factor;
     case "$O(N)$"
         ref_line = N_list;
-        ref_line = ref_line / ref_line(1) * factor;
+        ref_line = ref_line / mean(ref_line) * factor;
     case "$O(\sqrt{N})$"
         ref_line = sqrt(N_list);
-        ref_line = ref_line / ref_line(1) * factor;
+        ref_line = ref_line / mean(ref_line) * factor;
     case "$O(N \log (N))$"
         ref_line = N_list .* log2(N_list);
-        ref_line = ref_line / ref_line(1) * factor;
+        ref_line = ref_line / mean(ref_line) * factor;
     case "$O(N \log^{2}(N))$"
         ref_line = N_list .* (log2(N_list).^2);
-        ref_line = ref_line / ref_line(1) * factor;
+        ref_line = ref_line / mean(ref_line) * factor;
     case "$O(N^{1.5})$"
         ref_line = N_list.^(1.5);
-        ref_line = ref_line / ref_line(1) * factor;
-    case "$O(N^{1.5} \log (N)$"
+        ref_line = ref_line / mean(ref_line) * factor;
+    case "$O(N^{1.5} \log (N))$"
         ref_line = N_list.^(1.5) .* log2(N_list);
-        ref_line = ref_line / ref_line(1) * factor;
+        ref_line = ref_line / mean(ref_line) * factor;
+    case "$O(N^{1.5} \log^{2} (N))$"
+        ref_line = N_list.^(1.5) .* (log2(N_list).^2);
+        ref_line = ref_line / mean(ref_line) * factor;
 end
 
 loglog(N_list, ref_line, ...
