@@ -3,8 +3,8 @@
 #SBATCH --job-name=FIO2d_CG
 #SBATCH --output=FIO2d_CG_%j.out
 #SBATCH --error=FIO2d_CG_%j.err
-#SBATCH --nodelist=bigMem0
-#SBATCH --exclusive
+#SBATCH --nodelist=bigMem4
+#SBATCH --cpus-per-task=32
 #SBATCH --time=18:00:00
 
 module unload MATLAB
