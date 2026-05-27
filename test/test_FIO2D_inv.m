@@ -22,7 +22,7 @@ tol_hss = 1e-3;
 tol_cg = 1e-12;
 maxit_cg = 50;
 
-indep = 0;
+indep = 1;
 
 %% HSS Rank.
 % fprintf("\n");

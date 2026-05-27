@@ -1,8 +1,12 @@
-function res = fun_1D(x,k)
+function res = fun_1D(x, xi)
 
-xk = x*k';
-sx = (2 + sin(2*pi*x))/8;
-tmp = (2*pi)* (xk + sx*abs(k'));
-res = complex(cos(tmp),sin(tmp));
+phi_lin = x * xi.';
+
+sx = (2 + sin(2 * pi * x)) / 8;
+phi_nonlin = sx * abs(xi).';
+
+phi = phi_lin + phi_nonlin;
+
+res = complex(cos(2 * pi * phi), sin(2 * pi * phi));
 
 end
