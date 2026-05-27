@@ -1,10 +1,4 @@
-clear;
-close all;
-
-exp_phi_func = @(x, xi) fun_2D(x, xi);
-
-p_list = (4 : 7)';
-num_n = length(p_list);
+exp_2d_const_amplitude_settings;
 
 for it_p = 1 : num_n
     p = p_list(it_p);
