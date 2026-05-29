@@ -118,8 +118,7 @@ f_direct = G_HSS.Solve(rhs);
 result.t_direct = toc(t_direct_start);
 
 fprintf("  t_direct: %.1e\n", result.t_direct);
-% result.rel_res_direct = norm(result_bf.Kf_ex - apply_func(f_direct)) / norm(result_bf.Kf_ex);
-result.rel_res_direct = norm(rhs - op_G(f_direct)) / norm(rhs);
+result.rel_res_direct = norm(result_bf.Kf_ex - apply_func(f_direct)) / norm(result_bf.Kf_ex);
 fprintf("  rel_res_direct: %.1e\n", result.rel_res_direct);
 result.rel_err_direct = norm(result_bf.f_ex - f_direct) / norm(result_bf.f_ex);
 fprintf("  rel_err_direct: %.1e\n", result.rel_err_direct);

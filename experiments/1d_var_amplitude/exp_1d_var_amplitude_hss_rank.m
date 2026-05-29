@@ -1,6 +1,6 @@
-exp_1d_const_amplitude_settings;
+exp_1d_var_amplitude_settings;
 
-p_list = (10 : 12)';
+p_list = (8 : 12)';
 num_n = length(p_list);
 
 for it_p = 1 : num_n
@@ -11,8 +11,10 @@ for it_p = 1 : num_n
     fprintf("\n\n\n\n");
     fprintf("p: %d\n", p);
 
-    result = run_FIO1D_hss_rank(exp_phi_func, N);
-    save("./data/1d_const_amplitude_hss_rank" ...
+    result = run_FIO1D_var_hss_rank(...
+        m, sigma_sq, ...
+        exp_phi_func, N);
+    save("./data/1d_var_amplitude_hss_rank" ...
         + "_" + string(p) ...
         + ".mat", "result");
 end
