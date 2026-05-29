@@ -1,11 +1,4 @@
-clear;
-close all;
-
-exp_phi_func = @(x, xi) fun_2D_2(x, xi);
-a_func = @(x, xi) a_fun_2D_2(x, xi);
-
-p_list = (4 : 6)';
-num_n = length(p_list);
+exp_2d_var_amplitude_settings;
 
 for it_p = 1 : num_n
     p = p_list(it_p);
@@ -16,7 +9,9 @@ for it_p = 1 : num_n
     fprintf("\n\n\n\n");
     fprintf("p: %d\n", p);
 
-    result = run_FIO2D_var_hss_rank(exp_phi_func, n, a_func);
+    result = run_FIO2D_hss_rank(...
+        k_func, n, ...
+        rank_func_tol);
     save("./data/2d_var_amplitude_hss_rank" ...
         + "_" + string(p) ...
         + ".mat", "result");

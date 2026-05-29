@@ -1,5 +1,5 @@
 function result = run_FIO2D_inv_CG(...
-    exp_phi_func, n, ...
+    k_func, n, ...
     r_bf, tol_bf, ...
     num_sample, ...
     tol_cg, maxit_cg)
@@ -36,7 +36,7 @@ xi = TensorProduct2D(xi_co, xi_co);
 % BF.
 fprintf("BF.\n");
 tic;
-[result.K_BF, ~] = fastBF(exp_phi_func, x, xi, r_bf, tol_bf);
+[result.K_BF, ~] = fastBF(k_func, x, xi, r_bf, tol_bf);
 result.t_construct_BF = toc;
 fprintf("  t_construct_BF: %.1e\n", result.t_construct_BF);
 
@@ -46,7 +46,7 @@ result.Kf_ex = apply_fbf(result.K_BF, result.f_ex);
 result.t_apply_BF = toc;
 
 fprintf("  t_apply_BF: %.1e\n", result.t_apply_BF);
-result.rel_err_BF = fbf_check(N, exp_phi_func, result.f_ex, x, xi, result.Kf_ex, num_sample);
+result.rel_err_BF = fbf_check(N, k_func, result.f_ex, x, xi, result.Kf_ex, num_sample);
 fprintf("  rel_err_BF: %.1e\n", result.rel_err_BF);
 
 op_G = @(v) apply_fbf_adj(result.K_BF, apply_fbf(result.K_BF, v));

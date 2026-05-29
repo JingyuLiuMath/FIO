@@ -1,5 +1,6 @@
 function result = run_FIO2D_hss_rank(...
-    exp_phi_func, n)
+    k_func, n, ...
+    rank_func_tol)
 
 N = n^2;
 fprintf("Basic info.\n");
@@ -24,13 +25,12 @@ xi_co2 = (0 : (half_n - 1))';
 xi_row = TensorProduct2D(xi_co1, xi_co1);
 xi_col = TensorProduct2D(xi_co1, xi_co2);
 
-factor = 3;
-sub_K = exp_phi_func(x, xi_row)' * exp_phi_func(x, xi_col);
+sub_K = k_func(x, xi_row)' * k_func(x, xi_col);
 sigma = svd(sub_K);
 for it = 1 : size(result.tol_list, 1)
     tol = result.tol_list(it);
     result.rank_list(it) = find(sigma >= tol * sigma(1), 1, "last");
-    result.rank_est_list(it) = ceil(factor * log10(1 / tol)) * half_n;
+    result.rank_est_list(it) = rank_func_tol(tol) * half_n;
     fprintf("tol: %.1e, " + ...
         "rank: %d, " + ...
         "rank_est: %d\n", ...

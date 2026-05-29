@@ -13,6 +13,8 @@ addpath('../../extern/FastBF.m/src');
 exp_phi_func = @(x, xi) fun_1D(x, xi);
 m = 10;
 sigma_sq = 0.1;
+x_pts = rand(m, 1);
+xi_pts = (rand(m, 1) - 0.5);
 
 if ispc
     p_list = (10 : 2 : 14)';
@@ -29,6 +31,8 @@ if ispc
 elseif isunix
     min_points = 256;
 end
+
+rank_func_tol = @(tol) 8 * log10(1 / tol);
 tol_hss_list = [1e-3];
 num_tol_hss = length(tol_hss_list);
 tol_hss_display_list = ["10^{-3}"];

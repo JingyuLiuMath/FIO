@@ -1,5 +1,5 @@
 function result = run_FIO1D_inv_CG(...
-    exp_phi_func, N, ...
+    k_func, N, ...
     r_bf, tol_bf, ...
     num_sample, ...
     tol_cg, maxit_cg)
@@ -31,7 +31,7 @@ xi = (-half_N : (half_N - 1))';
 % BF.
 fprintf("BF.\n");
 t_construct_BF_start = tic;
-[result.K_BF, ~] = fastBF(exp_phi_func, x, xi, r_bf, tol_bf);
+[result.K_BF, ~] = fastBF(k_func, x, xi, r_bf, tol_bf);
 result.t_construct_BF = toc(t_construct_BF_start);
 fprintf("  t_construct_BF: %.1e\n", result.t_construct_BF);
 
@@ -44,7 +44,7 @@ result.Kf_ex = apply_fbf(result.K_BF, result.f_ex);
 result.t_apply_BF = toc(t_apply_BF_start);
 
 fprintf("  t_apply_BF: %.1e\n", result.t_apply_BF);
-result.rel_err_BF = fbf_check(N, exp_phi_func, result.f_ex, x, xi, result.Kf_ex, num_sample);
+result.rel_err_BF = fbf_check(N, k_func, result.f_ex, x, xi, result.Kf_ex, num_sample);
 fprintf("  rel_err_BF: %.1e\n", result.rel_err_BF);
 
 op_G = @(v) apply_fbf_adj(result.K_BF, apply_fbf(result.K_BF, v));

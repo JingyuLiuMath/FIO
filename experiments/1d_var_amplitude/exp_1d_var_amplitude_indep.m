@@ -1,10 +1,11 @@
 exp_1d_var_amplitude_settings;
 
-indep = 1;
 for it_tol_hss = 1 : num_tol_hss
     for it_p = num_n : -1 : 1
         tol_hss = tol_hss_list(it_tol_hss);
         p = p_list(it_p);
+
+        N = 2^p;
 
         fprintf("\n\n\n\n");
         fprintf("p: %d\n", p);
@@ -13,9 +14,9 @@ for it_tol_hss = 1 : num_tol_hss
             + "_" + string(p) ...
             + ".mat");
 
-        result = run_FIO1D_var_inv(...
+        result = run_FIO1D_inv(...
             result, ...
-            min_points, tol_hss, indep);
+            min_points, rank_func_tol, tol_hss);
 
         save(data_path + "1d_var_amplituide_results_indep" ...
             + "_" + string(p) ...

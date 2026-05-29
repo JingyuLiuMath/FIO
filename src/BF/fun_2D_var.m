@@ -1,9 +1,9 @@
 function res = fun_2D_var(x, xi)
 
-factor = 16;
+factor = 8;
 
-c1_func = @(x1, x2) (2 + sin(2 * pi * x1) .* sin(2 * pi * x2)) / factor;
-c2_func = @(x1, x2) (2 + cos(2 * pi * x1) .* cos(2 * pi * x2)) / factor;
+c1_func = @(x1, x2) (3 + sin(2 * pi * x1) .* sin(2 * pi * x2)) / factor;
+c2_func = @(x1, x2) (3 + cos(2 * pi * x1) .* cos(2 * pi * x2)) / factor;
 
 rho_func = @(x1, x2, xi1, xi2) c1_func(x1, x2) * sqrt((xi1.^2)' + (xi2.^2)');
 

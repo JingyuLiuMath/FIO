@@ -1,6 +1,6 @@
 function result = run_FIO2D_inv(...
     result_bf, ...
-    min_points, tol_hss, indep)
+    min_points, rank_func_tol, tol_hss)
 
 n = result_bf.n;
 N = result_bf.N;
@@ -24,8 +24,6 @@ fprintf("  tol_hss: %.1e\n", tol_hss);
 fprintf("  tol_cg: %.1e\n", tol_cg);
 fprintf("  maxit_cg: %d\n", maxit_cg);
 
-fprintf("  indep: %d\n", indep);
-
 result.n = n;
 result.N = N;
 result.r_bf = r_bf;
@@ -34,7 +32,6 @@ result.min_points = min_points;
 result.tol_hss = tol_hss;
 result.tol_cg = tol_cg;
 result.maxit_cg = maxit_cg;
-result.indep = indep;
 
 result.t_construct_BF = result_bf.t_construct_BF;
 result.t_apply_BF = result_bf.t_apply_BF;
@@ -59,17 +56,13 @@ Gf_ex = op_G(result_bf.f_ex);
 G_HSS = BF_HSS2D(n, n);
 G_HSS.BuildTree(min_points);
 
-c = ceil(3 * log10(1 / tol_hss));
+c = rank_func_tol(tol_hss);
 rank_func = @(ell) c * n / 2^ell;
 result.rel_err_HSS = inf;
 while result.rel_err_HSS >= tol_hss * 10
     fprintf("  c: %d\n", c);
     t_HSS_construct_start = tic;
-    if indep == 1
-        G_HSS.BlackBoxConstruct_Indep_FastBF(op_G, rank_func, tol_hss);
-    else
-        G_HSS.BlackBoxConstruct_FastBF(op_G, rank_func, tol_hss);
-    end
+    G_HSS.BlackBoxConstruct_Indep_FastBF(op_G, rank_func, tol_hss);
     result.t_construct_HSS = toc(t_HSS_construct_start);
     fprintf("  t_construct_HSS: %.1e\n", result.t_construct_HSS);
 
