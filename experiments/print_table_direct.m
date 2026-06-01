@@ -8,7 +8,7 @@ fprintf("\n");
 
 fprintf("\\begin{table}[tbhp]\n")
 fprintf("\\centering\n")
-fprintf("\\begin{tabular}{c c | cc | cc | cc}\n")
+fprintf("\\begin{tabular}{c c | cc | cc | ccc}\n")
 fprintf("\\toprule\n")
 
 fprintf("\\(N\\) ");
@@ -22,6 +22,7 @@ fprintf("& \\(t_{\\mathrm{cHSS}}\\) ");
 fprintf("& \\(e_{\\mathrm{HSS}}\\) ");
 
 fprintf("& \\(t_{\\mathrm{fHSS}}\\) ");
+fprintf("& \\(t_{\\mathrm{sHSS}}\\) ");
 fprintf("& \\(e_{\\mathrm{s}}\\) ");
 
 fprintf("\\\\ \n");
@@ -69,6 +70,7 @@ for it_hss_tol = 1 : num_hss_tol
     fprintf("& %.1e ", result_list(it_hss_tol).rel_err_HSS);
     
     fprintf("& %.1e ", result_list(it_hss_tol).t_factor_HSS);
+    fprintf("& %.1e ", result_list(it_hss_tol).t_direct);
     fprintf("& %.1e ", result_list(it_hss_tol).rel_err_direct);
     
     fprintf("\\\\ \n");

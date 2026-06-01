@@ -82,15 +82,13 @@ figure_name = figure_prefix + my_name;
 
 marker_list = ["o", "+", "*", "x", "square"];
 
-apply_bf_flag = 1;
+apply_bf_flag = 0;
 
 if apply_bf_flag == 1
     t_list = [t_construct_BF_list, ...
-        t_apply_BF_list, ...
-        t_construct_HSS_list];
+        t_apply_BF_list];
     display_name_list = ["$t_{\mathrm{cBF}}$", ...
-        "$t_{\mathrm{aBF}}$", ...
-        "$t_{\mathrm{cHSS}}$"];
+        "$t_{\mathrm{aBF}}$"];
 else
     t_list = [t_construct_BF_list, ...
         t_construct_HSS_list, ...
@@ -99,7 +97,7 @@ else
     display_name_list = ["$t_{\mathrm{cBF}}$", ...
         "$t_{\mathrm{cHSS}}$", ...
         "$t_{\mathrm{fHSS}}$", ...
-        "$t_{\mathrm{s}}$"];
+        "$t_{\mathrm{sHSS}}$"];
 end
 
 plot_single_curve(N_list, t_list, marker_list, display_name_list);
@@ -120,17 +118,17 @@ if apply_bf_flag == 1
     plot_ref_curve(N_list, scaling_type, factor);
 end
 
-% Construct HSS.
-if isfield(result_list(1), "n")
-    % scaling_type = "$O(N^{1.5} \log N)$";
-    scaling_type = "$O(N^{2})$";
-else
-    scaling_type = "$O(N \log^{2} N)$";
-end
-factor = mean(t_construct_HSS_list);
-plot_ref_curve(N_list, scaling_type, factor);
-
 if apply_bf_flag == 0
+    % Construct HSS.
+    if isfield(result_list(1), "n")
+        % scaling_type = "$O(N^{1.5} \log N)$";
+        scaling_type = "$O(N^{2})$";
+    else
+        scaling_type = "$O(N \log^{2} N)$";
+    end
+    factor = mean(t_construct_HSS_list);
+    plot_ref_curve(N_list, scaling_type, factor);
+
     % Factor HSS.
     if isfield(result_list(1), "n")
         scaling_type = "$O(N^{1.5})$";
