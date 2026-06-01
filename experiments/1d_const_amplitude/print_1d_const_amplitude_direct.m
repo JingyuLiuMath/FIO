@@ -5,7 +5,8 @@ addpath("../");
 
 caption_name = "Results " + ... 
     "of the direct solver " + ...
-    "for 1D problem.";
+    "for 1D problem " + ...
+    "with constant amplitude.";
 label_name = "1d_const_amplitude_direct";
 
 result_list = [];

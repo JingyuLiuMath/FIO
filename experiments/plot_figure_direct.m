@@ -7,6 +7,7 @@ N_list = zeros(num_n, 1);
 hss_rank_list = zeros(num_n, 1);
 
 t_construct_BF_list = zeros(num_n, 1);
+t_apply_BF_list = zeros(num_n, 1);
 rel_err_BF_list = zeros(num_n, 1);
 
 t_construct_HSS_list = zeros(num_n, 1);
@@ -22,6 +23,7 @@ for it_n = 1 : num_n
     hss_rank_list(it_n) = curr_result.hss_rank;
 
     t_construct_BF_list(it_n) = curr_result.t_construct_BF;
+    t_apply_BF_list(it_n) = curr_result.t_apply_BF;
     rel_err_BF_list(it_n) = curr_result.rel_err_BF;
 
     t_construct_HSS_list(it_n) = curr_result.t_construct_HSS;
@@ -58,10 +60,10 @@ xlabel(xlabel_name, "Interpreter", "latex");
 if isfield(result_list(1), "n")
     xlim([1e3 1e6]);
     xticks([1e3 1e4 1e5 1e6]);
-    ylim([128 4096]);  
+    ylim([128 4096]);
     yticks([256 512 1024 2048]);
 else
-    ylim([10 13]);  
+    ylim([10 13]);
     yticks([10 11 12 13]);
 end
 title(title_name, "Interpreter", "latex");
@@ -78,48 +80,75 @@ title_name = "Time scaling";
 my_name = "_time_scaling";
 figure_name = figure_prefix + my_name;
 
-t_list = [t_construct_BF_list, ...
-    t_construct_HSS_list, ...
-    t_factor_HSS_list, ...
-    t_solve_list];
-marker_list = ["o", "+", "*", "x"];
-display_name_list = ["$t_{\mathrm{cBF}}$", ...
-    "$t_{\mathrm{cHSS}}$", ...
-    "$t_{\mathrm{fHSS}}$", ...
-    "$t_{\mathrm{s}}$"];
+marker_list = ["o", "+", "*", "x", "square"];
+
+apply_bf_flag = 1;
+
+if apply_bf_flag == 1
+    t_list = [t_construct_BF_list, ...
+        t_apply_BF_list, ...
+        t_construct_HSS_list];
+    display_name_list = ["$t_{\mathrm{cBF}}$", ...
+        "$t_{\mathrm{aBF}}$", ...
+        "$t_{\mathrm{cHSS}}$"];
+else
+    t_list = [t_construct_BF_list, ...
+        t_construct_HSS_list, ...
+        t_factor_HSS_list, ...
+        t_solve_list];
+    display_name_list = ["$t_{\mathrm{cBF}}$", ...
+        "$t_{\mathrm{cHSS}}$", ...
+        "$t_{\mathrm{fHSS}}$", ...
+        "$t_{\mathrm{s}}$"];
+end
+
 plot_single_curve(N_list, t_list, marker_list, display_name_list);
 
 % Construct BF.
-scaling_type = "$O(N \log (N))$";
+scaling_type = "$O(N \log N)$";
 factor = mean(t_construct_BF_list);
 plot_ref_curve(N_list, scaling_type, factor);
 
+% Apply BF.
+if apply_bf_flag == 1
+    scaling_type = "$O(N \log N)$";
+    factor = mean(t_apply_BF_list);
+    plot_ref_curve(N_list, scaling_type, factor);
+
+    scaling_type = "$O(N^{1.5} \log N)$";
+    factor = mean(t_apply_BF_list);
+    plot_ref_curve(N_list, scaling_type, factor);
+end
+
 % Construct HSS.
 if isfield(result_list(1), "n")
-    scaling_type = "$O(N^{1.5} \log (N))$";
+    % scaling_type = "$O(N^{1.5} \log N)$";
+    scaling_type = "$O(N^{2})$";
 else
-    scaling_type = "$O(N \log^{2}(N))$";
+    scaling_type = "$O(N \log^{2} N)$";
 end
 factor = mean(t_construct_HSS_list);
 plot_ref_curve(N_list, scaling_type, factor);
 
-% Factor HSS.
-if isfield(result_list(1), "n")
-    scaling_type = "$O(N^{1.5})$";
-else
-    scaling_type = "$O(N)$";
-end
-factor = mean(t_factor_HSS_list);
-plot_ref_curve(N_list, scaling_type, factor);
+if apply_bf_flag == 0
+    % Factor HSS.
+    if isfield(result_list(1), "n")
+        scaling_type = "$O(N^{1.5})$";
+    else
+        scaling_type = "$O(N)$";
+    end
+    factor = mean(t_factor_HSS_list);
+    plot_ref_curve(N_list, scaling_type, factor);
 
-% Solve
-if isfield(result_list(1), "n")
-    scaling_type = "$O(N \log (N))$";
-else
-    scaling_type = "$O(N)$";
+    % Solve
+    if isfield(result_list(1), "n")
+        scaling_type = "$O(N \log N)$";
+    else
+        scaling_type = "$O(N)$";
+    end
+    factor = mean(t_solve_list);
+    plot_ref_curve(N_list, scaling_type, factor);
 end
-factor = mean(t_solve_list);
-plot_ref_curve(N_list, scaling_type, factor);
 
 
 xlabel(xlabel_name, "Interpreter", "latex");
@@ -130,7 +159,7 @@ if isfield(result_list(1), "n")
 else
     xlim([2^9 2^20])
     xticks([1e3 1e4 1e5 1e6])
-    ylim([1e-3 1e3]);  
+    ylim([1e-3 1e3]);
     yticks([1e-3 1e-2 1e-1 1e0 1e1 1e2 1e3]);
 end
 title(title_name, "Interpreter", "latex");
@@ -194,20 +223,20 @@ switch scaling_type
     case "$O(\sqrt{N})$"
         ref_line = sqrt(N_list);
         ref_line = ref_line / mean(ref_line) * factor;
-    case "$O(N \log (N))$"
+    case "$O(N \log N)$"
         ref_line = N_list .* log2(N_list);
         ref_line = ref_line / mean(ref_line) * factor;
-    case "$O(N \log^{2}(N))$"
+    case "$O(N \log^{2} N)$"
         ref_line = N_list .* (log2(N_list).^2);
         ref_line = ref_line / mean(ref_line) * factor;
     case "$O(N^{1.5})$"
         ref_line = N_list.^(1.5);
         ref_line = ref_line / mean(ref_line) * factor;
-    case "$O(N^{1.5} \log (N))$"
+    case "$O(N^{1.5} \log N)$"
         ref_line = N_list.^(1.5) .* log2(N_list);
         ref_line = ref_line / mean(ref_line) * factor;
-    case "$O(N^{1.5} \log^{2} (N))$"
-        ref_line = N_list.^(1.5) .* (log2(N_list).^2);
+    case "$O(N^{2})$"
+        ref_line = N_list.^(2);
         ref_line = ref_line / mean(ref_line) * factor;
 end
 

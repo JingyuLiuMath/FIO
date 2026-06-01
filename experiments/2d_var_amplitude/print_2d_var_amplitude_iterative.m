@@ -5,7 +5,8 @@ addpath("../");
 
 caption_name = "Results " + ... 
     "of the iterative solver " + ...
-    "for 2D problem.";
+    "for 2D problem" + ...
+    "with variable amplitude.";
 label_name = "2d_var_amplitude_iterative";
 
 result_list = [];
