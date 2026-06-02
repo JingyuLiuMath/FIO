@@ -58,14 +58,16 @@ end
 plot_ref_curve(N_list, scaling_type, factor);
 
 xlabel(xlabel_name, "Interpreter", "latex");
-if isfield(result_list(1), "n")
-    xlim([1e3 1e6]);
-    xticks([1e3 1e4 1e5 1e6]);
-    ylim([128 4096]);
-    yticks([256 512 1024 2048]);
-else
-    % ylim([10 13]);
-    % yticks([10 11 12 13]);
+if isunix
+    if isfield(result_list(1), "n")
+        xlim([1e3 1e6]);
+        xticks([1e3 1e4 1e5 1e6]);
+        ylim([128 4096]);
+        yticks([256 512 1024 2048]);
+    else
+        % ylim([10 13]);
+        % yticks([10 11 12 13]);
+    end
 end
 title(title_name, "Interpreter", "latex");
 legend("Location", "southeast", "Interpreter", "latex");
@@ -83,7 +85,7 @@ figure_name = figure_prefix + my_name;
 
 marker_list = ["o", "+", "*", "x", "square"];
 
-apply_bf_flag = 0;
+apply_bf_flag = 1;
 
 if apply_bf_flag == 1
     t_list = [t_construct_BF_list, ...
@@ -122,8 +124,8 @@ end
 if apply_bf_flag == 0
     % Construct HSS.
     if isfield(result_list(1), "n")
-        % scaling_type = "$O(N^{1.5} \log N)$";
-        scaling_type = "$O(N^{2})$";
+        scaling_type = "$O(N^{1.5} \log N)$";
+        % scaling_type = "$O(N^{2})$";
     else
         scaling_type = "$O(N \log^{2} N)$";
     end
@@ -152,14 +154,16 @@ end
 
 xlabel(xlabel_name, "Interpreter", "latex");
 ylabel(ylabel_name, "Interpreter", "latex");
-if isfield(result_list(1), "n")
-    xlim([1e3 1e6]);
-    xticks([1e3 1e4 1e5 1e6]);
-else
-    xlim([2^9 2^20])
-    xticks([1e3 1e4 1e5 1e6])
-    ylim([1e-3 1e3]);
-    yticks([1e-3 1e-2 1e-1 1e0 1e1 1e2 1e3]);
+if isunix
+    if isfield(result_list(1), "n")
+        xlim([1e3 1e6]);
+        xticks([1e3 1e4 1e5 1e6]);
+    else
+        xlim([2^9 2^20])
+        xticks([1e3 1e4 1e5 1e6])
+        ylim([1e-3 1e3]);
+        yticks([1e-3 1e-2 1e-1 1e0 1e1 1e2 1e3]);
+    end
 end
 title(title_name, "Interpreter", "latex");
 legend("Location", "southeastoutside", "Interpreter", "latex");

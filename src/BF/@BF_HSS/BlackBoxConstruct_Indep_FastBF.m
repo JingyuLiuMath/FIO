@@ -1,4 +1,4 @@
-function BlackBoxConstruct_Indep_FastBF(G, op_G, rank_func, tol)
+function out = BlackBoxConstruct_Indep_FastBF(G, op_G, rank_func, tol)
 
 arguments (Input)
     G BF_HSS;
@@ -7,7 +7,11 @@ arguments (Input)
     tol (1, 1) double;
 end
 
+arguments (Output)
+    out struct;
+end
+
 op_G_HSS = @(v) op_G(v);
-G.BlackBoxConstruct_Indep(op_G_HSS, rank_func, tol);
+out = G.BlackBoxConstruct_Indep(op_G_HSS, rank_func, tol);
 
 end

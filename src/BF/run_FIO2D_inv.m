@@ -42,10 +42,13 @@ result.iter_cg = result_bf.iter_cg;
 result.rel_res_cg = result_bf.rel_res_cg;
 result.rel_err_cg = result_bf.rel_err_cg;
 
-op_G = @(v) apply_fbf_adj_batch(result_bf.K_BF, apply_fbf_batch(result_bf.K_BF, v));
-rhs = apply_fbf_adj(result_bf.K_BF, result_bf.Kf_ex);
+op_G = @(v) apply_mbf_adj_batch(result_bf.K_BF, apply_mbf_batch(result_bf.K_BF, v));
+rhs = apply_mbf_adj(result_bf.K_BF, result_bf.Kf_ex);
 
-M = size(result_bf.K_BF.M, 1);
+M = 1;
+for i = 1:size(result_bf.K_BF,1)-1
+    M = max(M, size(result_bf.K_BF{i,1}.M, 1));
+end
 fprintf("  M in BF: %d\n", M);
 fprintf("  rel_err_BF: %.1e\n", result_bf.rel_err_BF);
 
@@ -62,7 +65,7 @@ result.rel_err_HSS = inf;
 while result.rel_err_HSS >= tol_hss * 10
     fprintf("  c: %d\n", c);
     t_HSS_construct_start = tic;
-    G_HSS.BlackBoxConstruct_Indep_FastBF(op_G, rank_func, tol_hss);
+    result.out_construct_HSS = G_HSS.BlackBoxConstruct_Indep_FastBF(op_G, rank_func, tol_hss);
     result.t_construct_HSS = toc(t_HSS_construct_start);
     fprintf("  t_construct_HSS: %.1e\n", result.t_construct_HSS);
 
@@ -92,7 +95,7 @@ f_direct = G_HSS.Solve(rhs);
 result.t_direct = toc(t_direct_start);
 
 fprintf("  t_direct: %.1e\n", result.t_direct);
-result.rel_res_direct = norm(result_bf.Kf_ex - apply_fbf(result_bf.K_BF, f_direct)) / norm(result_bf.Kf_ex);
+result.rel_res_direct = norm(result_bf.Kf_ex - apply_mbf(result_bf.K_BF, f_direct)) / norm(result_bf.Kf_ex);
 fprintf("  rel_res_direct: %.1e\n", result.rel_res_direct);
 result.rel_err_direct = norm(result_bf.f_ex - f_direct) / norm(result_bf.f_ex);
 fprintf("  rel_err_direct: %.1e\n", result.rel_err_direct);
@@ -107,7 +110,7 @@ result.t_pcg = toc(t_pcg_start);
 
 fprintf("    t_pcg: %.1e\n", result.t_pcg);
 fprintf("    iter_pcg: %d\n", result.iter_pcg);
-result.rel_res_pcg = norm(result_bf.Kf_ex - apply_fbf(result_bf.K_BF, f_pcg)) / norm(result_bf.Kf_ex);
+result.rel_res_pcg = norm(result_bf.Kf_ex - apply_mbf(result_bf.K_BF, f_pcg)) / norm(result_bf.Kf_ex);
 fprintf("    rel_res_pcg: %.1e\n", result.rel_res_pcg);
 result.rel_err_pcg = norm(result_bf.f_ex - f_pcg) / norm(result_bf.f_ex);
 fprintf("    rel_err_pcg: %.1e\n", result.rel_err_pcg);

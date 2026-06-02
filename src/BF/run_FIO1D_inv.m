@@ -60,7 +60,7 @@ result.rel_err_HSS = inf;
 while result.rel_err_HSS >= tol_hss * 5
     fprintf("  c: %d\n", c);
     t_construct_HSS_start = tic;
-    G_HSS.BlackBoxConstruct_Indep_FastBF(op_G, rank_func, tol_hss);
+    result.out_construct_HSS = G_HSS.BlackBoxConstruct_Indep_FastBF(op_G, rank_func, tol_hss);
     result.t_construct_HSS = toc(t_construct_HSS_start);
     fprintf("  t_construct_HSS: %.1e\n", result.t_construct_HSS);
 
