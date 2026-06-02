@@ -52,7 +52,8 @@ if isfield(result_list(1), "n")
     factor = mean(hss_rank_list);
 else
     scaling_type = "$O(1)$";
-    factor = 12;
+    factor = 16;  % const
+    % factor = 30;  % var
 end
 plot_ref_curve(N_list, scaling_type, factor);
 
@@ -63,8 +64,8 @@ if isfield(result_list(1), "n")
     ylim([128 4096]);
     yticks([256 512 1024 2048]);
 else
-    ylim([10 13]);
-    yticks([10 11 12 13]);
+    % ylim([10 13]);
+    % yticks([10 11 12 13]);
 end
 title(title_name, "Interpreter", "latex");
 legend("Location", "southeast", "Interpreter", "latex");
