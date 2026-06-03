@@ -22,6 +22,7 @@ num_n = length(p_list);
 
 r_bf = 10;
 tol_bf = 1e-8;
+type_bf = "bf";
 
 if ispc
     min_points = 64;

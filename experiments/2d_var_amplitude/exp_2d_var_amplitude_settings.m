@@ -26,6 +26,7 @@ tol_a = 1e-10;
 
 r_bf = 10;
 tol_bf = 1e-8;
+type_bf = "bf";
 
 if ispc
     min_points = 64;

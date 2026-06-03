@@ -7,6 +7,7 @@ N = result_bf.N;
 
 r_bf = result_bf.r_bf;
 tol_bf = result_bf.tol_bf;
+type_bf = result_bf.type_bf;
 
 tol_cg = result_bf.tol_cg;
 maxit_cg = result_bf.maxit_cg;
@@ -17,6 +18,7 @@ fprintf("  N: %d\n", N);
 
 fprintf("  r_bf: %d\n", r_bf);
 fprintf("  tol_bf: %.1e\n", tol_bf);
+fprintf("  type_bf: %s\n", type_bf);
 
 fprintf("  min_points: %d\n", min_points);
 fprintf("  tol_hss: %.1e\n", tol_hss);
@@ -28,6 +30,7 @@ result.n = n;
 result.N = N;
 result.r_bf = r_bf;
 result.tol_bf = tol_bf;
+result.type_bf = type_bf;
 result.min_points = min_points;
 result.tol_hss = tol_hss;
 result.tol_cg = tol_cg;
@@ -42,13 +45,11 @@ result.iter_cg = result_bf.iter_cg;
 result.rel_res_cg = result_bf.rel_res_cg;
 result.rel_err_cg = result_bf.rel_err_cg;
 
-op_G = @(v) apply_mbf_adj_batch(result_bf.K_BF, apply_mbf_batch(result_bf.K_BF, v));
-rhs = apply_mbf_adj(result_bf.K_BF, result_bf.Kf_ex);
+op_G = @(v) my_apply_bf_adj(result_bf.K_BF, ...
+    my_apply_bf(result_bf.K_BF, v, type_bf), type_bf);
+rhs = my_apply_bf_adj(result_bf.K_BF, result_bf.Kf_ex, type_bf);
 
-M = 1;
-for i = 1:size(result_bf.K_BF,1)-1
-    M = max(M, size(result_bf.K_BF{i,1}.M, 1));
-end
+M = my_getM_bf(result_bf.K_BF, type_bf);
 fprintf("  M in BF: %d\n", M);
 fprintf("  rel_err_BF: %.1e\n", result_bf.rel_err_BF);
 
@@ -95,7 +96,7 @@ f_direct = G_HSS.Solve(rhs);
 result.t_direct = toc(t_direct_start);
 
 fprintf("  t_direct: %.1e\n", result.t_direct);
-result.rel_res_direct = norm(result_bf.Kf_ex - apply_mbf(result_bf.K_BF, f_direct)) / norm(result_bf.Kf_ex);
+result.rel_res_direct = norm(result_bf.Kf_ex - my_apply_bf(result_bf.K_BF, f_direct, type_bf)) / norm(result_bf.Kf_ex);
 fprintf("  rel_res_direct: %.1e\n", result.rel_res_direct);
 result.rel_err_direct = norm(result_bf.f_ex - f_direct) / norm(result_bf.f_ex);
 fprintf("  rel_err_direct: %.1e\n", result.rel_err_direct);
@@ -110,7 +111,7 @@ result.t_pcg = toc(t_pcg_start);
 
 fprintf("    t_pcg: %.1e\n", result.t_pcg);
 fprintf("    iter_pcg: %d\n", result.iter_pcg);
-result.rel_res_pcg = norm(result_bf.Kf_ex - apply_mbf(result_bf.K_BF, f_pcg)) / norm(result_bf.Kf_ex);
+result.rel_res_pcg = norm(result_bf.Kf_ex - my_apply_bf(result_bf.K_BF, f_pcg, type_bf)) / norm(result_bf.Kf_ex);
 fprintf("    rel_res_pcg: %.1e\n", result.rel_res_pcg);
 result.rel_err_pcg = norm(result_bf.f_ex - f_pcg) / norm(result_bf.f_ex);
 fprintf("    rel_err_pcg: %.1e\n", result.rel_err_pcg);
