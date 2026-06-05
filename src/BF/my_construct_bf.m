@@ -5,6 +5,8 @@ switch type_bf
         [BF, Rcomp] = fastBF(k_func, x, xi, r_bf, tol_bf);
     case "mbf"
         [BF, Rcomp] = fastMBF(k_func, x, xi, r_bf, tol_bf);
+    case "pbf"
+        [BF, Rcomp] = fastBF(k_func, x, xi, r_bf, tol_bf, "polar");
 end
 
 end

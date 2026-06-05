@@ -5,6 +5,8 @@ switch type_bf
         y = apply_fbf_batch(BF, y);
     case "mbf"
         y = apply_mbf_batch(BF, y);
+    case "pbf"
+        y = apply_fbf_batch(BF, y);
 end
 
 end
