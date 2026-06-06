@@ -1,6 +1,7 @@
-classdef Butterfly < handle
+classdef Butterfly2D < handle
 
     properties
+        n_ (1, 1) double;
         N_ (1, 1) double;
 
         num_children_ (1, 1) double;
@@ -15,6 +16,12 @@ classdef Butterfly < handle
 
         mid_row_size_ (1, 1) double;
         mid_col_size_ (1, 1) double;
+
+        x_perm_ (:, 1) double;
+        x_perm_inv_ (:, 1) double;
+
+        xi_perm_ (:, 1) double;
+        xi_perm_inv_ (:, 1) double;
         
         U_ (:, :) cell;
         G_ (:, :) cell;
@@ -24,10 +31,11 @@ classdef Butterfly < handle
     end
 
     methods
-        function BF = Butterfly(N, a_func, phi_func, ...
+        function BF = Butterfly2D(n, a_func, phi_func, ...
                 min_points, r, tol)
-            BF.N_ = N;
-            BF.ConstructTree(N, min_points);
+            BF.n_ = n;
+            BF.N_ = n^2;
+            BF.ConstructTree(n, min_points);
             BF.Construct(a_func, phi_func, r);
             nnz_before = BF.Nnz();
             BF.OutCompression(tol);
@@ -36,8 +44,8 @@ classdef Butterfly < handle
             compression_ratio = nnz_before / nnz_after;
             fprintf("  compression_ratio: %.1e\n", compression_ratio);
             BF.SetMidSize();
-            fprintf("  N: %d, mid_row_size: %d, mid_col_size: %d\n", ...
-                N, BF.mid_row_size_, BF.mid_col_size_);
+            fprintf("  n: %d, mid_row_size: %d, mid_col_size: %d\n", ...
+                n, BF.mid_row_size_, BF.mid_col_size_);
         end
     end
 end

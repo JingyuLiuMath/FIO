@@ -21,7 +21,7 @@ if rank_or_tol >= 1
     [U, S, V] = svds(A, rank_or_tol);
 else
     [U, S, V] = svd(A, "econ");
-    k = find(diag(S) >= rank_or_tol * S(1, 1), 1, "last");
+    k = find(diag(S) >= rank_or_tol * S(1, 1) * max(size(A)), 1, "last");
     if isempty(k)
         k = 0;
     end

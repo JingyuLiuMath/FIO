@@ -1,7 +1,7 @@
 function f = Apply(BF, f)
 
 arguments (Input)
-    BF Butterfly;
+    BF Butterfly2D;
     f (: ,:) double;
 end
 
@@ -9,6 +9,7 @@ arguments (Output)
     f (:, :) double;
 end
 
+f = f(BF.xi_perm_, :);
 f = bmatrix_mult_vec(BF.V_, f);
 
 for ind_H = length(BF.H_) : -1 : 1
@@ -27,6 +28,7 @@ end
 
 f = bmatrix_mult_bvec(BF.U_, f);
 f = bvec2vec(f);
+f = f(BF.x_perm_inv_, :);
 
 end
 
@@ -53,11 +55,11 @@ g = cell(mH, nH);
 for i_par = 1 : m
     for j = 1 : nH
         i_offset = 0;
-        for i = [2 * i_par - 1, 2 * i_par]
+        for i = [4 * i_par - 3, 4 * i_par - 2, 4 * i_par - 1, 4 * i_par]
             i_size = size(A{i, j}, 2);
             i_ind = (i_offset + 1) : (i_offset + i_size);
             y = 0;
-            for j_ch = [2 * j - 1, 2 * j]
+            for j_ch = [4 * j - 3, 4 * j - 2, 4 * j - 1, 4 * j]
                 y = y + f{i_par, j_ch}(i_ind, :);
             end
             i_offset = i_offset + i_size;
@@ -90,9 +92,9 @@ end
 g = cell(mH, nH);
 for i_par = 1 : m
     for j = 1 : nH
-        for i = [2 * i_par - 1, 2 * i_par]
+        for i = [4 * i_par - 3, 4 * i_par - 2, 4 * i_par - 1, 4 * i_par]
             y = [];
-            for j_ch = [2 * j - 1, 2 * j]
+            for j_ch = [4 * j - 3, 4 * j - 2, 4 * j - 1, 4 * j]
                 y = [y; f{i_par, j_ch}];
             end
             g{i, j} = y;
