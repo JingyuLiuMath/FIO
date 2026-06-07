@@ -25,7 +25,7 @@ m_xi = length(BF.tree_{ind_level_xi});
 L_cell = cell(m_x, m_xi);
 for ind_tau = 1 : m_x
     for ind_sigma = 1 : m_xi
-        [U, S, V] = MySVDSketch(BF.U_{ind_tau, ind_sigma}, tol);
+        [U, S, V] = MySVDTrunc(BF.U_{ind_tau, ind_sigma}, tol);
         BF.U_{ind_tau, ind_sigma} = U;
         L_cell{ind_tau, ind_sigma} = S * V';
     end
@@ -86,7 +86,7 @@ for level = (L_x - 1) : -1 : h_x
                     G_alpha_sigma_cell{ch_tau + 1} = G_alpha_sigma;
                 end
                 G_tau_sigma = cell2mat(G_alpha_sigma_cell);
-                [U, S, V] = MySVDSketch(G_tau_sigma, tol);
+                [U, S, V] = MySVDTrunc(G_tau_sigma, tol);
                 L_cell{ind_tau, ind_sigma} = S * V';
 
                 alpha_offset = 0;
@@ -124,7 +124,7 @@ m_x = length(BF.tree_{ind_level_x});
 R_cell = cell(m_x, m_xi);
 for ind_tau = 1 : m_x
     for ind_sigma = 1 : m_xi
-        [U, S, V] = MySVDSketch(BF.V_{ind_tau, ind_sigma}, tol);
+        [U, S, V] = MySVDTrunc(BF.V_{ind_tau, ind_sigma}, tol);
         BF.V_{ind_tau, ind_sigma} = V';
         R_cell{ind_tau, ind_sigma} = U * S;
     end
@@ -185,7 +185,7 @@ for level = (L_xi - 1) : -1 : h_xi
                     H_tau_beta_cell{ch_sigma + 1} = H_tau_beta;
                 end
                 H_tau_sigma = cell2mat(H_tau_beta_cell);
-                [U, S, V] = MySVDSketch(H_tau_sigma, tol);
+                [U, S, V] = MySVDTrunc(H_tau_sigma, tol);
                 V = V';
                 R_cell{ind_tau, ind_sigma} = U * S;
 

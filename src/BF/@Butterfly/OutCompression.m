@@ -27,7 +27,7 @@ L_cell = cell(size(BF.M_));
 R_cell = cell(size(BF.M_));
 for ind_tau = 1 : m_x
     for ind_sigma = 1 : m_xi
-        [U, S, V] = MySVDSketch(BF.M_{ind_tau, ind_sigma}, tol);
+        [U, S, V] = MySVDTrunc(BF.M_{ind_tau, ind_sigma}, tol);
         L_cell{ind_tau, ind_sigma} = U*sqrt(S);
         BF.M_{ind_tau, ind_sigma} = eye(size(S));
         R_cell{ind_tau, ind_sigma} = sqrt(S)*V';
@@ -88,7 +88,7 @@ for level = h_x : (L_x - 1)
     L_cell = cell(m_x, m_xi);
     for ind_tau = 1 : m_x
         for ind_sigma = 1 : m_xi
-            [U, S, V] = MySVDSketch(BF.G_{cnt_G}{ind_tau, ind_sigma}, tol);
+            [U, S, V] = MySVDTrunc(BF.G_{cnt_G}{ind_tau, ind_sigma}, tol);
             L_cell{ind_tau, ind_sigma} = U * S;
             BF.G_{cnt_G}{ind_tau, ind_sigma} = V';
         end
@@ -163,7 +163,7 @@ for level = h_xi : (L_xi - 1)
     R_cell = cell(m_x, m_xi);
     for ind_tau = 1 : m_x
         for ind_sigma = 1 : m_xi
-            [U, S, V] = MySVDSketch(BF.H_{cnt_H}{ind_tau, ind_sigma}, tol);
+            [U, S, V] = MySVDTrunc(BF.H_{cnt_H}{ind_tau, ind_sigma}, tol);
             R_cell{ind_tau, ind_sigma} = S * V';
             BF.H_{cnt_H}{ind_tau, ind_sigma} = U;
         end
