@@ -1,6 +1,7 @@
 classdef Butterfly < handle
 
     properties
+        n_ (1, 1) double;
         N_ (1, 1) double;
 
         num_children_ (1, 1) double;
@@ -24,10 +25,10 @@ classdef Butterfly < handle
     end
 
     methods
-        function BF = Butterfly(N, a_func, phi_func, ...
+        function BF = Butterfly(n, a_func, phi_func, ...
                 n_leaf, r, tol)
             arguments (Input)
-                N (1, 1) double;
+                n (1, 1) double;
                 a_func function_handle;
                 phi_func function_handle;
                 n_leaf (1, 1) double;
@@ -35,8 +36,9 @@ classdef Butterfly < handle
                 tol (1, 1) double;
             end
 
-            BF.N_ = N;
-            BF.ConstructTree(N, n_leaf);
+            BF.n_ = n;
+            BF.N_ = n;
+            BF.ConstructTree(n_leaf);
             BF.Construct(a_func, phi_func, r);
             BF.OutCompression(tol);
             BF.InCompression(tol);

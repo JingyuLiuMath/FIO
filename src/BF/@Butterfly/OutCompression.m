@@ -55,21 +55,20 @@ for level = h_x : (L_x - 1)
 
     % Update G.
     for ind_alpha = 1 : m_x_par
+        alpha = BF.tree_{ind_level_x_par}{ind_alpha};
         for ind_sigma = 1 : m_xi
-            alpha = BF.tree_{ind_level_x_par}{ind_alpha};
-
             sigma = BF.tree_{ind_level_xi}{ind_sigma};
 
             for ch_alpha = ch_list
                 ind_tau = num_children * alpha.order_ + ch_alpha + 1;
-                tau = BF.tree_{ind_level_x}{ind_tau};
+                % tau = BF.tree_{ind_level_x}{ind_tau};
 
                 G_tau_sigma = BF.G_{cnt_G}{ind_tau, ind_sigma};
                 G_tau_beta_cell = cell(1, num_children);
                 beta_offset = 0;
                 for ch_sigma = ch_list
                     ind_beta = num_children * sigma.order_ + ch_sigma + 1;
-                    beta = BF.tree_{ind_level_xi_ch}{ind_beta};
+                    % beta = BF.tree_{ind_level_xi_ch}{ind_beta};
 
                     L_alpha_beta = L_cell{ind_alpha, ind_beta};
 
@@ -131,21 +130,20 @@ for level = h_xi : (L_xi - 1)
 
     % Update H.
     for ind_beta = 1 : m_xi_par
+        beta = BF.tree_{ind_level_xi_par}{ind_beta};
         for ind_tau = 1 : m_x
-            beta = BF.tree_{ind_level_xi_par}{ind_beta};
-
             tau = BF.tree_{ind_level_x}{ind_tau};
 
             for ch_beta = ch_list
                 ind_sigma = num_children * beta.order_ + ch_beta + 1;
-                sigma = BF.tree_{ind_level_xi}{ind_sigma};
+                % sigma = BF.tree_{ind_level_xi}{ind_sigma};
 
                 H_tau_sigma = BF.H_{cnt_H}{ind_tau, ind_sigma};
                 H_alpha_sigma_cell = cell(num_children, 1);
                 alpha_offset = 0;
                 for ch_tau = ch_list
                     ind_alpha = num_children * tau.order_ + ch_tau + 1;
-                    alpha = BF.tree_{ind_level_x_ch}{ind_alpha};
+                    % alpha = BF.tree_{ind_level_x_ch}{ind_alpha};
 
                     R_alpha_beta = R_cell{ind_alpha, ind_beta};
 
@@ -160,7 +158,7 @@ for level = h_xi : (L_xi - 1)
             end
         end
     end
-    
+
     % Compress H.
     R_cell = cell(m_x, m_xi);
     for ind_tau = 1 : m_x

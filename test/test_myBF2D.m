@@ -7,7 +7,9 @@ addpath('../extern/FastBF.m/src');
 
 a_func = @(x, xi) ones(size(x, 1), size(xi, 1));
 phi_func = @(x, xi) phi_fun_2D(x, xi);
-exp_phi_func = @(x, xi) fun_2D(x, xi);
+exp_phi_func = @(x, xi) complex(...
+    cos(2 * pi * phi_func(x, xi)), ...
+    sin(2 * pi * phi_func(x, xi)));
 k_func = @(x, xi) a_func(x, xi) .* exp_phi_func(x, xi);
 
 p_lim = 6;

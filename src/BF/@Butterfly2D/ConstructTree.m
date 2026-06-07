@@ -1,15 +1,13 @@
-function ConstructTree(BF, n, n_leaf)
+function ConstructTree(BF, n_leaf)
 
 arguments (Input)
     BF Butterfly2D;
-    n (1, 1) double;
     n_leaf (1, 1) double;
 end
 
-root_node = BFNode2D(n, 0, n - 1, 0, n - 1, 0, 0);
 
+n = BF.n_;
 N = BF.N_;
-
 BF.L_ = ceil(log2(n));
 BF.h_x_ = ceil(BF.L_ / 2);
 BF.h_xi_ = BF.L_ - BF.h_x_;
@@ -25,15 +23,19 @@ ch_dir_list = [0, 1];
 BF.num_children_ = num_children;
 BF.ch_list_ = ch_list;
 
-BF.tree_ = cell(1, BF.L_ + 1);
-for level = 0 : BF.L_
+L_max = max(BF.L_x_, BF.L_xi_);
+
+root_node = BFNode2D(n, 0, n - 1, 0, n - 1, 0, 0);
+
+BF.tree_ = cell(1, L_max + 1);
+for level = 0 : L_max
     BF.tree_{level + 1} = cell(1, num_children^level);
 end
 
 level = 0;
 ind_level = level + 1;
 BF.tree_{ind_level}{1} = root_node;
-for level = 0 : (BF.L_ - 1)
+for level = 0 : (L_max - 1)
     ind_level = level + 1;
     for k = 1 : num_children^level
         curr_node = BF.tree_{ind_level}{k};

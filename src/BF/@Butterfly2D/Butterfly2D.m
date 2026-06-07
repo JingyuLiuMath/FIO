@@ -44,7 +44,7 @@ classdef Butterfly2D < handle
 
             BF.n_ = n;
             BF.N_ = n^2;
-            BF.ConstructTree(n, n_leaf);
+            BF.ConstructTree(n_leaf);
             BF.Construct(a_func, phi_func, r);
             BF.OutCompression(tol);
             BF.InCompression(tol);
