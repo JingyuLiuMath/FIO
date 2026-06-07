@@ -1,16 +1,26 @@
-function res = my_nnz_bf(BF, type_bf)
+function res = my_nnz_bf(BF, type_bf, verbose)
+
+arguments (Input)
+    BF;
+    type_bf string;
+    verbose (1, 1) double = 0;
+end
 
 switch type_bf
     case "bf"
         res = my_nnz_bf_local(BF);
-        print_nnz_local(res);
+        if verbose == 1
+            print_nnz_local(res);
+        end
     case "mbf"
         res = cell(size(BF,1), 1);
         for i = 1 : (size(BF, 1) - 1)
             res{i} = my_nnz_bf_local(BF{i, 1});
         end
         res{size(BF, 1)} = nnz(BF{size(BF, 1), 1});
-        print_nnz_mbf(res);
+        if verbose == 1
+            print_nnz_mbf(res);
+        end
 end
 
 end

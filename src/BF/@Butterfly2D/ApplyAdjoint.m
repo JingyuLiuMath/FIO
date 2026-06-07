@@ -1,7 +1,7 @@
 function f = ApplyAdjoint(BF, f)
 
 arguments (Input)
-    BF Butterfly;
+    BF Butterfly2D;
     f (: ,:) double;
 end
 
@@ -20,6 +20,9 @@ num_children = BF.num_children_;
 ch_list = BF.ch_list_;
 
 num_col = size(f, 2);
+
+% Perm.
+f = f(BF.x_perm_, :);
 
 % Apply U.
 level_x = L_x;
@@ -198,5 +201,9 @@ for ind_tau = 1 : m_x
         sigma_offset = sigma_offset + sigma_size;
     end
 end
+
+% Perm.
+f = f(BF.xi_perm_inv_, :);
+
 
 end

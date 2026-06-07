@@ -1,6 +1,7 @@
 function result = run_FIO2D_inv_CG(...
-    k_func, n, ...
-    r_bf, tol_bf, type_bf, ...
+    n, ...
+    a_func, phi_func, ...
+    n_leaf_bf, r_bf, tol_bf, type_bf, ...
     num_sample, ...
     tol_cg, maxit_cg)
 
@@ -9,6 +10,7 @@ fprintf("Basic info.\n");
 fprintf("  n: %d\n", n);
 fprintf("  N: %d\n", N);
 
+fprintf("  n_leaf_bf: %d\n", n_leaf_bf);
 fprintf("  r_bf: %d\n", r_bf);
 fprintf("  tol_bf: %.1e\n", tol_bf);
 fprintf("  type_bf: %s\n", type_bf);
@@ -20,6 +22,7 @@ result = struct();
 
 result.n = n;
 result.N = N;
+result.n_leaf_bf = n_leaf_bf;
 result.r_bf = r_bf;
 result.tol_bf = tol_bf;
 result.type_bf = type_bf;
@@ -35,10 +38,18 @@ x = TensorProduct2D(x_co, x_co);
 xi_co = (-half_n : (half_n - 1))';
 xi = TensorProduct2D(xi_co, xi_co);
 
+exp_phi_func = @(x, xi) complex(...
+    cos(2 * pi * phi_func(x, xi)), ...
+    sin(2 * pi * phi_func(x, xi)));
+k_func = @(x, xi) a_func(x, xi) .* exp_phi_func(x, xi);
+
 % BF.
 fprintf("BF.\n");
 tic;
-[result.K_BF, ~] = my_construct_bf(k_func, x, xi, r_bf, tol_bf, type_bf);
+result.K_BF = my_construct_bf(...
+    n, a_func, phi_func, ...
+    x, xi, ...
+    n_leaf_bf, r_bf, tol_bf, type_bf);
 result.t_construct_BF = toc;
 fprintf("  t_construct_BF: %.1e\n", result.t_construct_BF);
 

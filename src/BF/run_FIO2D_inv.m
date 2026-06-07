@@ -1,10 +1,11 @@
 function result = run_FIO2D_inv(...
     result_bf, ...
-    min_points, rank_func_tol, tol_hss)
+    N_leaf_hss, rank_func_tol, tol_hss)
 
 n = result_bf.n;
 N = result_bf.N;
 
+n_leaf_bf = result_bf.n_leaf_bf;
 r_bf = result_bf.r_bf;
 tol_bf = result_bf.tol_bf;
 type_bf = result_bf.type_bf;
@@ -16,11 +17,12 @@ fprintf("Basic info.\n");
 fprintf("  n: %d\n", n);
 fprintf("  N: %d\n", N);
 
+fprintf("  n_leaf_bf: %d\n", n_leaf_bf);
 fprintf("  r_bf: %d\n", r_bf);
 fprintf("  tol_bf: %.1e\n", tol_bf);
 fprintf("  type_bf: %s\n", type_bf);
 
-fprintf("  min_points: %d\n", min_points);
+fprintf("  N_leaf_hss: %d\n", N_leaf_hss);
 fprintf("  tol_hss: %.1e\n", tol_hss);
 
 fprintf("  tol_cg: %.1e\n", tol_cg);
@@ -28,10 +30,11 @@ fprintf("  maxit_cg: %d\n", maxit_cg);
 
 result.n = n;
 result.N = N;
+result.n_leaf_bf = n_leaf_bf;
 result.r_bf = r_bf;
 result.tol_bf = tol_bf;
 result.type_bf = type_bf;
-result.min_points = min_points;
+result.N_leaf_hss = N_leaf_hss;
 result.tol_hss = tol_hss;
 result.tol_cg = tol_cg;
 result.maxit_cg = maxit_cg;
@@ -49,16 +52,12 @@ op_G = @(v) my_apply_bf_adj(result_bf.K_BF, ...
     my_apply_bf(result_bf.K_BF, v, type_bf), type_bf);
 rhs = my_apply_bf_adj(result_bf.K_BF, result_bf.Kf_ex, type_bf);
 
-M = my_getM_bf(result_bf.K_BF, type_bf);
-fprintf("  M in BF: %d\n", M);
-fprintf("  rel_err_BF: %.1e\n", result_bf.rel_err_BF);
-
 % HSS.
 fprintf("HSS.\n");
 Gf_ex = op_G(result_bf.f_ex);
 
 G_HSS = BF_HSS2D(n, n);
-G_HSS.BuildTree(min_points);
+G_HSS.BuildTree(N_leaf_hss);
 
 c = rank_func_tol(tol_hss);
 rank_func = @(ell) c * n / 2^ell;

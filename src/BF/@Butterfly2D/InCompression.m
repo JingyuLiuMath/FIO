@@ -23,11 +23,11 @@ level_xi = L - level_x;
 ind_level_xi = level_xi + 1;
 m_xi = length(BF.tree_{ind_level_xi});
 L_cell = cell(m_x, m_xi);
-for ind_alpha = 1 : m_x
-    for ind_beta = 1 : m_xi
-        [U, S, V] = MySVDSketch(BF.U_{ind_alpha, ind_beta}, tol);
-        BF.U_{ind_alpha, ind_beta} = U;
-        L_cell{ind_alpha, ind_beta} = S * V';
+for ind_tau = 1 : m_x
+    for ind_sigma = 1 : m_xi
+        [U, S, V] = MySVDSketch(BF.U_{ind_tau, ind_sigma}, tol);
+        BF.U_{ind_tau, ind_sigma} = U;
+        L_cell{ind_tau, ind_sigma} = S * V';
     end
 end
 

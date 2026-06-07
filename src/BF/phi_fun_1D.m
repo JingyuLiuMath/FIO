@@ -1,4 +1,4 @@
-function res = fun_1D(x, xi)
+function phi = phi_fun_1D(x, xi)
 
 factor = 8;
 
@@ -11,7 +11,5 @@ phi_lin = x * xi.';
 phi_nonlin = rho_func(x, xi);
 
 phi = phi_lin + phi_nonlin;
-
-res = complex(cos(2 * pi * phi), sin(2 * pi * phi));
 
 end

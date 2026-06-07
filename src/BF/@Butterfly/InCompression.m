@@ -23,11 +23,11 @@ level_xi = L - level_x;
 ind_level_xi = level_xi + 1;
 m_xi = length(BF.tree_{ind_level_xi});
 L_cell = cell(m_x, m_xi);
-for ind_alpha = 1 : m_x
-    for ind_beta = 1 : m_xi
-        [U, S, V] = MySVDSketch(BF.U_{ind_alpha, ind_beta}, tol);
-        BF.U_{ind_alpha, ind_beta} = U;
-        L_cell{ind_alpha, ind_beta} = S * V';
+for ind_tau = 1 : m_x
+    for ind_sigma = 1 : m_xi
+        [U, S, V] = MySVDSketch(BF.U_{ind_tau, ind_sigma}, tol);
+        BF.U_{ind_tau, ind_sigma} = U;
+        L_cell{ind_tau, ind_sigma} = S * V';
     end
 end
 
@@ -71,10 +71,10 @@ for level = (L_x - 1) : -1 : h_x
                 ind_sigma = num_children * beta.order_ + ch_beta + 1;
                 sigma = BF.tree_{ind_level_xi}{ind_sigma};
 
-                if cnt_G + 1 > length(BF.G_)
-                    sigma_size = size(BF.M_{ind_tau, ind_sigma}, 1);
-                else
+                if cnt_G + 1 <= length(BF.G_)
                     sigma_size = size(BF.G_{cnt_G + 1}{ind_tau, ind_sigma}, 1);
+                else
+                    sigma_size = size(BF.M_{ind_tau, ind_sigma}, 1);
                 end
 
                 G_alpha_sigma_cell = cell(num_children, 1);
@@ -123,11 +123,11 @@ level_x = L - level_xi;
 ind_level_x = level_x + 1;
 m_x = length(BF.tree_{ind_level_x});
 R_cell = cell(m_x, m_xi);
-for ind_alpha = 1 : m_x
-    for ind_beta = 1 : m_xi
-        [U, S, V] = MySVDSketch(BF.V_{ind_alpha, ind_beta}, tol);
-        BF.V_{ind_alpha, ind_beta} = V';
-        R_cell{ind_alpha, ind_beta} = U * S;
+for ind_tau = 1 : m_x
+    for ind_sigma = 1 : m_xi
+        [U, S, V] = MySVDSketch(BF.V_{ind_tau, ind_sigma}, tol);
+        BF.V_{ind_tau, ind_sigma} = V';
+        R_cell{ind_tau, ind_sigma} = U * S;
     end
 end
 
@@ -171,10 +171,10 @@ for level = (L_xi - 1) : -1 : h_xi
                 ind_tau = num_children * alpha.order_ + ch_alpha + 1;
                 tau = BF.tree_{ind_level_x}{ind_tau};
 
-                if cnt_H - 1 == 0
-                    tau_size = size(BF.M_{ind_tau, ind_sigma}, 2);
-                else
+                if cnt_H - 1 >= 1
                     tau_size = size(BF.H_{cnt_H - 1}{ind_tau, ind_sigma}, 2);
+                else
+                    tau_size = size(BF.M_{ind_tau, ind_sigma}, 2);
                 end
 
                 H_tau_beta_cell = cell(1, num_children);

@@ -10,8 +10,12 @@ end
 originalPath = path;
 addpath('../../extern/FastBF.m/src');
 
-exp_phi_func = @(x, xi) fun_2D(x, xi);
-k_func = @(x, xi) exp_phi_func(x, xi);
+a_func = @(x, xi) ones(size(x, 1), size(xi, 1));
+phi_func = @(x, xi) phi_fun_2D(x, xi);
+exp_phi_func = @(x, xi) complex(...
+    cos(2 * pi * phi_func(x, xi)), ...
+    sin(2 * pi * phi_func(x, xi)));
+k_func = @(x, xi) a_func(x, xi) .* exp_phi_func(x, xi);
 
 if ispc
     p_list = (4 : 6)';
@@ -20,20 +24,24 @@ elseif isunix
 end
 num_n = length(p_list);
 
+if ispc
+    n_leaf_bf = 8;
+else
+    n_leaf_bf = 16;
+end
 r_bf = 10;
 tol_bf = 1e-8;
-type_bf = "pbf";
+type_bf = "mybf";
 
 if ispc
-    min_points = 64;
+    N_leaf_hss = 64;
 elseif isunix
-    min_points = 256;
+    N_leaf_hss = 256;
 end
-
-rank_func_tol = @(tol, n) ceil(3 * log10(1 / tol));
 tol_hss_list = [1e-3];
 num_tol_hss = length(tol_hss_list);
 tol_hss_display_list = ["10^{-3}"];
+rank_func_tol = @(tol) ceil(3 * log10(1 / tol));
 
 tol_cg = 1e-12;
 if ispc

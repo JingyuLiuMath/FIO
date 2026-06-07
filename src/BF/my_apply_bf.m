@@ -7,6 +7,8 @@ switch type_bf
         y = apply_mbf_batch(BF, y);
     case "pbf"
         y = apply_fbf_batch(BF, y);
+    case "mybf"
+        y = BF.Apply(y);
 end
 
 end

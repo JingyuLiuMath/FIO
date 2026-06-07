@@ -11,7 +11,6 @@ arguments (Output)
     pts2 (:, 1) double;
 end
 
-
 pts1 = B.node1_.FreqChebPts(r);
 pts2 = B.node2_.FreqChebPts(r);
 pts = TensorProduct2D(pts1, pts2);

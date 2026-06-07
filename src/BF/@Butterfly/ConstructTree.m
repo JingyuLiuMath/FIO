@@ -1,9 +1,9 @@
-function ConstructTree(BF, N, min_points)
+function ConstructTree(BF, N, n_leaf)
 
 arguments (Input)
     BF Butterfly;
     N (1, 1) double;
-    min_points (1, 1) double;
+    n_leaf (1, 1) double;
 end
 
 root_node = BFNode(N, 0, N - 1, 0, 0);
@@ -11,8 +11,8 @@ root_node = BFNode(N, 0, N - 1, 0, 0);
 BF.L_ = ceil(log2(N));
 BF.h_x_ = ceil(BF.L_ / 2);
 BF.h_xi_ = BF.L_ - BF.h_x_;
-BF.L_x_ = max(BF.h_x_, ceil(log2(N / min_points)));
-BF.L_xi_ = max(BF.h_xi_, ceil(log2(N / min_points)));
+BF.L_x_ = max(BF.h_x_, ceil(log2(N / n_leaf)));
+BF.L_xi_ = max(BF.h_xi_, ceil(log2(N / n_leaf)));
 fprintf("  L: %d, h_x: %d, h_xi: %d, L_x: %d, L_xi: %d\n", ...
     BF.L_, BF.h_x_, BF.h_xi_, BF.L_x_, BF.L_xi_);
 

@@ -25,19 +25,21 @@ classdef Butterfly < handle
 
     methods
         function BF = Butterfly(N, a_func, phi_func, ...
-                min_points, r, tol)
+                n_leaf, r, tol)
+            arguments (Input)
+                N (1, 1) double;
+                a_func function_handle;
+                phi_func function_handle;
+                n_leaf (1, 1) double;
+                r (1, 1) double;
+                tol (1, 1) double;
+            end
+
             BF.N_ = N;
-            BF.ConstructTree(N, min_points);
+            BF.ConstructTree(N, n_leaf);
             BF.Construct(a_func, phi_func, r);
-            nnz_before = BF.Nnz();
             BF.OutCompression(tol);
             BF.InCompression(tol);
-            nnz_after = BF.Nnz();
-            compression_ratio = nnz_before / nnz_after;
-            fprintf("  compression_ratio: %.1e\n", compression_ratio);
-            BF.SetMidSize();
-            fprintf("  N: %d, mid_row_size: %d, mid_col_size: %d\n", ...
-                N, BF.mid_row_size_, BF.mid_col_size_);
         end
     end
 end

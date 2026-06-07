@@ -5,35 +5,41 @@ close all;
 originalPath = path;
 addpath('../extern/FastBF.m/src');
 
-exp_phi_func = @(x, xi) fun_1D(x, xi);
+a_func = @(x, xi) ones(size(x, 1), size(xi, 1));
+phi_func = @(x, xi) phi_fun_1D(x, xi);
+exp_phi_func = @(x, xi) complex(...
+    cos(2 * pi * phi_func(x, xi)), ...
+    sin(2 * pi * phi_func(x, xi)));
+k_func = @(x, xi) a_func(x, xi) .* exp_phi_func(x, xi);
 
 p = 10;
 N = 2^p;
-half_N = N / 2;
 
+n_leaf_bf = 8;
 r_bf = 10;
 tol_bf = 1e-8;
+type_bf = "mybf";
 
 num_sample = 256;
 
-min_points = 64;
+N_leaf_hss = 64;
 tol_hss = 1e-3;
+rank_func_tol = @(tol) 4 * log10(1 / tol);
 
 tol_cg = 1e-12;
 maxit_cg = 50;
 
-indep = 1;
-
 %% HSS Rank.
 fprintf("\n");
 result_rank = run_FIO1D_hss_rank(...
-    exp_phi_func, N);
+    k_func, N, rank_func_tol);
 
 %% BF.
 fprintf("\n");
 result_bf = run_FIO1D_inv_CG(...
-    exp_phi_func, N, ...
-    r_bf, tol_bf, ...
+    N, ...
+    a_func, phi_func, ...
+    n_leaf_bf, r_bf, tol_bf, type_bf, ...
     num_sample, ...
     tol_cg, maxit_cg);
 
@@ -41,6 +47,6 @@ result_bf = run_FIO1D_inv_CG(...
 fprintf("\n");
 run_FIO1D_inv(...
     result_bf, ...
-    min_points, tol_hss, indep);
+    N_leaf_hss, rank_func_tol, tol_hss);
 
 path(originalPath);

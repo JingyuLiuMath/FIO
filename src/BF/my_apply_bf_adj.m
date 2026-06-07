@@ -7,6 +7,8 @@ switch type_bf
         y = apply_mbf_adj_batch(BF, y);
     case "pbf"
         y = apply_fbf_adj_batch(BF, y);
+    case "mybf"
+        y = BF.ApplyAdjoint(y);
 end
 
 end

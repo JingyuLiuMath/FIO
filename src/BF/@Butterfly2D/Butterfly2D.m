@@ -32,20 +32,22 @@ classdef Butterfly2D < handle
 
     methods
         function BF = Butterfly2D(n, a_func, phi_func, ...
-                min_points, r, tol)
+                n_leaf, r, tol)
+            arguments (Input)
+                n (1, 1) double;
+                a_func function_handle;
+                phi_func function_handle;
+                n_leaf (1, 1) double;
+                r (1, 1) double;
+                tol (1, 1) double;
+            end
+
             BF.n_ = n;
             BF.N_ = n^2;
-            BF.ConstructTree(n, min_points);
+            BF.ConstructTree(n, n_leaf);
             BF.Construct(a_func, phi_func, r);
-            nnz_before = BF.Nnz();
             BF.OutCompression(tol);
             BF.InCompression(tol);
-            nnz_after = BF.Nnz();
-            compression_ratio = nnz_before / nnz_after;
-            fprintf("  compression_ratio: %.1e\n", compression_ratio);
-            BF.SetMidSize();
-            fprintf("  n: %d, mid_row_size: %d, mid_col_size: %d\n", ...
-                n, BF.mid_row_size_, BF.mid_col_size_);
         end
     end
 end

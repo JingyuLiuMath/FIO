@@ -1,12 +1,14 @@
 function result = run_FIO1D_inv_CG(...
-    k_func, N, ...
-    r_bf, tol_bf, type_bf, ...
+    N, ...
+    a_func, phi_func, ...
+    n_leaf_bf, r_bf, tol_bf, type_bf, ...
     num_sample, ...
     tol_cg, maxit_cg)
 
 fprintf("Basic info.\n");
 fprintf("  N: %d\n", N);
 
+fprintf("  n_leaf_bf: %d\n", n_leaf_bf);
 fprintf("  r_bf: %d\n", r_bf);
 fprintf("  tol_bf: %.1e\n", tol_bf);
 fprintf("  type_bf: %s\n", type_bf);
@@ -17,6 +19,7 @@ fprintf("  maxit_cg: %d\n", maxit_cg);
 result = struct();
 
 result.N = N;
+result.n_leaf_bf = n_leaf_bf;
 result.r_bf = r_bf;
 result.tol_bf = tol_bf;
 result.type_bf = type_bf;
@@ -30,15 +33,20 @@ half_N = N / 2;
 x = (0 : (N - 1))' / N;
 xi = (-half_N : (half_N - 1))';
 
+exp_phi_func = @(x, xi) complex(...
+    cos(2 * pi * phi_func(x, xi)), ...
+    sin(2 * pi * phi_func(x, xi)));
+k_func = @(x, xi) a_func(x, xi) .* exp_phi_func(x, xi);
+
 % BF.
 fprintf("BF.\n");
 t_construct_BF_start = tic;
-[result.K_BF, ~] = my_construct_bf(k_func, x, xi, r_bf, tol_bf, type_bf);
+result.K_BF = my_construct_bf(...
+    N, a_func, phi_func, ...
+    x, xi, ...
+    n_leaf_bf, r_bf, tol_bf, type_bf);
 result.t_construct_BF = toc(t_construct_BF_start);
 fprintf("  t_construct_BF: %.1e\n", result.t_construct_BF);
-
-M = size(result.K_BF.M, 1);
-fprintf("  M in BF: %d\n", M);
 
 result.f_ex = randn(N, 1) + 1i * randn(N, 1);
 t_apply_BF_start = tic;
