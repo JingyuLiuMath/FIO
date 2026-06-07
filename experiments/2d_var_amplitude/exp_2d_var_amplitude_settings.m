@@ -24,11 +24,7 @@ elseif isunix
 end
 num_n = length(p_list);
 
-if ispc
-    n_leaf_bf = 8;
-else
-    n_leaf_bf = 16;
-end
+n_leaf_bf = 8;
 r_a = 10;
 tol_a = 1e-10;
 

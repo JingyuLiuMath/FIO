@@ -56,7 +56,7 @@ for ind_tau = 1 : m_x
 
         if level_x == L_x || debug_mode == 1
             x_tau = tau.SpacePts();
-            P = EvalLagrange(z_tau, x_tau);
+            P = tau.SpaceEvalChebLagrange(r, x_tau);
             U_shift = phi_func(x_tau, eta_sigma) - phi_func(z_tau, eta_sigma).';
             U_shift = complex(cos(2 * pi * U_shift), sin(2 * pi * U_shift));
             U_tau_sigma = U_shift .* P;
@@ -65,7 +65,7 @@ for ind_tau = 1 : m_x
 
         if level_xi == L_xi || debug_mode == 1
             xi_sigma = sigma.FreqPts();
-            Q = EvalLagrange(gamma_sigma, xi_sigma).';
+            Q = sigma.FreqEvalChebLagrange(r, xi_sigma).';
             V_shift = phi_func(y_tau, xi_sigma) - phi_func(y_tau, gamma_sigma).';
             V_shift = complex(cos(2 * pi * V_shift), sin(2 * pi * V_shift));
             V_tau_sigma = V_shift .* Q;
@@ -135,14 +135,14 @@ for level = h_x : (L_x - 1)
                 if level_x == L_x || debug_mode == 1
                     x_tau = tau.SpacePts();
 
-                    P = EvalLagrange(z_tau, x_tau);
+                    P = tau.SpaceEvalChebLagrange(r, x_tau);
                     U_shift = phi_func(x_tau, eta_sigma) - phi_func(z_tau, eta_sigma).';
                     U_shift = complex(cos(2 * pi * U_shift), sin(2 * pi * U_shift));
                     U_tau_sigma = U_shift .* P;
                     BF.U_{ind_tau, ind_sigma} = U_tau_sigma;
                 end
 
-                P = EvalLagrange(z_alpha, z_tau);
+                P = alpha.SpaceEvalChebLagrange(r, z_tau);
                 G_tau_beta_cell = cell(1, num_children);
 
                 if debug_mode == 1
@@ -238,14 +238,14 @@ for level = h_xi : (L_xi - 1)
                 if level_xi == L_xi || debug_mode == 1
                     xi_sigma = sigma.FreqPts();
 
-                    Q = EvalLagrange(gamma_sigma, xi_sigma).';
+                    Q = sigma.FreqEvalChebLagrange(r, xi_sigma).';
                     V_shift = phi_func(y_tau, xi_sigma) - phi_func(y_tau, gamma_sigma).';
                     V_shift = complex(cos(2 * pi * V_shift), sin(2 * pi * V_shift));
                     V_tau_sigma = V_shift .* Q;
                     BF.V_{ind_tau, ind_sigma} = V_tau_sigma;
                 end
 
-                Q = EvalLagrange(gamma_beta, gamma_sigma).';
+                Q = beta.FreqEvalChebLagrange(r, gamma_sigma).';
                 H_alpha_sigma_cell = cell(num_children, 1);
 
                 if debug_mode == 1
