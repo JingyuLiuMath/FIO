@@ -31,7 +31,7 @@ else
 end
 r_bf = 10;
 tol_bf = 1e-8;
-type_bf = "mybf";
+type_bf = "bf";
 
 if ispc
     N_leaf_hss = 64;
