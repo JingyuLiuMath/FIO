@@ -44,12 +44,12 @@ for ind_tau = 1 : m_x
     tau = BF.tree_{ind_level_x}{ind_tau};
     % [x_tau, x1_tau, x2_tau] = tau.SpacePts();
     [y_tau, ~, ~] = tau.SpaceCt();
-    [z_tau, ~, ~] = tau.SpaceChebPts(r);
+    [z_tau, z1_tau, z2_tau] = tau.SpaceChebPts(r);
     for ind_sigma = 1 : m_xi
         sigma = BF.tree_{ind_level_xi}{ind_sigma};
         % [xi_sigma, xi1_sigma, xi2_sigma] = sigma.FreqPts();
         [eta_sigma, ~, ~] = sigma.FreqCt();
-        [gamma_sigma, ~, ~] = sigma.FreqChebPts(r);
+        [gamma_sigma, gamma1_sigma, gamma2_sigma] = sigma.FreqChebPts(r);
 
         M_tau_sigma = k_func(z_tau, gamma_sigma);
         BF.M_{ind_tau, ind_sigma} = M_tau_sigma;
@@ -57,7 +57,9 @@ for ind_tau = 1 : m_x
         if level_x == L_x || debug_mode == 1
             [x_tau, x1_tau, x2_tau] = tau.SpacePts();
 
-            [P, ~, ~] = tau.SpaceEvalChebLagrange(r, x1_tau, x2_tau);
+            P1 = EvalLagrange(z1_tau, x1_tau);
+            P2 = EvalLagrange(z2_tau, x2_tau);
+            P = kron(P2, P1);
             U_shift = phi_func(x_tau, eta_sigma) - phi_func(z_tau, eta_sigma).';
             U_shift = complex(cos(2 * pi * U_shift), sin(2 * pi * U_shift));
             U_tau_sigma = U_shift .* P;
@@ -67,8 +69,9 @@ for ind_tau = 1 : m_x
         if level_xi == L_xi || debug_mode == 1
             [xi_sigma, xi1_sigma, xi2_sigma] = sigma.FreqPts();
 
-            [Q, ~, ~] = sigma.FreqEvalChebLagrange(r, xi1_sigma, xi2_sigma);
-            Q = Q.';
+            Q1 = EvalLagrange(gamma1_sigma, xi1_sigma).';
+            Q2 = EvalLagrange(gamma2_sigma, xi2_sigma).';
+            Q = kron(Q2, Q1);
             V_shift = phi_func(y_tau, xi_sigma) - phi_func(y_tau, gamma_sigma).';
             V_shift = complex(cos(2 * pi * V_shift), sin(2 * pi * V_shift));
             V_tau_sigma = V_shift .* Q;
@@ -121,7 +124,7 @@ for level = h_x : (L_x - 1)
         alpha = BF.tree_{ind_level_x_par}{ind_alpha};
         % [x_alpha, x1_alpha, x2_alpha] = alpha.SpacePts();
         % [y_alpha, ~, ~] = alpha.SpaceCt();
-        [z_alpha, ~, ~] = alpha.SpaceChebPts(r);
+        [z_alpha, z1_alpha, z2_alpha] = alpha.SpaceChebPts(r);
         for ind_sigma = 1 : m_xi
             sigma = BF.tree_{ind_level_xi}{ind_sigma};
             % [xi_sigma, xi1_sigma, xi2_sigma] = sigma.FreqPts();
@@ -139,14 +142,18 @@ for level = h_x : (L_x - 1)
                 if level_x == L_x || debug_mode == 1
                     [x_tau, x1_tau, x2_tau] = tau.SpacePts();
 
-                    [P, ~, ~] = tau.SpaceEvalChebLagrange(r, x1_tau, x2_tau);
+                    P1 = EvalLagrange(z1_tau, x1_tau);
+                    P2 = EvalLagrange(z2_tau, x2_tau);
+                    P = kron(P2, P1);
                     U_shift = phi_func(x_tau, eta_sigma) - phi_func(z_tau, eta_sigma).';
                     U_shift = complex(cos(2 * pi * U_shift), sin(2 * pi * U_shift));
                     U_tau_sigma = U_shift .* P;
                     BF.U_{ind_tau, ind_sigma} = U_tau_sigma;
                 end
 
-                [P, ~, ~] = alpha.SpaceEvalChebLagrange(r, z1_tau, z2_tau);
+                P1 = EvalLagrange(z1_alpha, z1_tau);
+                P2 = EvalLagrange(z2_alpha, z2_tau);
+                P = kron(P2, P1);
                 G_tau_beta_cell = cell(1, num_children);
 
                 if debug_mode == 1
@@ -224,7 +231,7 @@ for level = h_xi : (L_xi - 1)
         beta = BF.tree_{ind_level_xi_par}{ind_beta};
         % [xi_beta, xi1_beta, xi2_beta] = beta.FreqPts();
         % [eta_beta, ~, ~] = beta.FreqCt();
-        [gamma_beta, ~, ~] = beta.FreqChebPts(r);
+        [gamma_beta, gamma1_beta, gamma2_beta] = beta.FreqChebPts(r);
         for ind_tau = 1 : m_x
             tau = BF.tree_{ind_level_x}{ind_tau};
             % [x_tau, x1_tau, x2_tau] = tau.SpacePts();
@@ -242,16 +249,18 @@ for level = h_xi : (L_xi - 1)
                 if level_xi == L_xi || debug_mode == 1
                     [xi_sigma, xi1_sigma, xi2_sigma] = sigma.FreqPts();
 
-                    [Q, ~, ~] = sigma.FreqEvalChebLagrange(r, xi1_sigma, xi2_sigma);
-                    Q = Q.';
+                    Q1 = EvalLagrange(gamma1_sigma, xi1_sigma).';
+                    Q2 = EvalLagrange(gamma2_sigma, xi2_sigma).';
+                    Q = kron(Q2, Q1);
                     V_shift = phi_func(y_tau, xi_sigma) - phi_func(y_tau, gamma_sigma).';
                     V_shift = complex(cos(2 * pi * V_shift), sin(2 * pi * V_shift));
                     V_tau_sigma = V_shift .* Q;
                     BF.V_{ind_tau, ind_sigma} = V_tau_sigma;
                 end
 
-                [Q, ~, ~] = beta.FreqEvalChebLagrange(r, gamma1_sigma, gamma2_sigma);
-                Q = Q.';
+                Q1 = EvalLagrange(gamma1_beta, gamma1_sigma).';
+                Q2 = EvalLagrange(gamma2_beta, gamma2_sigma).';
+                Q = kron(Q2, Q1);
                 H_alpha_sigma_cell = cell(num_children, 1);
 
                 if debug_mode == 1
