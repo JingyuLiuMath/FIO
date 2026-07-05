@@ -17,15 +17,15 @@ end
 fprintf("}\n");
 fprintf("\\toprule\n");
 
-fprintf("\\(N\\) ");
+fprintf("\\(\\numtot\\) ");
 fprintf("& \\(t_{\\iter}\\) ");
 fprintf("& \\(n_{\\iter}\\) ");
 fprintf("& \\(e_{\\solve}\\) ");
 
 for it_hss_tol = 1 : num_hss_tol
     fprintf("& \\(t_{\\pre}\\) ");
-    fprintf("& \\(t_{\\iter}\\) ");
-    fprintf("& \\(n_{\\iter}\\) ");
+    fprintf("& \\(t_{\\piter}\\) ");
+    fprintf("& \\(n_{\\piter}\\) ");
     fprintf("& \\(e_{\\solve}\\) ");
     fprintf("\\\\ \n");
 end
