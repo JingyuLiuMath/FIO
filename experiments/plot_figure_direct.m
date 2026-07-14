@@ -179,6 +179,7 @@ if apply_bf_flag == 0
     if isfield(result_list(1), "n")
         scaling_type = "$O(N^{1.5} \log N)$";
         factor = mean(t_construct_HSS_list) * 0.8;
+        plot_ref_curve(N_list, scaling_type, factor, color_cHSS_ref);
 
         scaling_type = "$O(N^{2})$";
         factor = mean(t_construct_HSS_list);
@@ -187,7 +188,6 @@ if apply_bf_flag == 0
         scaling_type = "$O(N \log^{2} N)$";
         factor = mean(t_construct_HSS_list);
     end
-    plot_ref_curve(N_list, scaling_type, factor, color_cHSS_ref);
 
     % Factor HSS.
     if isfield(result_list(1), "n")
