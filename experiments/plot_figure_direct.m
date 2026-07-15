@@ -37,7 +37,7 @@ end
 
 figure_position = [100 100 1600 900];
 paper_position = [0 0 24 12];
-font_size = 45;
+font_size = 64;
 font_size_rank = font_size;
 font_size_scaling = font_size;
 
@@ -234,7 +234,6 @@ else
     lgd = legend("Location", "eastoutside", "Interpreter", "latex", "NumColumns", 1);
 end
 set(gca, 'FontSize', font_size_scaling);
-set(gca, 'FontSize', font_size_rank);
 set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPosition', paper_position);   % 统一的物理尺寸
 set(gcf, 'PaperPositionMode', 'manual');

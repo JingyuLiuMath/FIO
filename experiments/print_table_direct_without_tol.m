@@ -20,7 +20,7 @@ fprintf("& \\(e_{\\construct \\HSS}\\) ");
 
 fprintf("& \\(t_{\\factor \\HSS}\\) ");
 fprintf("& \\(t_{\\solve \\HSS}\\) ");
-fprintf("& \\(e_{\\solve}\\) ");
+fprintf("& \\(e_{\\direct}\\) ");
 
 fprintf("\\\\ \n");
 for it_n = 1 : num_n

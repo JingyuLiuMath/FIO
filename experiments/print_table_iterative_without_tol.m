@@ -20,13 +20,13 @@ fprintf("\\toprule\n");
 fprintf("\\(\\numtot\\) ");
 fprintf("& \\(t_{\\iter}\\) ");
 fprintf("& \\(n_{\\iter}\\) ");
-fprintf("& \\(e_{\\solve}\\) ");
+fprintf("& \\(e_{\\iter}\\) ");
 
 for it_hss_tol = 1 : num_hss_tol
     fprintf("& \\(t_{\\pre}\\) ");
     fprintf("& \\(t_{\\piter}\\) ");
     fprintf("& \\(n_{\\piter}\\) ");
-    fprintf("& \\(e_{\\solve}\\) ");
+    fprintf("& \\(e_{\\piter}\\) ");
     fprintf("\\\\ \n");
 end
 

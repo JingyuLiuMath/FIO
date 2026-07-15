@@ -21,7 +21,7 @@ fprintf("\\toprule\n");
 fprintf("\\multirow{2}{*}{\\(\\numtot\\)} ");
 fprintf("& \\multirow{2}{*}{\\(t_{\\iter}\\)} ");
 fprintf("& \\multirow{2}{*}{\\(n_{\\iter}\\)} ");
-fprintf("& \\multirow{2}{*}{\\(e_{\\solve}\\)} ");
+fprintf("& \\multirow{2}{*}{\\(e_{\\iter}\\)} ");
 
 for it_hss_tol = 1 : num_hss_tol
     tol_hss_display = tol_hss_display_list(it_hss_tol);
@@ -34,7 +34,7 @@ for it_hss_tol = 1 : num_hss_tol
     fprintf("\\(t_{\\pre}\\) ");
     fprintf("& \\(t_{\\piter}\\) ");
     fprintf("& \\(n_{\\piter}\\) ");
-    fprintf("& \\(e_{\\solve}\\) ");
+    fprintf("& \\(e_{\\piter}\\) ");
     fprintf("\\\\ \n");
 end
 
