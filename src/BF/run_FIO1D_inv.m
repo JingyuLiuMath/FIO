@@ -75,7 +75,7 @@ while result.rel_err_HSS >= tol_hss * 5
     result.hss_rank = G_HSS.Rank();
     fprintf("  HSS rank: %d\n", result.hss_rank);
     result.hss_mem = G_HSS.Storage();
-    ratio = result.hss_mem / N^2;
+    ratio = result.hss_mem / (16 * N^2);
     fprintf("  ratio: %.1e\n", ratio);
 
     c = c * 2;
