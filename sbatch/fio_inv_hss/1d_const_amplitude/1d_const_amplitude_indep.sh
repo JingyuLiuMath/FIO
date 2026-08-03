@@ -1,8 +1,11 @@
 #!/bin/bash
 
-#SBATCH --job-name=FIO2d_DEBUG
-#SBATCH --output=FIO2d_DEBUG_%j.out
-#SBATCH --error=FIO2d_DEBUG_%j.err
+#SBATCH --job-name=FIO1d_indep
+#SBATCH --output=FIO1d_indep_%j.out
+#SBATCH --error=FIO1d_indep_%j.err
+#SBATCH --nodelist=bigMem0
+#SBATCH --exclusive
+#SBATCH --time=18:00:00
 
 module unload MATLAB
 module load MATLAB/R2023b
@@ -46,7 +49,7 @@ echo "Job started at: $(date)"
 echo "=========================================="
 echo ""
 
-matlab -r 'cd /home/jyliu/FIO; fio_startup; cd experiments/2d_const_amplitude; exp_2d_const_amplitude_debug_mbf;'
+matlab -r 'cd /home/jyliu/FIO; fio_startup; cd experiments/fio_inv_hss/1d_const_amplitude; exp_1d_const_amplitude_indep;'
 
 echo ""
 echo "MATLAB finished at: $(date)"

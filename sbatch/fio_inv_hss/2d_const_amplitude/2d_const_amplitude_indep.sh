@@ -50,7 +50,7 @@ echo "Job started at: $(date)"
 echo "=========================================="
 echo ""
 
-matlab -r 'cd /home/jyliu/FIO; fio_startup; cd experiments/2d_const_amplitude; exp_2d_const_amplitude_indep;'
+matlab -r 'cd /home/jyliu/FIO; fio_startup; cd experiments/fio_inv_hss/2d_const_amplitude; exp_2d_const_amplitude_indep;'
 
 echo ""
 echo "MATLAB finished at: $(date)"

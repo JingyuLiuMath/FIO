@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#SBATCH --job-name=FIO1d_CG
-#SBATCH --output=FIO1d_CG_%j.out
-#SBATCH --error=FIO1d_CG_%j.err
+#SBATCH --job-name=FIO1d_indep
+#SBATCH --output=FIO1d_indep_%j.out
+#SBATCH --error=FIO1d_indep_%j.err
 #SBATCH --nodelist=bigMem0
 #SBATCH --exclusive
 #SBATCH --time=18:00:00
@@ -49,7 +49,7 @@ echo "Job started at: $(date)"
 echo "=========================================="
 echo ""
 
-matlab -r 'cd /home/jyliu/FIO; fio_startup; cd experiments/1d_var_amplitude; exp_1d_var_amplitude_cg;'
+matlab -r 'cd /home/jyliu/FIO; fio_startup; cd experiments/fio_inv_hss/1d_var_amplitude; exp_1d_var_amplitude_indep;'
 
 echo ""
 echo "MATLAB finished at: $(date)"
