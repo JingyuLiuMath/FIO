@@ -18,7 +18,7 @@ p = 10;
 N = 2^p;
 half_N = N / 2;
 
-min_points = 8;
+n_leaf_bf = 8;
 r_bf = 10;
 tol_bf = 1e-6;
 
@@ -36,7 +36,7 @@ end
 fprintf("BF.\n");
 
 tic;
-K_BF = Butterfly(N, a_func, phi_func, min_points, r_bf, tol_bf);
+K_BF = Butterfly(N, a_func, phi_func, n_leaf_bf, r_bf, tol_bf);
 t_BF_construct = toc;
 fprintf("  t_BF_construct: %.1e\n", t_BF_construct);
 
