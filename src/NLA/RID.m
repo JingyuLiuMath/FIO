@@ -1,8 +1,6 @@
 function [sk, re, T, k] = RID(A, rank_or_tol)
 % RID Randomized ID. A(:, re) = A(:, sk) * T
 
-% Jingyu Liu, March 20, 2024.
-
 % If rank_or_tol >= 1, it is treated as target rank. Otherwise it is
 % treated as relative tolerance.
 

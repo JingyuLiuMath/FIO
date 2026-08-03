@@ -1,8 +1,6 @@
 function ULV_Solve_Downward(A, level)
 % ULV_Solve_Downward
 
-% Jingyu Liu, November 23, 2024.
-
 arguments (Input)
     A HSS_Herm;
     level (1, 1) double;

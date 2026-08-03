@@ -1,8 +1,6 @@
 function FillVector_Col(A, u)
 % FillVector_Col
 
-% Jingyu Liu, November 18, 2024.
-
 arguments (Input)
     A HSS_Herm;
     u (:, :) double;

@@ -1,8 +1,6 @@
 function f = FetchVector_Row(A)
 % FetchVector_Row
 
-% Jingyu Liu, November 18, 2024.
-
 arguments (Input)
     A HSS_Herm;
 end

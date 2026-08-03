@@ -16,8 +16,6 @@ function [kappa1_est, info] = Condest_Implict(op_A, op_A_inv, n, maxit, restarts
 %   kappa1_est : estimate of cond_1(A) = ||A||_1 * ||A^{-1}||_1
 %   info       : diagnostics for both Hager iterations.
 
-% Jingyu Liu, April 5, 2026.
-
 arguments (Input)
     op_A (1, 1) function_handle;
     op_A_inv (1, 1) function_handle;

@@ -1,8 +1,6 @@
 function ULV_Solve_SplitVector(A)
 % ULV_Solve_SplitVector
 
-% Jingyu Liu, November 23, 2024.
-
 arguments (Input)
     A HSS_Herm;
 end

@@ -1,8 +1,6 @@
 function [U, S, V] = MySVDSketch(A, rank_or_tol)
 % MySVDSketch
 
-% Jingyu Liu, May 9, 2024.
-
 % If rank_or_tol >= 1, it is treated as target rank. Otherwise it is
 % treated as relative tolerance.
 

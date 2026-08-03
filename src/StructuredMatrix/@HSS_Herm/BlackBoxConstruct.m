@@ -1,8 +1,6 @@
 function BlackBoxConstruct(A, op_A, rank_func, tol, verbose)
 % BlackBoxConstruct
 
-% Jingyu Liu, December 4, 2024.
-
 arguments (Input)
     A HSS_Herm;
     op_A function_handle;

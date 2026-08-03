@@ -1,8 +1,6 @@
 function BBC_EliminateRootBMat(A)
 % BBC_EliminateRootBMat
 
-% Jingyu Liu, December 6, 2024.
-
 arguments (Input)
     A HSS_Herm;
 end

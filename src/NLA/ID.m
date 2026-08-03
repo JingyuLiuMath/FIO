@@ -1,8 +1,6 @@
 function [sk, re, T, k] = ID(A, rank_or_tol)
 % ID Interpolative decomposition. A(:, re) = A(:, sk) * T
 
-% Jingyu Liu, December 11, 2023.
-
 % If rank_or_tol >= 1, it is treated as target rank. Otherwise it is
 % treated as relative tolerance.
 

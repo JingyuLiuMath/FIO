@@ -2,8 +2,6 @@ function [Q, R, p, k] = MyQRSketch(A, rank_or_tol)
 % MyQRSketch For a m-by-n matrix A, compute A(:, p) = Q * R where Q is
 % m-by-k and R is k-by-n.
 
-% Jingyu Liu, January 5, 2024.
-
 % If rank_or_tol >= 1, it is treated as target rank. Otherwise it is
 % treated as relative tolerance.
 

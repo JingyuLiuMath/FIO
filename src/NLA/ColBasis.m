@@ -1,8 +1,6 @@
 function [Q, k] = ColBasis(B, k, tol)
 % ColBasis
 
-% Jingyu Liu, December 4, 2024.
-
 arguments (Input)
     B (:, :) double;
     k (1, 1) double;

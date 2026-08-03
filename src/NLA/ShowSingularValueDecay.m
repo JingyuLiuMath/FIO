@@ -1,8 +1,6 @@
 function s = ShowSingularValueDecay(A, title_name)
 % ShowSingularValueDecay
 
-% Jingyu Liu, October 23, 2023.
-
 arguments (Input)
     A (:, :) double;
     title_name string = "ShowSingularValueDecay";

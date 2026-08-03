@@ -1,8 +1,6 @@
 function u = FetchVector_Col(A)
 % FetchVector_Col
 
-% Jingyu Liu, November 23, 2024.
-
 arguments (Input)
     A HSS_Herm;
 end

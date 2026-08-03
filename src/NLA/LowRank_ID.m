@@ -1,8 +1,6 @@
 function [sk, V, k, re] = LowRank_ID(A, rank_or_tol)
 % LowRank_ID Interpolative decomposition. A = A(:, sk) * V'.
 
-% Jingyu Liu, November 19, 2024.
-
 % If rank_or_tol >= 1, it is treated as target rank. Otherwise it is
 % treated as relative tolerance.
 

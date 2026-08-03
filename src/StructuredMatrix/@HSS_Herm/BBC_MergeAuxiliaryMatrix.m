@@ -1,8 +1,6 @@
 function BBC_MergeAuxiliaryMatrix(A)
 % BBC_MergeAuxiliaryMatrix
 
-% Jingyu Liu, December 5, 2024.
-
 arguments (Input)
     A HSS_Herm;
 end

@@ -1,8 +1,6 @@
 function FillVector_Row(A, f)
 % FillVector_Row
 
-% Jingyu Liu, November 23, 2024.
-
 arguments (Input)
     A HSS_Herm;
     f (:, :) double;

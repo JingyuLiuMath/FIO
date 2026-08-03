@@ -1,8 +1,6 @@
 function [sk, re, Z, k] = Row_ID(A, rank_or_tol)
 % Row_ID Interpolative decomposition. A(re, :) = Z * A(sk, :).
 
-% Jingyu Liu, December 11, 2023.
-
 % If rank_or_tol >= 1, it is treated as target rank. Otherwise it is
 % treated as relative tolerance.
 

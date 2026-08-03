@@ -2,8 +2,6 @@ function [U, S, V] = RSVDImplict(m, n, ...
     AX_fun, XA_fun, rank_or_tol, power_iter)
 % RSVD Randomized SVD.
 
-% Jingyu Liu, April 12, 2024.
-
 % If rank_or_tol >= 1, it is treated as target rank. Otherwise it is
 % treated as relative tolerance.
 

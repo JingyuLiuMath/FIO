@@ -11,8 +11,6 @@ function [Q, B] = RangeFinderImplict(m, n, ...
 
 % Only X -> AX and X -> XA is available.
 
-% Jingyu Liu, April 11, 2024.
-
 arguments (Input)
     m (1, 1) double;
     n (1, 1) double;

@@ -1,8 +1,6 @@
 function x_pos = TensorProduct2D(x1_range, x2_range)
 % TensorProduct2D
 
-% Jingyu Liu, January 27, 2025.
-
 arguments (Input)
     x1_range (:, 1) double;
     x2_range (:, 1) double;

@@ -1,8 +1,6 @@
 function Construct(BF, a_func, phi_func, r, tol)
 % Construct constructs and compresses an interpolation BHP.
 
-% Jingyu Liu, August 3, 2026.
-
 arguments (Input)
     BF Butterfly2D;
     a_func function_handle;
