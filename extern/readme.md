@@ -12,7 +12,6 @@ git clone https://github.com/YingzhouLi/BF.m
 
 Download [FastBF](https://github.com/YingzhouLi/FastBF.m) by the following command:
 
-```
+``` bash
 git clone git@github.com:YingzhouLi/FastBF.m.git
 ```
-

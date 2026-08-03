@@ -9,6 +9,9 @@ arguments (Output)
     f (:, :) double;
 end
 
+assert(BF.constructed_, "Butterfly:ApplyAdjoint:NotConstructed", ...
+    "Call Construct or BlackBoxConstruct before ApplyAdjoint.");
+
 N = BF.N_;
 L = BF.L_;
 h_x = BF.h_x_;

@@ -36,7 +36,8 @@ end
 fprintf("BF.\n");
 
 tic;
-K_BF = Butterfly(N, a_func, phi_func, n_leaf_bf, r_bf, tol_bf);
+K_BF = Butterfly(N, n_leaf_bf);
+K_BF.Construct(a_func, phi_func, r_bf, tol_bf);
 t_BF_construct = toc;
 fprintf("  t_BF_construct: %.1e\n", t_BF_construct);
 

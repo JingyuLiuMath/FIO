@@ -9,6 +9,9 @@ arguments (Output)
     f (:, :) double;
 end
 
+assert(BF.constructed_, "Butterfly2D:Apply:NotConstructed", ...
+    "Call Construct or BlackBoxConstruct before Apply.");
+
 N = BF.N_;
 L = BF.L_;
 h_x = BF.h_x_;

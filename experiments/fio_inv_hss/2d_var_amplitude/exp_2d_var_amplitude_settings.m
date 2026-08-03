@@ -4,11 +4,11 @@ close all;
 if ispc
     data_path = "./data/";
 elseif isunix
-    data_path = "/scratch/jyliu/FIO/2d_var_amplitude/data/";
+    data_path = "/scratch/jyliu/FIO/fio_inv_hss/2d_var_amplitude/data/";
 end
 
 originalPath = path;
-addpath('../../extern/FastBF.m/src');
+addpath('../../../extern/FastBF.m/src');
 
 a_func = @(x, xi) a_fun_2D_var(x, xi);
 phi_func = @(x, xi) phi_fun_2D_var(x, xi);

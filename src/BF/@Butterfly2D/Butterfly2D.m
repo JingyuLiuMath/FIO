@@ -14,8 +14,7 @@ classdef Butterfly2D < handle
         L_x_ (1, 1) double;
         L_xi_ (1, 1) double;
 
-        mid_row_size_ (1, 1) double;
-        mid_col_size_ (1, 1) double;
+        constructed_ (1, 1) logical;
 
         x_perm_ (:, 1) double;
         x_perm_inv_ (:, 1) double;
@@ -31,23 +30,21 @@ classdef Butterfly2D < handle
     end
 
     methods
-        function BF = Butterfly2D(n, a_func, phi_func, ...
-                n_leaf, r, tol)
+        function BF = Butterfly2D(n, n_leaf)
             arguments (Input)
                 n (1, 1) double;
-                a_func function_handle;
-                phi_func function_handle;
                 n_leaf (1, 1) double;
-                r (1, 1) double;
-                tol (1, 1) double;
             end
 
             BF.n_ = n;
             BF.N_ = n^2;
             BF.ConstructTree(n_leaf);
-            BF.Construct(a_func, phi_func, r);
-            BF.OutCompression(tol);
-            BF.InCompression(tol);
+            BF.constructed_ = false;
+            BF.U_ = {};
+            BF.G_ = {};
+            BF.M_ = {};
+            BF.H_ = {};
+            BF.V_ = {};
         end
     end
 end

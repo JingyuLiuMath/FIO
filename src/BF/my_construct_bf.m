@@ -19,9 +19,11 @@ switch type_bf
         [BF, ~] = fastBF(k_func, x, xi, r_bf, tol_bf, "polar");
     case "mybf"
         if d == 1
-            BF = Butterfly(n, a_func, phi_func, n_leaf_bf, r_bf, tol_bf);
+            BF = Butterfly(n, n_leaf_bf);
+            BF.Construct(a_func, phi_func, r_bf, tol_bf);
         elseif d == 2
-            BF = Butterfly2D(n, a_func, phi_func, n_leaf_bf, r_bf, tol_bf);
+            BF = Butterfly2D(n, n_leaf_bf);
+            BF.Construct(a_func, phi_func, r_bf, tol_bf);
         end
 end
 
