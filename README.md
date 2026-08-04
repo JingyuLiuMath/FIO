@@ -18,8 +18,8 @@ where
 
 $$
 X = \bigl\{
-x_i = \bigl(i_1/n, \dotsc, i_d/n\bigr)
-: 0 \leq i_1, \dotsc, i_d < n
+x_{i} = \bigl(i_{1} / n, \dotsc, i_{d} / n\bigr)
+: 0 \leq i_{1}, \dotsc, i_{d} < n
 \bigr\}
 $$
 
@@ -27,8 +27,8 @@ and
 
 $$
 \Xi = \bigl\{
-\xi_j = \bigl(j_1, \dotsc, j_d\bigr)
-: -n/2 \leq j_1, \dotsc, j_d < n/2
+\xi_{j} = \bigl(j_{1}, \dotsc, j_{d}\bigr)
+: -n / 2 \leq j_{1}, \dotsc, j_{d} < n / 2
 \bigr\}
 $$
 
@@ -55,8 +55,8 @@ A butterfly factorization approximates $K$ by
 
 $$
 K \approx \widetilde{K}
-= U^{[L]} G^{[L]} \dotsb G^{[h+1]} M^{[h]}
-H^{[h+1]} \dotsb H^{[L]} V^{[L]},
+= U^{[L]} G^{[L]} \dotsb G^{[h + 1]} M^{[h]}
+H^{[h + 1]} \dotsb H^{[L]} V^{[L]},
 $$
 
 where $L = \mathcal{O}(\log n)$ and $h \approx L / 2$. For fixed butterfly ranks, each sparse factor has $\mathcal{O}(N)$ nonzero entries.
@@ -77,8 +77,8 @@ Alternatively, the BF can be written as
 $$
 K
 \approx \widetilde{K}
-= U^{[L]} \odot G^{[L]} \odot \dotsb \odot G^{[h+1]}
-\odot M^{[h]} \odot H^{[h+1]} \odot \dotsb \odot H^{[L]}
+= U^{[L]} \odot G^{[L]} \odot \dotsb \odot G^{[h + 1]}
+\odot M^{[h]} \odot H^{[h + 1]} \odot \dotsb \odot H^{[L]}
 \odot V^{[L]},
 $$
 
@@ -87,29 +87,29 @@ redistributed according to the complementary trees between successive levels. Fo
 
 ## Hierarchically Semiseparable (HSS) Matrices
 
-Let $\mathsf{T}$ be a hierarchical partition of an index set $\mathcal{J}$. For the Hermitian matrices considered here, the two defining properties of the HSS representation are low-rank off-diagonal blocks and nested bases. For example, if a node $\tau$ has two children $\alpha_1$ and $\alpha_2$, then
+Let $\mathsf{T}$ be a hierarchical partition of an index set $\mathcal{J}$. For the Hermitian matrices considered here, the two defining properties of the HSS representation are low-rank off-diagonal blocks and nested bases. For example, if a node $\tau$ has two children $\alpha_{1}$ and $\alpha_{2}$, then
 
 $$
 D_{\tau}
 =
 \begin{bmatrix}
-D_{\alpha_1}
-& U_{\alpha_1}^{\mathrm{big}} B_{\alpha_2,\alpha_1}^{*}
-  U_{\alpha_2}^{\mathrm{big},*} \\
-U_{\alpha_2}^{\mathrm{big}} B_{\alpha_2,\alpha_1}
-  U_{\alpha_1}^{\mathrm{big},*}
-& D_{\alpha_2}
+D_{\alpha_{1}}
+& U_{\alpha_{1}}^{\mathrm{big}} B_{\alpha_{2}, \alpha_{1}}^{*}
+  U_{\alpha_{2}}^{\mathrm{big}, *} \\
+U_{\alpha_{2}}^{\mathrm{big}} B_{\alpha_{2}, \alpha_{1}}
+  U_{\alpha_{1}}^{\mathrm{big}, *}
+& D_{\alpha_{2}}
 \end{bmatrix},
 $$
 
-where $D_{\tau}=H\bigl(\mathcal{J}_{\tau},\mathcal{J}_{\tau}\bigr)$, and
+where $D_{\tau} = H\bigl(\mathcal{J}_{\tau}, \mathcal{J}_{\tau}\bigr)$, and
 
 $$
 U_{\tau}^{\mathrm{big}}
 =
 \begin{bmatrix}
-U_{\alpha_1}^{\mathrm{big}} & 0 \\
-0 & U_{\alpha_2}^{\mathrm{big}}
+U_{\alpha_{1}}^{\mathrm{big}} & 0 \\
+0 & U_{\alpha_{2}}^{\mathrm{big}}
 \end{bmatrix}
 U_{\tau}.
 $$
@@ -121,7 +121,7 @@ For 1D problems, a binary tree is used. For 2D problems, a quadtree is used.
 Assume that $K$ is square and nonsingular. Define the Hermitian positive definite normal matrix
 
 $$
-G = K^{*}K.
+G = K^{*} K.
 $$
 
 The inverse of $K$ is given by
