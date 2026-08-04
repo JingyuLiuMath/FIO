@@ -17,19 +17,19 @@ $$
 where
 
 $$
-X = \bigl\{
+X = \{
 x_{i} = (i_{1} / n, \dotsc, i_{d} / n)
 : 0 \leq i_{1}, \dotsc, i_{d} < n
-\bigr\}
+\}
 $$
 
 and
 
 $$
-\Xi = \bigl\{
+\Xi = \{
 \xi_{j} = (j_{1}, \dotsc, j_{d})
 : -n / 2 \leq j_{1}, \dotsc, j_{d} < n / 2
-\bigr\}
+\}
 $$
 
 are the spatial and frequency grids, respectively. Here, $n$ is a positive even integer.
