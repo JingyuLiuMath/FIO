@@ -8,44 +8,44 @@ This repository contains MATLAB research code for discrete Fourier integral oper
 
 The $d$-dimensional discrete FIO takes the form
 
-$$
+```math
 u(x) = \sum_{\xi \in \Xi} a(x, \xi)
 \exp(2 \pi \imath \phi(x, \xi)) f(\xi),
 \qquad x \in X,
-$$
+```
 
 where
 
-$$
+```math
 X = \{
 x_{i} = (i_{1} / n, \dotsc, i_{d} / n)
 : 0 \leq i_{1}, \dotsc, i_{d} < n
 \}
-$$
+```
 
 and
 
-$$
+```math
 \Xi = \{
 \xi_{j} = (j_{1}, \dotsc, j_{d})
 : -n / 2 \leq j_{1}, \dotsc, j_{d} < n / 2
 \}
-$$
+```
 
 are the spatial and frequency grids, respectively. Here, $n$ is a positive even integer.
 
 The amplitude $a(x, \xi)$ is assumed to be smooth in $(x, \xi)$. The phase $\phi(x, \xi)$ is smooth for $\xi \neq 0$ and homogeneous of degree one in $\xi$:
 
-$$
+```math
 \phi(x, \lambda \xi) = \lambda \phi(x, \xi),
 \qquad \lambda > 0.
-$$
+```
 
 The number of degrees of freedom is $N = n^d$. In matrix form, the discrete FIO is written as
 
-$$
+```math
 u = Kf.
-$$
+```
 
 ## Butterfly Factorization (BF)
 
@@ -53,11 +53,11 @@ $$
 
 A butterfly factorization approximates $K$ by
 
-$$
+```math
 K \approx \widetilde{K}
 = U^{[L]} G^{[L]} \dotsb G^{[h + 1]} M^{[h]}
 H^{[h + 1]} \dotsb H^{[L]} V^{[L]},
-$$
+```
 
 where $L = \mathcal{O}(\log n)$ and $h \approx L / 2$. For fixed butterfly ranks, each sparse factor has $\mathcal{O}(N)$ nonzero entries.
 Consequently, applying $\widetilde{K}$ or $\widetilde{K}^{*}$ costs $\mathcal{O}(N \log N)$ for fixed dimension. For the FIOs considered here, the factorization can be constructed by interpolation in
@@ -74,13 +74,13 @@ Related papers:
 
 Alternatively, the BF can be written as
 
-$$
+```math
 K
 \approx \widetilde{K}
 = U^{[L]} \odot G^{[L]} \odot \dotsb \odot G^{[h + 1]}
 \odot M^{[h]} \odot H^{[h + 1]} \odot \dotsb \odot H^{[L]}
 \odot V^{[L]},
-$$
+```
 
 where each factor is an array of small dense blocks. Here, $\odot$ denotes a generalized block Hadamard product: corresponding dense blocks are multiplied as matrices, rather than entrywise, and are
 redistributed according to the complementary trees between successive levels. For fixed butterfly ranks and dimension, this representation retains the $\mathcal{O}(N\log N)$ storage and application complexities of BF while avoiding the expanded intermediate vectors arising from global sparse matrix products. It is implemented by the `Butterfly` and `Butterfly2D` classes in this repository.
@@ -89,7 +89,7 @@ redistributed according to the complementary trees between successive levels. Fo
 
 Let $\mathsf{T}$ be a hierarchical partition of an index set $\mathcal{J}$. For the Hermitian matrices considered here, the two defining properties of the HSS representation are low-rank off-diagonal blocks and nested bases. For example, if a node $\tau$ has two children $\alpha_{1}$ and $\alpha_{2}$, then
 
-$$
+```math
 D_{\tau}
 =
 \begin{bmatrix}
@@ -100,11 +100,11 @@ U_{\alpha_{2}}^{\mathrm{big}} B_{\alpha_{2}, \alpha_{1}}
   U_{\alpha_{1}}^{\mathrm{big}, *}
 & D_{\alpha_{2}}
 \end{bmatrix},
-$$
+```
 
 where $D_{\tau} = H(\mathcal{J}_{\tau}, \mathcal{J}_{\tau})$, and
 
-$$
+```math
 U_{\tau}^{\mathrm{big}}
 =
 \begin{bmatrix}
@@ -112,7 +112,7 @@ U_{\alpha_{1}}^{\mathrm{big}} & 0 \\
 0 & U_{\alpha_{2}}^{\mathrm{big}}
 \end{bmatrix}
 U_{\tau}.
-$$
+```
 
 For 1D problems, a binary tree is used. For 2D problems, a quadtree is used.
 
@@ -120,15 +120,15 @@ For 1D problems, a binary tree is used. For 2D problems, a quadtree is used.
 
 Assume that $K$ is square and nonsingular. Define the Hermitian positive definite normal matrix
 
-$$
+```math
 G = K^{*} K.
-$$
+```
 
 The inverse of $K$ is given by
 
-$$
+```math
 K^{-1} = G^{-1} K^{*}.
-$$
+```
 
 Empirically, the normal matrix $G$ can be compressed into an HSS matrix.
 
@@ -136,9 +136,9 @@ In the implementation, a BF approximation $\widetilde{K}$ is first constructed, 
 
 The HSS matrix $\widetilde{G}$ is then factorized using the ULV factorization, which enables fast application of the inverse operator $\widetilde{F} = \widetilde{G}^{-1}$ through structured solves, without explicitly forming $\widetilde{G}^{-1}$. Therefore,
 
-$$
+```math
 K^{-1} = G^{-1} K^{*} \approx \widetilde{F} \widetilde{K}^{*}.
-$$
+```
 
 The algorithm consists of three steps:
 
