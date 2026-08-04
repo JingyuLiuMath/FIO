@@ -1,9 +1,17 @@
 function fio_startup()
-% fio_startup
+% fio_startup adds the project and required dependency paths.
 
-file_path = mfilename('fullpath');
-tmp = strfind(file_path, 'fio');
-file_path = file_path(1:(tmp(end)-1));
-addpath(genpath([file_path 'src']));
+root_path = fileparts(mfilename("fullpath"));
+
+fastbf_path = fullfile(root_path, "extern", "FastBF.m", "src");
+if isfolder(fastbf_path)
+    addpath(fastbf_path);
+else
+    warning("FIO:FastBFNotFound", ...
+        "FastBF was not found at %s.", fastbf_path);
+end
+
+src_path = fullfile(root_path, "src");
+addpath(genpath(src_path));
 
 end

@@ -8,7 +8,6 @@ elseif isunix
 end
 
 originalPath = path;
-addpath('../../../extern/FastBF.m/src');
 
 a_func = @(x, xi) a_fun_2D_var(x, xi);
 phi_func = @(x, xi) phi_fun_2D_var(x, xi);
