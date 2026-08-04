@@ -13,15 +13,21 @@ arguments (Output)
 end
 
 if isempty(B)
-    % m = 0; n = 0;
-    Q = zeros(0, 0);
+    Q = zeros(size(B, 1), 0, "like", B);
     k = 0;
     return;
 end
 
 [Q, R, ~] = qr(B, "econ", "vector");
 
-k1 = find(abs(diag(R)) >= tol * 1e-1 * abs(R(1, 1)), 1, "last");
+diag_R = abs(diag(R));
+if isempty(diag_R) || diag_R(1) == 0
+    Q = zeros(size(B, 1), 0, "like", B);
+    k = 0;
+    return;
+end
+
+k1 = find(diag_R >= tol * 1e-1 * diag_R(1), 1, "last");
 if ~isempty(k1)
     k = min(k1, k);
 else
