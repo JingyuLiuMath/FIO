@@ -10,7 +10,7 @@ The $d$-dimensional discrete FIO takes the form
 
 $$
 u(x) = \sum_{\xi \in \Xi} a(x, \xi)
-\exp\bigl(2 \pi \imath \phi(x, \xi)\bigr) f(\xi),
+\exp(2 \pi \imath \phi(x, \xi)) f(\xi),
 \qquad x \in X,
 $$
 
@@ -18,7 +18,7 @@ where
 
 $$
 X = \bigl\{
-x_{i} = \bigl(i_{1} / n, \dotsc, i_{d} / n\bigr)
+x_{i} = (i_{1} / n, \dotsc, i_{d} / n)
 : 0 \leq i_{1}, \dotsc, i_{d} < n
 \bigr\}
 $$
@@ -27,7 +27,7 @@ and
 
 $$
 \Xi = \bigl\{
-\xi_{j} = \bigl(j_{1}, \dotsc, j_{d}\bigr)
+\xi_{j} = (j_{1}, \dotsc, j_{d})
 : -n / 2 \leq j_{1}, \dotsc, j_{d} < n / 2
 \bigr\}
 $$
@@ -102,7 +102,7 @@ U_{\alpha_{2}}^{\mathrm{big}} B_{\alpha_{2}, \alpha_{1}}
 \end{bmatrix},
 $$
 
-where $D_{\tau} = H\bigl(\mathcal{J}_{\tau}, \mathcal{J}_{\tau}\bigr)$, and
+where $D_{\tau} = H(\mathcal{J}_{\tau}, \mathcal{J}_{\tau})$, and
 
 $$
 U_{\tau}^{\mathrm{big}}
