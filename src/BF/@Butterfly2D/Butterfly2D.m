@@ -3,6 +3,7 @@ classdef Butterfly2D < handle
     properties
         n_ (1, 1) double;
         N_ (1, 1) double;
+        n_leaf_ (1, 1) double;
 
         num_children_ (1, 1) double;
         ch_list_ (1, :) double;
@@ -30,15 +31,17 @@ classdef Butterfly2D < handle
     end
 
     methods
-        function BF = Butterfly2D(n, n_leaf)
+        function BF = Butterfly2D(n, n_leaf, verbose)
             arguments (Input)
                 n (1, 1) double;
                 n_leaf (1, 1) double;
+                verbose (1, 1) double = 1;
             end
 
             BF.n_ = n;
             BF.N_ = n^2;
-            BF.ConstructTree(n_leaf);
+            BF.n_leaf_ = n_leaf;
+            BF.ConstructTree(n_leaf, verbose);
             BF.constructed_ = false;
             BF.U_ = {};
             BF.G_ = {};

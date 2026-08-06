@@ -2,8 +2,6 @@
 clear;
 close all;
 
-originalPath = path;
-
 a_func = @(x, xi) ones(size(x, 1), size(xi, 1));
 phi_func = @(x, xi) phi_fun_2D(x, xi);
 exp_phi_func = @(x, xi) complex(...
@@ -21,6 +19,7 @@ half_n = n / 2;
 n_leaf_bf = 8;
 r_bf = 10;
 tol_bf = 1e-6;
+type_bf = "mybf";
 
 num_sample = 256;
 
@@ -38,8 +37,10 @@ end
 fprintf("BF.\n");
 
 tic;
-K_BF = Butterfly2D(n, n_leaf_bf);
-K_BF.Construct(a_func, phi_func, r_bf, tol_bf);
+K_BF = my_construct_bf(...
+    n, a_func, phi_func, ...
+    x, xi, ...
+    n_leaf_bf, r_bf, tol_bf, type_bf);
 t_BF_construct = toc;
 fprintf("  t_BF_construct: %.1e\n", t_BF_construct);
 
@@ -51,19 +52,16 @@ fprintf("  ratio: %.1e\n", ratio);
 %% Apply.
 f_ex = randn(N, 1) + 1i * randn(N, 1);
 tic;
-Kf = K_BF.Apply(f_ex);
+Kf = my_apply_bf(K_BF, f_ex, type_bf);
 t_BF_apply = toc;
-rel_err_BF = fbf_check(N, k_func, f_ex, x, xi, Kf, num_sample);
+rel_err_BF = my_check_bf(N, k_func, f_ex, x, xi, Kf, num_sample);
 fprintf("  t_BF_apply: %.1e\n", t_BF_apply);
 fprintf("  rel_err_BF: %.1e\n", rel_err_BF);
 
 if p <= p_lim
     f_ex = randn(N, 1) + 1i * randn(N, 1);
-    Kf = K_BF.ApplyAdjoint(f_ex);
+    Kf = my_apply_bf_adj(K_BF, f_ex, type_bf);
     Kf_ex = K' * f_ex;
     rel_err_BF = norm(Kf_ex - Kf) / norm(Kf_ex);
     fprintf("  rel_err_BF: %.1e\n", rel_err_BF);
 end
-
-%% Remove path.
-path(originalPath);

@@ -63,7 +63,7 @@ where $L = \mathcal{O}(\log n)$ and $h \approx L / 2$. For fixed butterfly ranks
 Consequently, applying $\widetilde{K}$ or $\widetilde{K}^{*}$ costs $\mathcal{O}(N \log N)$ for fixed dimension. For the FIOs considered here, the factorization can be constructed by interpolation in
 $\mathcal{O}(N \log N)$ operations when the interpolation rank is treated as a constant.
 
-This form of BF is implemented by [FastBF](https://github.com/YingzhouLi/FastBF.m), which needs to be installed under the `extern` directory.
+This form of BF is implemented by [BF.m](https://github.com/JingyuLiuMath/BF.m) and [FastBF.m](https://github.com/JingyuLiuMath/FastBF.m). The versions used by this repository are included as Git submodules under the `extern` directory.
 
 Related papers:
 
@@ -155,21 +155,21 @@ Related paper:
 ### Requirements
 
 - MATLAB;
-- [FastBF](https://github.com/YingzhouLi/FastBF.m);
+- [BF.m](https://github.com/JingyuLiuMath/BF.m);
+- [FastBF.m](https://github.com/JingyuLiuMath/FastBF.m);
 
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/JingyuLiuMath/FIO.git
+git clone --recurse-submodules https://github.com/JingyuLiuMath/FIO.git
 cd FIO
 ```
 
-### Install FastBF
+If the repository has already been cloned, initialize or update the external dependencies with
 
 ```bash
-cd extern
-git clone https://github.com/YingzhouLi/FastBF.m.git
-cd ..
+git submodule sync --recursive
+git submodule update --init --recursive
 ```
 
 ### Set the MATLAB Path
@@ -179,6 +179,8 @@ Start MATLAB from the repository root and run:
 ```matlab
 fio_startup();
 ```
+
+The startup function adds the FIO source code and every `src` directory under `extern`. Dependency helper functions use the `bf1d_`, `bf2d_`, and `fastbf_` prefixes where necessary to avoid name conflicts.
 
 ### Run the HSS-Based Inversion Tests
 

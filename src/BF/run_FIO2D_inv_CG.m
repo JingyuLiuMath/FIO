@@ -59,7 +59,7 @@ result.Kf_ex = my_apply_bf(result.K_BF, result.f_ex, type_bf);
 result.t_apply_BF = toc;
 
 fprintf("  t_apply_BF: %.1e\n", result.t_apply_BF);
-result.rel_err_BF = fbf_check(N, k_func, result.f_ex, x, xi, result.Kf_ex, num_sample);
+result.rel_err_BF = my_check_bf(N, k_func, result.f_ex, x, xi, result.Kf_ex, num_sample);
 fprintf("  rel_err_BF: %.1e\n", result.rel_err_BF);
 
 op_G = @(v) my_apply_bf_adj(result.K_BF, ...

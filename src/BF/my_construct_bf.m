@@ -12,10 +12,51 @@ d = size(x, 2);
 
 switch type_bf
     case "bf"
+        if d == 1
+            BF = bf1d_explicit(...
+                k_func, x, [0, 1], ...
+                xi, [-n / 2, n / 2], ...
+                r_bf, tol_bf, 0);
+        elseif d == 2
+            BF = bf2d_explicit(...
+                k_func, x, repmat([0, 1], d, 1), ...
+                xi, repmat([-n / 2, n / 2], d, 1), ...
+                r_bf, tol_bf, 0);
+        else
+            error("FIO:BFConstruct:UnsupportedDimension", ...
+                "BF.m explicit construction only supports 1D and 2D problems.");
+        end
+    case "fbf"
         [BF, ~] = fastBF(k_func, x, xi, r_bf, tol_bf);
     case "mbf"
-        [BF, ~] = fastMBF(k_func, x, xi, r_bf, tol_bf);
+        if d ~= 2
+            error("FIO:BFConstruct:UnsupportedDimension", ...
+                "BF.m MBF construction only supports 2D problems.");
+        end
+        BF = mbf_explicit(...
+            k_func, x, repmat([0, 1], d, 1), ...
+            xi, repmat([-n / 2, n / 2], d, 1), ...
+            r_bf, tol_bf, 0);
     case "pbf"
+        if d ~= 2
+            error("FIO:BFConstruct:UnsupportedDimension", ...
+                "BF.m PBF construction only supports 2D problems.");
+        end
+        BF = pbf_explicit(...
+            n, k_func, x, repmat([0, 1], d, 1), ...
+            xi, repmat([-n / 2, n / 2], d, 1), ...
+            r_bf, tol_bf, 0);
+    case "fmbf"
+        if d ~= 2
+            error("FIO:BFConstruct:UnsupportedDimension", ...
+                "FastBF MBF construction only supports 2D problems.");
+        end
+        [BF, ~] = fastMBF(k_func, x, xi, r_bf, tol_bf);
+    case "fpbf"
+        if d ~= 2
+            error("FIO:BFConstruct:UnsupportedDimension", ...
+                "FastBF PBF construction only supports 2D problems.");
+        end
         [BF, ~] = fastBF(k_func, x, xi, r_bf, tol_bf, "polar");
     case "mybf"
         if d == 1
@@ -24,7 +65,13 @@ switch type_bf
         elseif d == 2
             BF = Butterfly2D(n, n_leaf_bf);
             BF.Construct(a_func, phi_func, r_bf, tol_bf);
+        else
+            error("FIO:BFConstruct:UnsupportedDimension", ...
+                "BHP construction only supports 1D and 2D problems.");
         end
+    otherwise
+        error("FIO:BFConstruct:UnsupportedType", ...
+            "Unsupported BF type: %s.", type_bf);
 end
 
 end

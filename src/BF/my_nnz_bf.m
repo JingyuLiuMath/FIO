@@ -1,75 +1,65 @@
-function res = my_nnz_bf(BF, type_bf, verbose)
+function num_nnz = my_nnz_bf(BF, type_bf)
+% my_nnz_bf returns the total stored entries of a BF representation.
 
 arguments (Input)
     BF;
-    type_bf string;
-    verbose (1, 1) double = 0;
+    type_bf (1, 1) string;
+end
+
+arguments (Output)
+    num_nnz (1, 1) double;
 end
 
 switch type_bf
-    case "bf"
-        res = my_nnz_bf_local(BF);
-        if verbose == 1
-            print_nnz_local(res);
-        end
+    case {"bf", "pbf"}
+        num_nnz = SmpNnz(BF);
+    case {"fbf", "fpbf"}
+        num_nnz = FbfNnz(BF);
     case "mbf"
-        res = cell(size(BF,1), 1);
-        for i = 1 : (size(BF, 1) - 1)
-            res{i} = my_nnz_bf_local(BF{i, 1});
-        end
-        res{size(BF, 1)} = nnz(BF{size(BF, 1), 1});
-        if verbose == 1
-            print_nnz_mbf(res);
-        end
+        num_nnz = MultiscaleNnz(BF, @SmpNnz);
+    case "fmbf"
+        num_nnz = MultiscaleNnz(BF, @FbfNnz);
+    case "mybf"
+        num_nnz = BF.Nnz();
+    case "adjoint_view"
+        num_nnz = my_nnz_bf(BF.factor, BF.type_bf);
+    otherwise
+        error("FIO:BFNnz:UnsupportedType", ...
+            "Unsupported BF type: %s.", type_bf);
 end
 
 end
 
-function res = my_nnz_bf_local(BF)
+function num_nnz = SmpNnz(Factor)
 
-res = struct();
-
-res.nnz_U = nnz(BF.U);
-
-res.nnz_GTol = zeros(size(BF.GTol));
-for i = 1 : size(BF.GTol)
-    res.nnz_GTol(i) = nnz(BF.GTol{i});
+num_nnz = nnz(Factor.U) + nnz(Factor.SigmaM) ...
+    + nnz(Factor.V);
+for i = 1 : length(Factor.ATol)
+    num_nnz = num_nnz + nnz(Factor.ATol{i});
 end
-
-res.nnz_M = nnz(BF.M);
-
-res.nnz_HTol = zeros(size(BF.HTol));
-for i = 1 : size(BF.HTol)
-    res.nnz_HTol(i) = nnz(BF.HTol{i});
+for i = 1 : length(Factor.BTol)
+    num_nnz = num_nnz + nnz(Factor.BTol{i});
 end
-
-res.nnz_V = nnz(BF.V);
 
 end
 
-function print_nnz_local(nnz_BF)
+function num_nnz = FbfNnz(Factor)
 
-fprintf("  nnz_U: %d\n", nnz_BF.nnz_U);
-for i = 1 : size(nnz_BF.nnz_GTol)
-    fprintf("  nnz_GTol(%d): %d\n", i, nnz_BF.nnz_GTol(i));
+num_nnz = nnz(Factor.U) + nnz(Factor.M) + nnz(Factor.V);
+for i = 1 : length(Factor.GTol)
+    num_nnz = num_nnz + nnz(Factor.GTol{i});
 end
-fprintf("  nnz_M: %d\n", nnz_BF.nnz_M);
-for i = 1 : size(nnz_BF.nnz_HTol)
-    fprintf("  nnz_HTol(%d): %d\n", i, nnz_BF.nnz_HTol(i));
+for i = 1 : length(Factor.HTol)
+    num_nnz = num_nnz + nnz(Factor.HTol{i});
 end
-fprintf("  nnz_V: %d\n", nnz_BF.nnz_V);
 
 end
 
-function print_nnz_mbf(nnz_mbf)
+function num_nnz = MultiscaleNnz(Factors, factor_nnz)
 
-m = size(nnz_mbf, 1);
-for i = 1 : (m - 1)
-    fprintf("the %d-th row in mbf\n", i);
-    print_nnz_local(nnz_mbf{i});
+num_nnz = nnz(Factors{end, 1});
+for i = 1 : (size(Factors, 1) - 1)
+    num_nnz = num_nnz + factor_nnz(Factors{i, 1});
 end
-i = m;
-fprintf("the %d-th row in mbf\n", i);
-fprintf("  nnz: %d\n", nnz_mbf{i});
 
 end

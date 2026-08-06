@@ -1,0 +1,29 @@
+exp_1d_var_amplitude_settings;
+
+originalPath = path;
+addpath("../");
+
+result_list = cell(0, 1);
+for it_p = 1 : num_n
+    p = p_list(it_p);
+    file_name = data_path ...
+        + "1d_var_amplitude_results_newton_schulz" ...
+        + "_" + string(p) + ".mat";
+    if ~isfile(file_name)
+        continue;
+    end
+    result_data = load(file_name, "result");
+    if ~isfield(result_data.result, "r_ns") ...
+            || result_data.result.r_ns ~= r_ns ...
+            || result_data.result.tol_ns ~= tol_ns
+        continue;
+    end
+    result_list{end + 1, 1} = result_data.result;
+end
+
+print_table_direct(result_list, ...
+    "Results of the direct solver for a 1D FIO " ...
+    + "with variable amplitude.", ...
+    "1d_var_amplitude_newton_schulz_direct");
+
+path(originalPath);

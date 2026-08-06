@@ -2,8 +2,6 @@
 clear;
 close all;
 
-originalPath = path;
-
 a_func = @(x, xi) ones(size(x, 1), size(xi, 1));
 phi_func = @(x, xi) phi_fun_2D(x, xi);
 exp_phi_func = @(x, xi) complex(...
@@ -48,6 +46,3 @@ fprintf("\n");
 run_FIO2D_inv_HSS(...
     result_bf, ...
     N_leaf_hss, rank_func_tol, tol_hss);
-
-%% Remove path.
-path(originalPath);

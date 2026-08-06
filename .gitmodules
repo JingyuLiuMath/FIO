@@ -1,0 +1,6 @@
+[submodule "extern/BF.m"]
+	path = extern/BF.m
+	url = https://github.com/JingyuLiuMath/BF.m.git
+[submodule "extern/FastBF.m"]
+	path = extern/FastBF.m
+	url = https://github.com/JingyuLiuMath/FastBF.m.git

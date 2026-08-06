@@ -1,8 +1,9 @@
-function ConstructTree(BF, n_leaf)
+function ConstructTree(BF, n_leaf, verbose)
 
 arguments (Input)
     BF Butterfly2D;
     n_leaf (1, 1) double;
+    verbose (1, 1) double = 1;
 end
 
 
@@ -13,8 +14,10 @@ BF.h_x_ = ceil(BF.L_ / 2);
 BF.h_xi_ = BF.L_ - BF.h_x_;
 BF.L_x_ = max(BF.h_x_, ceil(log2(n / n_leaf)));
 BF.L_xi_ = max(BF.h_xi_, ceil(log2(n / n_leaf)));
-fprintf("  L: %d, h_x: %d, h_xi: %d, L_x: %d, L_xi: %d\n", ...
-    BF.L_, BF.h_x_, BF.h_xi_, BF.L_x_, BF.L_xi_);
+if verbose == 1
+    fprintf("  L: %d, h_x: %d, h_xi: %d, L_x: %d, L_xi: %d\n", ...
+        BF.L_, BF.h_x_, BF.h_xi_, BF.L_x_, BF.L_xi_);
+end
 
 num_children = 4;
 ch_list = [0, 1, 2, 3];

@@ -29,7 +29,7 @@ tol_a = 1e-10;
 
 r_bf = 10;
 tol_bf = 1e-8;
-type_bf = "bf";
+type_bf = "fbf";
 
 if ispc
     N_leaf_hss = 64;

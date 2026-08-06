@@ -1,0 +1,26 @@
+exp_1d_var_amplitude_settings;
+
+for it_p = 1 : num_n
+    p = p_list(it_p);
+    N = 2^p;
+
+    b_func = @(x) exp(-(x - x_pts.').^2 / sigma_sq);
+    c_func = @(xi) exp(-(xi / N - xi_pts.').^2 / sigma_sq);
+    a_func = @(x, xi) b_func(x) * c_func(xi).';
+
+    fprintf("\n\n\n\n");
+    fprintf("p: %d\n", p);
+
+    result = run_FIO1D_inv_GMRES(...
+        N, ...
+        a_func, phi_func, ...
+        n_leaf_bf, r_bf, tol_bf, type_bf, ...
+        num_sample, ...
+        restart_gmres, tol_gmres, maxit_gmres);
+
+    save(data_path + "1d_var_amplitude_results_gmres" ...
+        + "_" + string(p) ...
+        + ".mat", "result", '-v7.3');
+end
+
+path(originalPath);

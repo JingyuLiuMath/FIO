@@ -1,0 +1,88 @@
+%% Setting.
+clear;
+close all;
+
+a_func = @(x, xi) ones(size(x, 1), size(xi, 1));
+phi_func = @(x, xi) phi_fun_1D(x, xi);
+exp_phi_func = @(x, xi) complex(...
+    cos(2 * pi * phi_func(x, xi)), ...
+    sin(2 * pi * phi_func(x, xi)));
+k_func = @(x, xi) a_func(x, xi) .* exp_phi_func(x, xi);
+
+p = 10;
+N = 2^p;
+half_N = N / 2;
+
+n_leaf_fbf = 0;
+r_fbf = 10;
+tol_fbf = 1e-8;
+type_fbf = "fbf";
+
+r_bf = 10;
+tol_bf = 1e-6;
+type_bf = "bf";
+n_leaf_bf = 0;
+
+num_sample = 256;
+
+%% Points.
+x = (0 : (N - 1))' / N;
+xi = (-half_N : (half_N - 1))';
+
+%% FBF black box.
+fprintf("FBF black box.\n");
+
+tic;
+K_FBF = my_construct_bf(...
+    N, a_func, phi_func, ...
+    x, xi, ...
+    n_leaf_fbf, r_fbf, tol_fbf, type_fbf);
+t_FBF_construct = toc;
+fprintf("  t_FBF_construct: %.1e\n", t_FBF_construct);
+
+op_K = @(f) my_apply_bf(K_FBF, f, type_fbf);
+op_K_adjoint = @(f) my_apply_bf_adj(K_FBF, f, type_fbf);
+
+%% BF.
+fprintf("BF black-box construction.\n");
+
+tic;
+[K_BF, out] = my_construct_bf_blackbox(...
+    N, op_K, op_K_adjoint, ...
+    x, xi, ...
+    n_leaf_bf, r_bf, tol_bf, type_bf);
+t_BF_construct = toc;
+fprintf("  t_BF_construct: %.1e\n", t_BF_construct);
+fprintf("  num_operator_calls: %d\n", out.num_operator_calls);
+fprintf("  num_operator_calls_adj: %d\n", ...
+    out.num_operator_calls_adj);
+fprintf("  num_operator_vectors: %d\n", ...
+    out.num_operator_vectors);
+fprintf("  num_operator_vectors_adj: %d\n", ...
+    out.num_operator_vectors_adj);
+
+nnz_BF = my_nnz_bf(K_BF, type_bf);
+nnz_dense = N^2;
+ratio = nnz_BF / nnz_dense;
+fprintf("  ratio: %.1e\n", ratio);
+
+%% Apply.
+f_ex = randn(N, 1) + 1i * randn(N, 1);
+tic;
+Kf = my_apply_bf(K_BF, f_ex, type_bf);
+t_BF_apply = toc;
+Kf_blackbox = op_K(f_ex);
+rel_err_BF_blackbox = norm(Kf_blackbox - Kf) ...
+    / norm(Kf_blackbox);
+rel_err_BF = my_check_bf(...
+    N, k_func, f_ex, x, xi, Kf, num_sample);
+fprintf("  t_BF_apply: %.1e\n", t_BF_apply);
+fprintf("  rel_err_BF_blackbox: %.1e\n", ...
+    rel_err_BF_blackbox);
+fprintf("  rel_err_BF: %.1e\n", rel_err_BF);
+
+f_ex = randn(N, 1) + 1i * randn(N, 1);
+Kf = my_apply_bf_adj(K_BF, f_ex, type_bf);
+Kf_ex = op_K_adjoint(f_ex);
+rel_err_BF = norm(Kf_ex - Kf) / norm(Kf_ex);
+fprintf("  rel_err_BF_adjoint_blackbox: %.1e\n", rel_err_BF);
