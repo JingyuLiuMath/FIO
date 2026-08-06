@@ -29,8 +29,6 @@ r_bf = 10;
 tol_bf = 1e-8;
 type_bf = "mybf";
 type_bf_inv = "mybf";
-type_bf_smp = "fbf";
-type_bf_inv_smp = "bf";
 
 r_ns = 4;
 tol_ns = 4e-1;
