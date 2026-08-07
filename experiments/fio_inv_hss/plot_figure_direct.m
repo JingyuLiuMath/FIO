@@ -37,12 +37,15 @@ end
 
 figure_position = [100 100 1600 900];
 paper_position = [0 0 24 12];
+paper_size = paper_position(3:4);
+axes_position = [0.13 0.23 0.60 0.70];
 font_size = 64;
 font_size_rank = font_size;
 font_size_scaling = font_size;
 
 % ========== Rank ==========
 figure();
+set(gcf, 'Position', figure_position);
 xlabel_name = "$N$";
 ylabel_name = "numerical rank";
 
@@ -84,12 +87,16 @@ if isunix
 end
 % title(title_name, "Interpreter", "latex");
 lgd = legend("Location", "southeast", "Interpreter", "latex");
-set(gca, 'FontSize', font_size_rank);
+set(gca, ...
+    'FontSize', font_size_rank, ...
+    'Units', 'normalized', ...
+    'Position', axes_position);
 set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPosition', paper_position);   % 统一的物理尺寸
+set(gcf, 'PaperSize', paper_size);
 set(gcf, 'PaperPositionMode', 'manual');
 print(gcf, figure_name + ".png", "-dpng", "-r200");
-exportgraphics(gcf, figure_name + ".pdf", "ContentType", "vector", "BackgroundColor", "white");
+print(gcf, figure_name + ".pdf", "-dpdf", "-painters");
 
 % ========== Time scaling ==========
 figure();
@@ -233,12 +240,16 @@ if isfield(result_list(1), "n")
 else
     lgd = legend("Location", "eastoutside", "Interpreter", "latex", "NumColumns", 1);
 end
-set(gca, 'FontSize', font_size_scaling);
+set(gca, ...
+    'FontSize', font_size_scaling, ...
+    'Units', 'normalized', ...
+    'Position', axes_position);
 set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPosition', paper_position);   % 统一的物理尺寸
+set(gcf, 'PaperSize', paper_size);
 set(gcf, 'PaperPositionMode', 'manual');
 print(gcf, figure_name + ".png", "-dpng", "-r200");
-exportgraphics(gcf, figure_name + ".pdf", "ContentType", "vector", "BackgroundColor", "white");
+print(gcf, figure_name + ".pdf", "-dpdf", "-painters");
 
 end
 
