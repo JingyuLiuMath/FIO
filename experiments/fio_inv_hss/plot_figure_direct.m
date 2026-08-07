@@ -89,7 +89,7 @@ set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPosition', paper_position);   % 统一的物理尺寸
 set(gcf, 'PaperPositionMode', 'manual');
 print(gcf, figure_name + ".png", "-dpng", "-r200");
-print(gcf, figure_name + ".eps", "-depsc", "-r200");
+exportgraphics(gcf, figure_name + ".pdf", "ContentType", "vector", "BackgroundColor", "white");
 
 % ========== Time scaling ==========
 figure();
@@ -238,7 +238,7 @@ set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPosition', paper_position);   % 统一的物理尺寸
 set(gcf, 'PaperPositionMode', 'manual');
 print(gcf, figure_name + ".png", "-dpng", "-r200");
-print(gcf, figure_name + ".eps", "-depsc", "-r200");
+exportgraphics(gcf, figure_name + ".pdf", "ContentType", "vector", "BackgroundColor", "white");
 
 end
 
