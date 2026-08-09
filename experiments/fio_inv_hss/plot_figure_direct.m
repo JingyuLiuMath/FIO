@@ -38,7 +38,11 @@ end
 figure_position = [100 100 1600 900];
 paper_position = [0 0 24 12];
 paper_size = paper_position(3:4);
-axes_position = [0.13 0.23 0.60 0.70];
+if isfield(result_list(1), "n")
+    axes_position = [0.18 0.23 0.55 0.70];
+else
+    axes_position = [0.13 0.23 0.60 0.70];
+end
 font_size = 64;
 font_size_rank = font_size;
 font_size_scaling = font_size;
