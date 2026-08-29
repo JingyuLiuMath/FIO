@@ -30,7 +30,7 @@ for it_n = 1 : num_n
     t_factor_HSS_list(it_n) = curr_result.t_factor_HSS;
     rel_err_HSS_list(it_n) = curr_result.rel_err_HSS;
 
-    t_solve_list(it_n) = curr_result.t_direct + curr_result.t_apply_BF;
+    t_solve_list(it_n) = curr_result.t_direct;
     rel_err_direct_list(it_n) = curr_result.rel_err_direct;
     N_list(it_n) = curr_result.N;
 end
@@ -90,17 +90,17 @@ if isunix
     end
 end
 % title(title_name, "Interpreter", "latex");
-lgd = legend("Location", "southeast", "Interpreter", "latex");
+legend("Location", "southeast", "Interpreter", "latex");
 set(gca, ...
     'FontSize', font_size_rank, ...
     'Units', 'normalized', ...
     'Position', axes_position);
 set(gcf, 'PaperUnits', 'inches');
-set(gcf, 'PaperPosition', paper_position);   % 统一的物理尺寸
+set(gcf, 'PaperPosition', paper_position);
 set(gcf, 'PaperSize', paper_size);
 set(gcf, 'PaperPositionMode', 'manual');
 print(gcf, figure_name + ".png", "-dpng", "-r200");
-print(gcf, figure_name + ".pdf", "-dpdf", "-painters");
+print(gcf, figure_name + ".pdf", "-dpdf", "-vector");
 
 % ========== Time scaling ==========
 figure();
@@ -197,6 +197,7 @@ if apply_bf_flag == 0
     else
         scaling_type = "$O(N \log^{2} N)$";
         factor = mean(t_construct_HSS_list);
+        plot_ref_curve(N_list, scaling_type, factor, color_cHSS_ref);
     end
 
     % Factor HSS.
@@ -239,21 +240,17 @@ if isunix
     end
 end
 % title(title_name, "Interpreter", "latex");
-if isfield(result_list(1), "n")
-    lgd = legend("Location", "eastoutside", "Interpreter", "latex", "NumColumns", 1);
-else
-    lgd = legend("Location", "eastoutside", "Interpreter", "latex", "NumColumns", 1);
-end
+legend("Location", "eastoutside", "Interpreter", "latex", "NumColumns", 1);
 set(gca, ...
     'FontSize', font_size_scaling, ...
     'Units', 'normalized', ...
     'Position', axes_position);
 set(gcf, 'PaperUnits', 'inches');
-set(gcf, 'PaperPosition', paper_position);   % 统一的物理尺寸
+set(gcf, 'PaperPosition', paper_position);
 set(gcf, 'PaperSize', paper_size);
 set(gcf, 'PaperPositionMode', 'manual');
 print(gcf, figure_name + ".png", "-dpng", "-r200");
-print(gcf, figure_name + ".pdf", "-dpdf", "-painters");
+print(gcf, figure_name + ".pdf", "-dpdf", "-vector");
 
 end
 
