@@ -130,6 +130,7 @@ legend(ax_rank, ...
     "Interpreter", "latex", ...
     "FontSize", font_size_lgd);
 
+add_export_height_anchor(fig_rank);
 drawnow;
 exportgraphics(fig_rank, figure_name + ".pdf", ...
     "ContentType", "vector");
@@ -400,8 +401,8 @@ lgd_position(1) = axes_right + legend_gap;
 lgd_position(2) = 0.5 - lgd_position(4) / 2;
 
 set(lgd, "Position", lgd_position);
-drawnow;
 
+add_export_height_anchor(fig_time);
 drawnow;
 exportgraphics(fig_time, figure_name + ".pdf", ...
     "ContentType", "vector");
@@ -471,5 +472,20 @@ loglog(N_list, ref_line, ...
     "DisplayName", scaling_type, ...
     "Color", color);
 hold on;
+
+end
+
+function add_export_height_anchor(fig)
+
+background_color = [1, 1, 1];
+set(fig, "Color", background_color);
+
+% 位于 Figure 最左侧白色区域，肉眼不可见。
+% 作用是让 exportgraphics 对两个 Figure 使用相同的垂直范围。
+annotation(fig, "line", ...
+    [0.002, 0.002], ...
+    [0.002, 0.998], ...
+    "Color", background_color, ...
+    "LineWidth", 0.1);
 
 end
